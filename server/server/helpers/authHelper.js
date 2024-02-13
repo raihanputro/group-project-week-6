@@ -27,7 +27,7 @@ const __generateToken = (data) => {
 }
 
 const registerUser = async (dataObject) => {
-  const { name, email, password } = dataObject;
+  const { name, email, password, role } = dataObject;
 
   try {
     const user = await db.User.findOne({
@@ -38,7 +38,7 @@ const registerUser = async (dataObject) => {
     }
 
     const hashedPass = __hashPassword(password)
-    await db.User.create({ name, email, password: hashedPass });
+    await db.User.create({ name, email, password: hashedPass, role });
     
     return Promise.resolve(true);
   } catch (err) {

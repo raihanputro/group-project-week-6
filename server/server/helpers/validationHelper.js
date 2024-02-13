@@ -17,7 +17,8 @@ const registerValidation = (data) => {
     name: Joi.string().required().description('Person\'s full name'),
     email: Joi.string().required().description('Active email'),
     password: Joi.string().min(8).max(20).required().description('Should be between 8-20 characters'),
-    confirmPassword: Joi.string().min(8).max(20).required().valid(Joi.ref('password')).description('Should match password')
+    confirmPassword: Joi.string().min(8).max(20).required().valid(Joi.ref('password')).description('Should match password'),
+    role: Joi.number().required().description('1  for admin, 2 for manager, 3 for user')
   });
 
   if (schema.validate(data).error) {

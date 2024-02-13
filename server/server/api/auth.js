@@ -11,8 +11,8 @@ const register = async (request, reply) => {
   try {
     Validation.registerValidation(request.body);
 
-    const { name, email, password } = request.body;
-    const response = await AuthHelper.registerUser({ name, email, password });
+    const { name, email, password, role } = request.body;
+    const response = await AuthHelper.registerUser({ name, email, password, role });
     
     return reply.send(response);
   } catch (err) {
