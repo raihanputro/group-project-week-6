@@ -41,8 +41,8 @@ const hello = async (request, reply) => {
   return reply.send('HELLO');
 }
 
-Router.post('/register', register);
-Router.post('/login', login);
-Router.get('/hello', Middleware.validateToken, hello);
+Router.post('/api/register', register);
+Router.post('/api/login', login);
+Router.get('/api/hello', Middleware.validateToken, hello);
 
 module.exports = Router;
