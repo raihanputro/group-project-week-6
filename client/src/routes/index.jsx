@@ -1,6 +1,7 @@
 import MainLayout from '@layouts/MainLayout';
 
 import Home from '@pages/Home';
+import Profile from '@pages/Profile';
 import NotFound from '@pages/NotFound';
 import Login from '@pages/Login';
 
@@ -10,6 +11,13 @@ const routes = [
     name: 'Home',
     protected: false,
     component: Home,
+    layout: MainLayout,
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    protected: false,
+    component: Profile,
     layout: MainLayout,
   },
   {

@@ -11,6 +11,9 @@ const Port = process.env.NODEJS_PORT || 8080;
 
 // Import routes
 const Auth = require('./server/api/auth');
+const Blog = require('./server/api/blog');
+const User = require('./server/api/user');
+
 const Task = require('./server/api/task');
 const TaskPivot = require('./server/api/taskPivot');
 dotenv.config();
@@ -53,7 +56,7 @@ app.use((req, res, next) => {
     if (statusCode !== 200 && data.isBoom) {
       bodyResponse = data.output.payload;
     }
-    
+
     const response = {
       statusCode,
       bodyResponse
@@ -78,6 +81,8 @@ app.use((req, res, next) => {
 
 // Route middlewares
 app.use('/', Auth);
+app.use('/blog', Blog);
+app.use('/user', User);
 app.use('/api/task', Task);
 app.use('/api/task-pivot', TaskPivot);
 
