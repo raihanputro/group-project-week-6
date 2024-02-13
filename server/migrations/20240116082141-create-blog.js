@@ -1,19 +1,21 @@
-'use strict';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Bookmarks', {
+    await queryInterface.createTable('Blogs', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      idUser: {
-        type: Sequelize.INTEGER
+      name: {
+        type: Sequelize.STRING
       },
-      idPost: {
-        type: Sequelize.INTEGER
+      description: {
+        type: Sequelize.STRING
+      },
+      owner: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -25,7 +27,8 @@ module.exports = {
       }
     });
   },
+  // eslint-disable-next-line no-unused-vars
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Bookmarks');
+    await queryInterface.dropTable('Blogs');
   }
 };
