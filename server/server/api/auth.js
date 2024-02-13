@@ -11,8 +11,8 @@ const register = async (request, reply) => {
   try {
     Validation.registerValidation(request.body);
 
-    const { name, email, password } = request.body;
-    const response = await AuthHelper.registerUser({ name, email, password });
+    const { name, email, password, role } = request.body;
+    const response = await AuthHelper.registerUser({ name, email, password, role });
     
     return reply.send(response);
   } catch (err) {
@@ -41,8 +41,8 @@ const hello = async (request, reply) => {
   return reply.send('HELLO');
 }
 
-Router.post('/register', register);
-Router.post('/login', login);
-Router.get('/hello', Middleware.validateToken, hello);
+Router.post('/api/register', register);
+Router.post('/api/login', login);
+Router.get('/api/hello', Middleware.validateToken, hello);
 
 module.exports = Router;
