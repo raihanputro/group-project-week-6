@@ -31,7 +31,7 @@ const registerUser = async (dataObject) => {
 
   try {
     const user = await db.User.findOne({
-      where: { email }
+      where: { email: email }
     });
     if (!_.isEmpty(user)) {
       return Promise.reject(Boom.badRequest('EMAIL_HAS_BEEN_USED'));
@@ -64,6 +64,7 @@ const login = async (dataObject) => {
     }
 
     const token = __generateToken({
+      id: user.id,
       name: user.name,
       role: user.role,
       imageUrl: user.imageUrl

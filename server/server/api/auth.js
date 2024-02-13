@@ -10,9 +10,9 @@ const fileName = 'server/api/auth.js';
 
 const register = async (request, reply) => {
   try {
-    Validation.registerValidation(request.body);
-
-    const { name, email, password, role } = request.body;
+    const decryptedData = Decryptor.decryptObject(request.body);
+    Validation.registerValidation(decryptedData);
+    const { name, email, password, role } = decryptedData;
     const response = await AuthHelper.registerUser({ name, email, password, role });
 
     return reply.send(response);
