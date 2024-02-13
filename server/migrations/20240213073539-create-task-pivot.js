@@ -11,19 +11,43 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.INTEGER,
         },
-        task_id: {
-          type: Sequelize.INTEGER,
-        },
         user_id: {
           type: Sequelize.INTEGER,
+          references: {
+            model: "Users",
+            key: "id",
+          },
+          onDelete: "cascade",
+          allowNull: false,
         },
-        deletedAt: {
-          type: Sequelize.DATE,
+        task_id: {
+          type: Sequelize.INTEGER,
+          references: {
+            model: "Tasks",
+            key: "id",
+          },
+          onDelete: "cascade",
+          allowNull: false,
+        },
+        member_id: {
+          type: Sequelize.INTEGER,
+          references: {
+            model: "Users",
+            key: "id",
+          },
+          onDelete: "cascade",
+          allowNull: false,
         },
         createdAt: {
+          allowNull: false,
           type: Sequelize.DATE,
         },
         updatedAt: {
+          allowNull: false,
+          type: Sequelize.DATE,
+        },
+        deletedAt: {
+          allowNull: true,
           type: Sequelize.DATE,
         },
       },
