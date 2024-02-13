@@ -4,30 +4,39 @@ const GeneralHelper = require("./generalHelper");
 const Boom = require("boom");
 const fileName = "server/helpers/taskPivotHelper.js";
 
-const createMemberTask = async (dataObject) => {
-  const { task_id, user_id } = dataObject;
+const updateMemberTask = async (task_id, member_id, dataToken) => {
   try {
-    if (!Array.isArray(user_id)) {
-      throw new Error('user_id is not an array');
-    }
-    for (const userId of user_id) {
-      await db.TaskPivot.create({
-        task_id: task_id,
-        user_id: userId,
-      });
-    }
-    return Promise.resolve(true);
-  } catch (err) {
-    console.log([fileName, "createMemberTask", "ERROR"], {
-      info: `${err}`,
+    const checkMember = await db.User.findOne({
+      where: { id: member_id },
     });
-    return Promise.reject(GeneralHelper.errorResponse(err));
-  }
-};
+    if (_.isEmpty(checkMember)) {
+      return Promise.reject(
+        Boom.unauthorized("Member with this id is doesn't exist")
+      );
+    }
+    const checkAuthorization = await db.Task.findOne({
+      where: { user_id: dataToken.id },
+    });
+    if (_.isEmpty(checkAuthorization)) {
+      return Promise.reject(
+        Boom.unauthorized("You are not authorized to see this data")
+      );
+    }
+    const userIds = Array.isArray(member_id) ? member_id : [member_id];
 
-const updateMemberTask = async (task_id) => {
-  try {
-    await db.TaskPivot.destroy({ where: { task_id: task_id } });
+    await db.TaskPivot.destroy({
+      where: {
+        task_id: task_id,
+        user_id: dataToken.id,
+      },
+    });
+    const newRows = userIds.map((userId) => ({
+      user_id: dataToken.id,
+      task_id: task_id,
+      member_id: userId,
+    }));
+    await db.TaskPivot.bulkCreate(newRows);
+
     return Promise.resolve(true);
   } catch (err) {
     console.log([fileName, "updateMemberTask", "ERROR"], { info: `${err}` });
@@ -36,6 +45,5 @@ const updateMemberTask = async (task_id) => {
 };
 
 module.exports = {
-  createMemberTask,
   updateMemberTask,
 };

@@ -4,30 +4,21 @@ const taskPivotHelper = require("../helpers/taskPivotHelper");
 
 const GeneralHelper = require("../helpers/generalHelper");
 
-const ValidationTask = require("../helpers/validationHelper");
+const Validation = require("../helpers/validationHelper");
+
+const Middleware = require("../middlewares/authMiddleware");
 
 const fileName = "server/api/task.js";
 
-const createMemberTask = async (req, res) => {
-  try {
-    const { task_id, user_id } = req.body;
-    const response = await taskPivotHelper.createMemberTask({
-      task_id,
-      user_id,
-    });
-    return res.send(response);
-  } catch (err) {
-    console.log([fileName, "createMemberTask", "ERROR"], { info: `${err}` });
-    return res.send(GeneralHelper.errorResponse(err));
-  }
-};
-
 const updateMemberTask = async (req, res) => {
-  console.log(req.body,"<<<<<<")
   try {
-    const { task_id } = req.body;
-    const response = await taskPivotHelper.createMemberTask(
+    Validation.updateMemberValidation(req.body);
+    const dataToken = req.body.dataToken;
+    const { task_id, member_id } = req.body;
+    const response = await taskPivotHelper.updateMemberTask(
       task_id,
+      member_id,
+      dataToken
     );
     return res.send(response);
   } catch (err) {
@@ -36,7 +27,6 @@ const updateMemberTask = async (req, res) => {
   }
 };
 
-Router.post("/add-member", createMemberTask);
-Router.delete("/update-member",updateMemberTask);
+Router.put("/update-member", Middleware.validateToken, updateMemberTask);
 
 module.exports = Router;
