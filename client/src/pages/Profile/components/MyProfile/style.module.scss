@@ -1,2 +1,10 @@
 @import '../../../../styles/base.scss';
 
+.container {
+    width: 100%;
+}
+
+.containerTextField {
+    @include directionY;
+    width: 100%;
+}
