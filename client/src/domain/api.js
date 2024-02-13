@@ -5,7 +5,7 @@ import request from '@utils/request';
 
 const urls = {
   ping: 'ping.json',
-  login: '/api/login'
+  login: 'login',
 };
 
 export const callAPI = async (endpoint, method, header = {}, params = {}, data = {}) => {

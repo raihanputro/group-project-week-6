@@ -25,6 +25,7 @@ const register = async (request, reply) => {
 const login = async (request, reply) => {
   try {
     const decryptedData = Decryptor.decryptObject(request.body);
+    console.log(decryptedData,"DECRYPT")
     Validation.loginValidation(decryptedData);
     const { email, password } = decryptedData;
     const response = await AuthHelper.login({ email, password });
@@ -35,18 +36,6 @@ const login = async (request, reply) => {
     return reply.send(GeneralHelper.errorResponse(err));
   }
 }
-const getUserDetails = async (request, reply) => {
-  try {
-    Validation.userDetailValidation(request.params);
-    const { id } = request.params;
-    const response = await AuthHelper.getUserDetails({ id });
-    return reply.send(response);
-  } catch (err) {
-    console.log([fileName, 'list', 'ERROR'], { info: `${err}` });
-    return reply.send(GeneralHelper.errorResponse(err));
-  }
-}
-
 // eslint-disable-next-line arrow-body-style
 const hello = async (request, reply) => {
   // SAMPLE API WITH JWT MIDDLEWARE 
@@ -56,6 +45,5 @@ const hello = async (request, reply) => {
 Router.post('/api/register', register);
 Router.post('/api/login', login);
 Router.get('/api/hello', Middleware.validateToken, hello);
-Router.get('/api/user-details/:id', getUserDetails);
 
 module.exports = Router;

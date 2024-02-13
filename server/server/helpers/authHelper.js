@@ -65,7 +65,8 @@ const login = async (dataObject) => {
 
     const token = __generateToken({
       name: user.name,
-      password: user.password
+      role: user.role,
+      imageUrl: user.imageUrl
     });
 
     return Promise.resolve({ token });
@@ -75,29 +76,7 @@ const login = async (dataObject) => {
   }
 }
 
-const getUserDetails = async (dataObject) => {
-  const { id } = dataObject;
-  try {
-    const users = await db.User.findOne({
-      where: {
-        id: id,
-      },
-      attributes: { exclude: ['user_password', 'createdAt', 'updatedAt', 'deletedAt'] }
-    })
-    if (_.isEmpty(users)) {
-      return Promise.reject(Boom.notFound('USER_NOT_FOUND'));
-    }
-    const message = "Get user details successful.";
-    const res = { message, users }
-    return Promise.resolve(res);
-  } catch (err) {
-    console.error(err);
-    return Promise.reject("Failed to fetch user details. Check the server logs for details.");
-  }
-}
-
 module.exports = {
   registerUser,
   login,
-  getUserDetails
 }
