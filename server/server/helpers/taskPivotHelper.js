@@ -7,6 +7,9 @@ const fileName = "server/helpers/taskPivotHelper.js";
 const createMemberTask = async (dataObject) => {
   const { task_id, user_id } = dataObject;
   try {
+    if (!Array.isArray(user_id)) {
+      throw new Error('user_id is not an array');
+    }
     for (const userId of user_id) {
       await db.TaskPivot.create({
         task_id: task_id,
@@ -22,20 +25,9 @@ const createMemberTask = async (dataObject) => {
   }
 };
 
-const updateMemberTask = async (task_id, new_member) => {
+const updateMemberTask = async (task_id) => {
   try {
-    await db.TaskPivot.destroy({
-      where: {
-        task_id: task_id,
-        user_id: { [db.Sequelize.Op.notIn]: new_member },
-      },
-    });
-
-    for (const user_id of new_member) {
-      await db.TaskPivot.findOrCreate({
-        where: { task_id: task_id, user_id: user_id },
-      });
-    }
+    await db.TaskPivot.destroy({ where: { task_id: task_id } });
     return Promise.resolve(true);
   } catch (err) {
     console.log([fileName, "updateMemberTask", "ERROR"], { info: `${err}` });
@@ -45,4 +37,5 @@ const updateMemberTask = async (task_id, new_member) => {
 
 module.exports = {
   createMemberTask,
+  updateMemberTask,
 };

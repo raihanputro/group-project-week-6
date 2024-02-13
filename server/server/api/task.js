@@ -65,7 +65,6 @@ const detailList = async (req, res) => {
 };
 
 const updateTask = async (req, res) => {
-    console.log(req.body)
   try {
     const { id } = req.params;
     const { name, description, start_date, end_date, status } = req.body;

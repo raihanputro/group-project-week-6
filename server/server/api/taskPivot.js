@@ -22,6 +22,21 @@ const createMemberTask = async (req, res) => {
   }
 };
 
+const updateMemberTask = async (req, res) => {
+  console.log(req.body,"<<<<<<")
+  try {
+    const { task_id } = req.body;
+    const response = await taskPivotHelper.createMemberTask(
+      task_id,
+    );
+    return res.send(response);
+  } catch (err) {
+    console.log([fileName, "updateMemberTask", "ERROR"], { info: `${err}` });
+    return res.send(GeneralHelper.errorResponse(err));
+  }
+};
+
 Router.post("/add-member", createMemberTask);
+Router.delete("/update-member",updateMemberTask);
 
 module.exports = Router;
