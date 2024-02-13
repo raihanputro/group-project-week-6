@@ -16,10 +16,16 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     name: DataTypes.STRING,
     email: DataTypes.STRING,
-    password: DataTypes.STRING
+    password: DataTypes.STRING,
+    imageUrl: DataTypes.STRING,
+    role: {
+      type: DataTypes.TINYINT,
+      defaultValue: 3
+    }
   }, {
     sequelize,
     modelName: 'User',
+    paranoid: true
   });
   return User;
 };
