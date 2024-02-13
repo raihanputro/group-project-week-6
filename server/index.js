@@ -8,6 +8,7 @@ const Port = process.env.NODEJS_PORT || 8080;
 // Import routes
 const Auth = require('./server/api/auth');
 const Blog = require('./server/api/blog');
+const User = require('./server/api/user');
 
 dotenv.config();
 
@@ -46,7 +47,7 @@ app.use((req, res, next) => {
     if (statusCode !== 200 && data.isBoom) {
       bodyResponse = data.output.payload;
     }
-    
+
     const response = {
       statusCode,
       bodyResponse
@@ -72,6 +73,7 @@ app.use((req, res, next) => {
 // Route middlewares
 app.use('/', Auth);
 app.use('/blog', Blog);
+app.use('/user', User);
 
 // Sys ping api 
 app.get('/sys/ping', (req, res) => {
