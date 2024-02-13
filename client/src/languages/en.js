@@ -11,4 +11,7 @@ export default {
   profile_myProfile: 'My Profile',
   profile_changePass: 'Change Password',
   profile_currentTask: 'Current Task',
+
+  profile_name: 'Name',
+  profile_email: 'Email',
 };
