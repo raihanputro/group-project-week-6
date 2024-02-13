@@ -1,0 +1,20 @@
+const CryptoJS = require("crypto-js")
+
+const secretKey = process.env.SECRET_KEY || 'super-secret-key';
+
+const decryptObject = (dataObject) => {
+    const { encryptedData } = dataObject
+    try {
+        if (encryptedData) {
+            const bytes = CryptoJS.AES.decrypt(encryptedData, secretKey);
+            const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+            return decryptedData
+        }
+        else return dataObject
+    } catch (error) {
+        console.error(err);
+        return Promise.reject("Authentication Error");
+    }
+}
+
+module.exports = { decryptObject };

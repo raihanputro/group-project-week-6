@@ -1,5 +1,6 @@
 const Router = require('express').Router();
 
+const Decryptor = require('../utils/decryptor');
 const Middleware = require('../middlewares/authMiddleware');
 const Validation = require('../helpers/validationHelper');
 const AuthHelper = require('../helpers/authHelper');
@@ -13,7 +14,7 @@ const register = async (request, reply) => {
 
     const { name, email, password, role } = request.body;
     const response = await AuthHelper.registerUser({ name, email, password, role });
-    
+
     return reply.send(response);
   } catch (err) {
     console.log([fileName, 'register', 'ERROR'], { info: `${err}` });
@@ -23,14 +24,25 @@ const register = async (request, reply) => {
 
 const login = async (request, reply) => {
   try {
-    Validation.loginValidation(request.body);
-
-    const { email, password } = request.body;
+    const decryptedData = Decryptor.decryptObject(request.body);
+    Validation.loginValidation(decryptedData);
+    const { email, password } = decryptedData;
     const response = await AuthHelper.login({ email, password });
-    
+
     return reply.send(response);
   } catch (err) {
     console.log([fileName, 'login', 'ERROR'], { info: `${err}` });
+    return reply.send(GeneralHelper.errorResponse(err));
+  }
+}
+const getUserDetails = async (request, reply) => {
+  try {
+    Validation.userDetailValidation(request.params);
+    const { id } = request.params;
+    const response = await AuthHelper.getUserDetails({ id });
+    return reply.send(response);
+  } catch (err) {
+    console.log([fileName, 'list', 'ERROR'], { info: `${err}` });
     return reply.send(GeneralHelper.errorResponse(err));
   }
 }
@@ -44,5 +56,6 @@ const hello = async (request, reply) => {
 Router.post('/api/register', register);
 Router.post('/api/login', login);
 Router.get('/api/hello', Middleware.validateToken, hello);
+Router.get('/api/user-details/:id', getUserDetails);
 
 module.exports = Router;

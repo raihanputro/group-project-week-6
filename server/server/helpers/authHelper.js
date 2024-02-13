@@ -39,7 +39,7 @@ const registerUser = async (dataObject) => {
 
     const hashedPass = __hashPassword(password)
     await db.User.create({ name, email, password: hashedPass, role });
-    
+
     return Promise.resolve(true);
   } catch (err) {
     console.log([fileName, 'registerUser', 'ERROR'], { info: `${err}` });
@@ -57,9 +57,9 @@ const login = async (dataObject) => {
     if (_.isEmpty(user)) {
       return Promise.reject(Boom.notFound('USER_NOT_FOUND'));
     }
-    
+
     const isPassMatched = __comparePassword(password, user.password)
-    if(!isPassMatched) {
+    if (!isPassMatched) {
       return Promise.reject(Boom.badRequest('WRONG_CREDENTIALS'));
     }
 
@@ -67,7 +67,7 @@ const login = async (dataObject) => {
       name: user.name,
       password: user.password
     });
-    
+
     return Promise.resolve({ token });
   } catch (err) {
     console.log([fileName, 'login', 'ERROR'], { info: `${err}` });
@@ -75,7 +75,29 @@ const login = async (dataObject) => {
   }
 }
 
+const getUserDetails = async (dataObject) => {
+  const { id } = dataObject;
+  try {
+    const users = await db.User.findOne({
+      where: {
+        id: id,
+      },
+      attributes: { exclude: ['user_password', 'createdAt', 'updatedAt', 'deletedAt'] }
+    })
+    if (_.isEmpty(users)) {
+      return Promise.reject(Boom.notFound('USER_NOT_FOUND'));
+    }
+    const message = "Get user details successful.";
+    const res = { message, users }
+    return Promise.resolve(res);
+  } catch (err) {
+    console.error(err);
+    return Promise.reject("Failed to fetch user details. Check the server logs for details.");
+  }
+}
+
 module.exports = {
   registerUser,
-  login
+  login,
+  getUserDetails
 }

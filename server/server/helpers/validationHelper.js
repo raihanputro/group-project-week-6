@@ -37,8 +37,20 @@ const loginValidation = (data) => {
   }
 };
 
+const userDetailValidation = (data) => {
+  const schema = Joi.object({
+    id: Joi.number().required().description('id; i.e. 1'),
+  });
+
+  if (schema.validate(data).error) {
+    throw Boom.badRequest(schema.validate(data).error);
+  }
+};
+
+
 module.exports = {
   blogListValidation,
   registerValidation,
-  loginValidation
+  loginValidation,
+  userDetailValidation
 };
