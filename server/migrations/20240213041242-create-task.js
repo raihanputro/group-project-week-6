@@ -28,6 +28,12 @@ module.exports = {
         },
         user_id: {
           type: Sequelize.INTEGER,
+          references: {
+            model: "Users",
+            key: "id",
+          },
+          onDelete: "cascade",
+          allowNull: false,
         },
         deletedAt: {
           type: Sequelize.DATE,

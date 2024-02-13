@@ -4,12 +4,13 @@ const GeneralHelper = require("./generalHelper");
 const Boom = require("boom");
 const fileName = "server/helpers/taskHelper.js";
 
-const getListTaskHelper = async () => {
+const getListTaskHelper = async (dataToken) => {
   try {
     const checkTask = await db.Task.findAll({
       include: {
         model: db.User,
       },
+      where: { user_id: dataToken.id },
     });
     if (_.isEmpty(checkTask)) {
       return { message: "Your Task is Empty" };
@@ -23,10 +24,13 @@ const getListTaskHelper = async () => {
   }
 };
 
-const getTaskDetailHelper = async (id) => {
+const getTaskDetailHelper = async (id, dataToken) => {
   try {
     const checkTask = await db.Task.findOne({
-      where: { id: id },
+      where: {
+        id: id,
+        user_id: dataToken.id,
+      },
       include: {
         model: db.User,
       },
@@ -45,9 +49,8 @@ const getTaskDetailHelper = async (id) => {
   }
 };
 
-const createTaskHelper = async (dataObject) => {
-  const { name, description, start_date, end_date, status, user_id } =
-    dataObject;
+const createTaskHelper = async (dataObject, dataToken) => {
+  const { name, description, start_date, end_date, status } = dataObject;
   try {
     await db.Task.create({
       name: name,
@@ -55,12 +58,11 @@ const createTaskHelper = async (dataObject) => {
       start_date: start_date,
       end_date: end_date,
       status: status,
-      user_id: user_id,
+      user_id: dataToken.id,
     });
-
     return Promise.resolve(true);
   } catch (err) {
-    console.log([fileName, "createDepartmentHelper", "ERROR"], {
+    console.log([fileName, "createTaskHelper", "ERROR"], {
       info: `${err}`,
     });
     return Promise.reject(GeneralHelper.errorResponse(err));
@@ -73,9 +75,18 @@ const updateTaskHelper = async (
   description,
   start_date,
   end_date,
-  status
+  status,
+  dataToken
 ) => {
   try {
+    const checkAuthorization = await db.Task.findOne({
+      where: { user_id: dataToken.id },
+    });
+    if (_.isEmpty(checkAuthorization)) {
+      return Promise.reject(
+        Boom.unauthorized("You are not authorized to see this data")
+      );
+    }
     const checkTask = await db.Task.findOne({
       where: { id: id },
     });
@@ -105,8 +116,16 @@ const updateTaskHelper = async (
   }
 };
 
-const deleteTaskHelper = async (id) => {
+const deleteTaskHelper = async (id, dataToken) => {
   try {
+    const checkAuthorization = await db.Task.findOne({
+      where: { user_id: dataToken.id },
+    });
+    if (_.isEmpty(checkAuthorization)) {
+      return Promise.reject(
+        Boom.unauthorized("You are not authorized to see this data")
+      );
+    }
     const checkTask = await db.Task.findOne({
       where: { id: id },
     });
