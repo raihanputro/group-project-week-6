@@ -1,5 +1,6 @@
 const Router = require('express').Router();
 
+const Decryptor = require('../utils/decryptor');
 const Middleware = require('../middlewares/authMiddleware');
 const Validation = require('../helpers/validationHelper');
 const AuthHelper = require('../helpers/authHelper');
@@ -9,11 +10,11 @@ const fileName = 'server/api/auth.js';
 
 const register = async (request, reply) => {
   try {
-    Validation.registerValidation(request.body);
-
-    const { name, email, password, role } = request.body;
+    const decryptedData = Decryptor.decryptObject(request.body);
+    Validation.registerValidation(decryptedData);
+    const { name, email, password, role } = decryptedData;
     const response = await AuthHelper.registerUser({ name, email, password, role });
-    
+
     return reply.send(response);
   } catch (err) {
     console.log([fileName, 'register', 'ERROR'], { info: `${err}` });
@@ -23,18 +24,18 @@ const register = async (request, reply) => {
 
 const login = async (request, reply) => {
   try {
-    Validation.loginValidation(request.body);
-
-    const { email, password } = request.body;
+    const decryptedData = Decryptor.decryptObject(request.body);
+    console.log(decryptedData,"DECRYPT")
+    Validation.loginValidation(decryptedData);
+    const { email, password } = decryptedData;
     const response = await AuthHelper.login({ email, password });
-    
+
     return reply.send(response);
   } catch (err) {
     console.log([fileName, 'login', 'ERROR'], { info: `${err}` });
     return reply.send(GeneralHelper.errorResponse(err));
   }
 }
-
 // eslint-disable-next-line arrow-body-style
 const hello = async (request, reply) => {
   // SAMPLE API WITH JWT MIDDLEWARE 

@@ -31,7 +31,7 @@ const registerUser = async (dataObject) => {
 
   try {
     const user = await db.User.findOne({
-      where: { email }
+      where: { email: email }
     });
     if (!_.isEmpty(user)) {
       return Promise.reject(Boom.badRequest('EMAIL_HAS_BEEN_USED'));
@@ -39,7 +39,7 @@ const registerUser = async (dataObject) => {
 
     const hashedPass = __hashPassword(password)
     await db.User.create({ name, email, password: hashedPass, role });
-    
+
     return Promise.resolve(true);
   } catch (err) {
     console.log([fileName, 'registerUser', 'ERROR'], { info: `${err}` });
@@ -57,17 +57,19 @@ const login = async (dataObject) => {
     if (_.isEmpty(user)) {
       return Promise.reject(Boom.notFound('USER_NOT_FOUND'));
     }
-    
+
     const isPassMatched = __comparePassword(password, user.password)
-    if(!isPassMatched) {
+    if (!isPassMatched) {
       return Promise.reject(Boom.badRequest('WRONG_CREDENTIALS'));
     }
 
     const token = __generateToken({
+      id: user.id,
       name: user.name,
-      password: user.password
+      role: user.role,
+      imageUrl: user.imageUrl
     });
-    
+
     return Promise.resolve({ token });
   } catch (err) {
     console.log([fileName, 'login', 'ERROR'], { info: `${err}` });
@@ -77,5 +79,5 @@ const login = async (dataObject) => {
 
 module.exports = {
   registerUser,
-  login
+  login,
 }
