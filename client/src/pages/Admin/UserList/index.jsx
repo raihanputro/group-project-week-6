@@ -27,6 +27,9 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+import { getUserListData } from './actions';
+import { selectUserListData } from './selectors';
+
 import classes from './style.module.scss';
 
 const StyledTableCell = styled(TableCell)(() => ({
@@ -44,10 +47,21 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-const UserList = () => {
+const UserList = ({userListSelect}) => {
+  const dispatch = useDispatch();
+  const [userListData, setUserListData] = useState([]);
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
   const [isModalDetailOpen, setIsModalDetailOpen] = useState(false);
+
+  useEffect(() => {
+    dispatch(getUserListData());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setUserListData(userListSelect.response);
+  }, [userListSelect])
+
 
   const handleModalOpen = () => {
     setIsModalAddOpen(true);
@@ -93,28 +107,42 @@ const UserList = () => {
             </TableRow>
             </TableHead>
             <TableBody>
-              <StyledTableRow>  
-                <StyledTableCell align="center">
-                  <Box
-                    component="img"
-                    sx={{
-                      objectFit: "contain",
-                      height: "70px",
-                      width: "70px",
-                      borderRadius: "50%"
-                    }}
-                    src="/profiletest.jpg"
-                  />
-                </StyledTableCell>
-                <StyledTableCell align="center">1</StyledTableCell>
-                <StyledTableCell align="center">Raihan Putro Maulana Rizky</StyledTableCell>
-                <StyledTableCell align="center">Admin</StyledTableCell>
-                <StyledTableCell align="center">
-                  <Button><InfoIcon sx={{ color: 'yellow' }}/></Button>
-                  <Button ><EditIcon /></Button>
-                  <Button sx={{ color: 'red' }}><DeleteIcon /></Button>
-                </StyledTableCell>
-              </StyledTableRow>
+                { userListData && userListData?.map((user, index) => (
+                  <StyledTableRow key={index}>  
+                    <StyledTableCell align="center" sx={{ display: 'flex', justifyContent: 'center' }}>
+                      {user.imageUrl !== null ? (
+                        <Box
+                          component="img"
+                          sx={{
+                            objectFit: "contain",
+                            height: "50px",
+                            width: "50px",
+                            borderRadius: "50%"
+                          }}
+                          src={user.imageUrl}
+                        />
+                      ) : (
+                        <Avatar sx={{ height: "50px", width: "50px" }} />
+                      )}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">{user.id}</StyledTableCell>
+                    <StyledTableCell align="center">{user.name}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      {user.role === 1 && 'Admin'}
+                      {user.role === 2 && 'Manager'}
+                      {user.role === 3 && 'Member'}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Button><InfoIcon sx={{ color: 'yellow' }}/></Button>
+                      {user.role === 1 && 
+                        <>
+                          <Button ><EditIcon /></Button>
+                          <Button sx={{ color: 'red' }}><DeleteIcon /></Button>
+                        </>
+                      }
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
             </TableBody>
         </Table>
       </TableContainer>
@@ -122,4 +150,12 @@ const UserList = () => {
   )
 }
 
-export default UserList
+UserList.propTypes = {
+  userListSelect: PropTypes.object,
+};
+
+const mapStateToProps = createStructuredSelector({
+  userListSelect: selectUserListData,
+});
+
+export default connect(mapStateToProps)(UserList);

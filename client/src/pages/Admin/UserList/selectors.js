@@ -1,6 +1,6 @@
 import { createSelector } from "reselect";
 import { initialState } from "./reducer";
 
-const selectProfileState = (state) => state.login || initialState;
+const selectUserListtate = (state) => state.userList || initialState;
 
-export const selectInfoLogin = createSelector(selectProfileState, (state) => state.infoLoginData);
+export const selectUserListData = createSelector(selectUserListtate, (state) => state.userListData);

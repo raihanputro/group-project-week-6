@@ -3,8 +3,23 @@ const Router = require('express').Router();
 const UserHelper = require('../helpers/userHelper');
 const GeneralHelper = require('../helpers/generalHelper');
 const Validation = require('../helpers/validationHelper');
+const Middleware = require('../middlewares/authMiddleware');
 
 const fileName = 'server/api/user.js';
+
+const listUser = async (request, reply) => {
+    try {
+        const response = await UserHelper.getAllUser();
+
+        return reply.send({
+            message: 'Get All user Success',
+            response
+        })
+    } catch (error) {
+        console.log([fileName, 'get all user api', 'ERROR'], { info: `${error}` });
+        return reply.send(GeneralHelper.errorResponse(error));
+    }
+}
 
 const getProfileUser = async (request, reply) => {
     try {
@@ -58,6 +73,7 @@ const updateProfile = async (request, reply) => {
     }
 };
 
+Router.get('/list', listUser)
 Router.get('/my-profile', getProfileUser);
 Router.patch('/change-password', changePassword);
 Router.patch('/update-profile', updateProfile);

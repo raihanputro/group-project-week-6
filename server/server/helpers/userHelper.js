@@ -18,6 +18,17 @@ const __comparePassword = (payloadPass, dbPass) => {
     return bcrypt.compareSync(payloadPass, dbPass);
 };
 
+const getAllUser = async () => {
+    try {
+        const response = await db.User.findAll();
+
+        return Promise.resolve(response);
+    } catch (error) {
+        console.log([fileName, 'get all user helper', 'ERROR'], { info: `${error}` });
+        return Promise.reject(GeneralHelper.errorResponse(error));
+    }
+}
+
 const getProfileUser = async (id) => {
     try {
         const response = await db.User.findOne({
@@ -104,6 +115,7 @@ const updateProfile = async (id, name) => {
 }
 
 module.exports = {
+    getAllUser,
     getProfileUser,
     changePassword,
     updateProfile
