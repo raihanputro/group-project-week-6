@@ -1,25 +1,106 @@
-const Router = require('express').Router();
+const Router = require("express").Router();
 
-const Validation = require('../helpers/validationHelper');
-const BlogHelper = require('../helpers/blogHelper');
-const GeneralHelper = require('../helpers/generalHelper');
+const taskHelper = require("../helpers/taskHelper");
 
-const fileName = 'server/api/blog.js';
+const GeneralHelper = require("../helpers/generalHelper");
 
-const list = async (request, reply) => {
+const ValidationTask = require("../helpers/validationHelper");
+
+const Middleware = require("../middlewares/authMiddleware");
+
+const fileName = "server/api/task.js";
+
+const listTask = async (req, res) => {
   try {
-    Validation.blogListValidation(request.query);
-
-    const { limit, offset } = request.query;
-    const response = await BlogHelper.getBlogList({ limit, offset });
-    
-    return reply.send(response);
+    const dataToken = req.body.dataToken;
+    const response = await taskHelper.getListTaskHelper(dataToken);
+    return res.send({
+      message: "Task data received successfully",
+      response,
+    });
   } catch (err) {
-    console.log([fileName, 'list', 'ERROR'], { info: `${err}` });
-    return reply.send(GeneralHelper.errorResponse(err));
+    console.log([fileName, "listTask", "ERROR"], { info: `${err}` });
+    return res.send(GeneralHelper.errorResponse(err));
   }
-}
+};
 
-Router.get('/list', list);
+const createTask = async (req, res) => {
+  try {
+    const dataToken = req.body.dataToken; // Assuming dataToken contains user information
+    ValidationTask.createTaskValidation(req.body);
+    const { name, description, start_date, end_date, status } = req.body;
+    const response = await taskHelper.createTaskHelper(
+      { name, description, start_date, end_date, status },
+      dataToken
+    );
+    return res.send(response);
+  } catch (err) {
+    console.log([fileName, "createTask", "ERROR"], { info: `${err}` });
+    return res.status(500).send(GeneralHelper.errorResponse(err));
+  }
+};
+
+const detailList = async (req, res) => {
+  try {
+    const dataToken = req.body.dataToken;
+    ValidationTask.idTaskValidation(req.params);
+    const { id } = req.params;
+    const response = await taskHelper.getTaskDetailHelper(id, dataToken);
+    return res.send({
+      message: "Task detail data received successfully",
+      data: response,
+    });
+  } catch (err) {
+    console.log([fileName, "detailList", "ERROR"], { info: `${err}` });
+    return res.send(GeneralHelper.errorResponse(err));
+  }
+};
+
+const updateTask = async (req, res) => {
+  try {
+    const dataToken = req.body.dataToken;
+    ValidationTask.idTaskValidation(req.params);
+    const { id } = req.params;
+    const { name, description, start_date, end_date, status } = req.body;
+    const response = await taskHelper.updateTaskHelper(
+      id,
+      name,
+      description,
+      start_date,
+      end_date,
+      status,
+      dataToken
+    );
+    return res.send({
+      message: "Task data successfully updated",
+      data: response,
+    });
+  } catch (err) {
+    console.log([fileName, "updateTask", "ERROR"], { info: `${err}` });
+    return res.send(GeneralHelper.errorResponse(err));
+  }
+};
+
+const deleteTask = async (req, res) => {
+  try {
+    const dataToken = req.body.dataToken;
+    ValidationTask.idTaskValidation(req.params);
+    const { id } = req.params;
+    const response = await taskHelper.deleteTaskHelper(id, dataToken);
+    return res.status(200).send({
+      message: "Task data successfully deleted",
+      response,
+    });
+  } catch (err) {
+    console.log([fileName, "deleteTask", "ERROR"], { info: `${err}` });
+    return res.send(GeneralHelper.errorResponse(err));
+  }
+};
+
+Router.get("/list", Middleware.validateToken, listTask);
+Router.post("/create", Middleware.validateToken, createTask);
+Router.get("/detail/:id", Middleware.validateToken, detailList);
+Router.put("/update/:id", Middleware.validateToken, updateTask);
+Router.delete("/delete/:id", Middleware.validateToken, deleteTask);
 
 module.exports = Router;

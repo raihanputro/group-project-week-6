@@ -1,24 +1,32 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class taskPivot extends Model {
+  class TaskPivot extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      TaskPivot.belongsTo(models.Task, {
+        foreignKey: "task_id",
+      });
+      TaskPivot.belongsTo(models.User, {
+        foreignKey: "user_id",
+      });
     }
   }
-  taskPivot.init({
-    user_id: DataTypes.INTEGER,
-    task_id: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'taskPivot',
-  });
-  return taskPivot;
+  TaskPivot.init(
+    {
+      task_id: DataTypes.INTEGER,
+      user_id: DataTypes.INTEGER,
+      member_id: DataTypes.INTEGER,
+      deletedAt: DataTypes.DATE,
+    },
+    {
+      sequelize,
+      modelName: "TaskPivot",
+    }
+  );
+  return TaskPivot;
 };

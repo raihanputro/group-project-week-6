@@ -26,4 +26,10 @@ export default {
   action_table_row: 'Aksi',
 
   number_users_title: 'Jumlah Pengguna',
+  profile_myProfile: 'Profile Saya',
+  profile_changePass: 'Ganti Password',
+  profile_currentTask: 'Tugas Saat Ini',
+
+  profile_name: 'Nama',
+  profile_email: 'Email',
 };

@@ -10,19 +10,26 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Task.belongsTo(models.User, {
+        foreignKey: "user_id",
+      });
+      Task.hasMany(models.TaskPivot, {
+        foreignKey: "task_id",
+      });
     }
   }
   Task.init({
     name: DataTypes.STRING,
+    description: DataTypes.STRING,
     start_date: DataTypes.DATE,
     end_date: DataTypes.DATE,
-    description: DataTypes.STRING,
     status: DataTypes.STRING,
-    user_id: DataTypes.INTEGER
+    user_id: DataTypes.INTEGER,
+    deletedAt: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'Task',
+    paranoid: true
   });
   return Task;
 };
