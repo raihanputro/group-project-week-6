@@ -1,1 +1,24 @@
 @import '@styles/base';
+
+.page-container{
+    color: purple;
+    background-image: url("/home-wallpaper.png");
+    height: 100vh;
+    display: flex;
+    padding: 75px 50px;
+    justify-content: center;
+    @include apply-at-md-size{
+        display: block;
+        padding: 150px 0px 0px 200px;
+    }
+}
+
+.content-container{
+
+}
+
+button{
+    background-color: purple;
+    color: white;
+    margin: 5px 5px;
+}
