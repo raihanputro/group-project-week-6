@@ -1,6 +1,6 @@
 export default {
   app_greeting: 'Hi from Web!',
-  app_title_header: 'Bootcamp',
+  app_title_header: 'Taskmaster',
   app_not_found: 'Page not found',
   app_lang_id: 'Indonesian',
   app_lang_en: 'English',
@@ -41,4 +41,20 @@ export default {
   enddate_modal_input: 'End',
   status_modal_input: 'Status',
   add_task_modal_button: 'Add Task',
+
+  click_here: "Click Here!",
+
+  login: "Login",
+  login_title: "Welcome Back!",
+  login_to_register: "Don't have an account?",
+  login_to_forgot_password: "Forgot Your Password?",
+  login_here: "Login here!",
+
+  register: 'Register',
+  register_title: "Create your account",
+  register_now: "Register now!",
+  register_to_login: "Already have an account?",
+  role: 'Role',
+  
+  logout: 'Logout',
 };
