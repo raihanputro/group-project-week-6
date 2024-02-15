@@ -20,12 +20,12 @@ module.exports = (sequelize, DataTypes) => {
     {
       task_id: DataTypes.INTEGER,
       user_id: DataTypes.INTEGER,
+      member_id: DataTypes.INTEGER,
       deletedAt: DataTypes.DATE,
     },
     {
       sequelize,
       modelName: "TaskPivot",
-      paranoid: true,
     }
   );
   return TaskPivot;

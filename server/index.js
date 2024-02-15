@@ -7,7 +7,7 @@ const multer = require('multer');
 const upload = multer();
 
 const app = express();
-const Port = process.env.NODEJS_PORT || 8080;
+const Port = process.env.NODEJS_PORT || 5000;
 
 // Import routes
 const Auth = require('./server/api/auth');

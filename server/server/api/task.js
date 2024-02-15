@@ -6,11 +6,14 @@ const GeneralHelper = require("../helpers/generalHelper");
 
 const ValidationTask = require("../helpers/validationHelper");
 
+const Middleware = require("../middlewares/authMiddleware");
+
 const fileName = "server/api/task.js";
 
 const listTask = async (req, res) => {
   try {
-    const response = await taskHelper.getListTaskHelper();
+    const dataToken = req.body.dataToken;
+    const response = await taskHelper.getListTaskHelper(dataToken);
     return res.send({
       message: "Task data received successfully",
       response,
@@ -23,37 +26,26 @@ const listTask = async (req, res) => {
 
 const createTask = async (req, res) => {
   try {
+    const dataToken = req.body.dataToken; // Assuming dataToken contains user information
     ValidationTask.createTaskValidation(req.body);
-    const {
-      name,
-      description,
-      start_date,
-      end_date,
-      status,
-      user_id,
-      user_member,
-    } = req.body;
-    const response = await taskHelper.createTaskHelper({
-      name,
-      description,
-      start_date,
-      end_date,
-      status,
-      user_id,
-      user_member,
-    });
+    const { name, description, start_date, end_date, status } = req.body;
+    const response = await taskHelper.createTaskHelper(
+      { name, description, start_date, end_date, status },
+      dataToken
+    );
     return res.send(response);
   } catch (err) {
-    console.log([fileName, "createList", "ERROR"], { info: `${err}` });
-    return res.send(GeneralHelper.errorResponse(err));
+    console.log([fileName, "createTask", "ERROR"], { info: `${err}` });
+    return res.status(500).send(GeneralHelper.errorResponse(err));
   }
 };
 
 const detailList = async (req, res) => {
   try {
+    const dataToken = req.body.dataToken;
     ValidationTask.idTaskValidation(req.params);
     const { id } = req.params;
-    const response = await taskHelper.getTaskDetailHelper(id);
+    const response = await taskHelper.getTaskDetailHelper(id, dataToken);
     return res.send({
       message: "Task detail data received successfully",
       data: response,
@@ -65,8 +57,9 @@ const detailList = async (req, res) => {
 };
 
 const updateTask = async (req, res) => {
-    console.log(req.body)
   try {
+    const dataToken = req.body.dataToken;
+    ValidationTask.idTaskValidation(req.params);
     const { id } = req.params;
     const { name, description, start_date, end_date, status } = req.body;
     const response = await taskHelper.updateTaskHelper(
@@ -75,7 +68,8 @@ const updateTask = async (req, res) => {
       description,
       start_date,
       end_date,
-      status
+      status,
+      dataToken
     );
     return res.send({
       message: "Task data successfully updated",
@@ -89,9 +83,10 @@ const updateTask = async (req, res) => {
 
 const deleteTask = async (req, res) => {
   try {
+    const dataToken = req.body.dataToken;
     ValidationTask.idTaskValidation(req.params);
     const { id } = req.params;
-    const response = await taskHelper.deleteTaskHelper(id);
+    const response = await taskHelper.deleteTaskHelper(id, dataToken);
     return res.status(200).send({
       message: "Task data successfully deleted",
       response,
@@ -102,10 +97,10 @@ const deleteTask = async (req, res) => {
   }
 };
 
-Router.get("/list", listTask);
-Router.post("/create", createTask);
-Router.get("/detail/:id", detailList);
-Router.put("/update/:id", updateTask);
-Router.delete("/delete/:id", deleteTask);
+Router.get("/list", Middleware.validateToken, listTask);
+Router.post("/create", Middleware.validateToken, createTask);
+Router.get("/detail/:id", Middleware.validateToken, detailList);
+Router.put("/update/:id", Middleware.validateToken, updateTask);
+Router.delete("/delete/:id", Middleware.validateToken, deleteTask);
 
 module.exports = Router;

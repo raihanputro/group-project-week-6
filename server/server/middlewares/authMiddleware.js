@@ -27,8 +27,8 @@ const validateToken = (request, reply, next) => {
     if (isTokenExpired) {
       throw Boom.unauthorized();
     }
-
-    request.body.token = verifiedUser;
+    
+    request.body.dataToken = verifiedUser;
 
     return next();
   } catch (err) {

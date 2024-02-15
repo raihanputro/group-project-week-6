@@ -25,7 +25,6 @@ const register = async (request, reply) => {
 const login = async (request, reply) => {
   try {
     const decryptedData = Decryptor.decryptObject(request.body);
-    console.log(decryptedData,"DECRYPT")
     Validation.loginValidation(decryptedData);
     const { email, password } = decryptedData;
     const response = await AuthHelper.login({ email, password });
