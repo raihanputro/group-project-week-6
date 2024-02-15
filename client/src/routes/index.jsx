@@ -10,6 +10,7 @@ import DashboardAdmin from '@pages/Admin/Dashboard';
 import UserList from '@pages/Admin/UserList';
 import TaskList from '@pages/Admin/TaskList';
 import HomeMember from '@pages/Member/Home';
+import Detail from '@pages/Member/Detail';
 
 const routes = [
   {
@@ -66,6 +67,13 @@ const routes = [
     name: 'Home Member',
     protected: false,
     component: HomeMember,
+    layout: MainLayout
+  },
+  {
+    path: '/member/task/:id',
+    name: 'Detail Member',
+    protected: false,
+    component: Detail,
     layout: MainLayout
   },
   { 

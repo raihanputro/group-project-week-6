@@ -7,6 +7,7 @@ import profileSaga from '@pages/Profile/saga';
 import userListSaga from '@pages/Admin/UserList/saga';
 import taskListSaga from '@pages/Admin/TaskList/saga';
 import myTaskSaga from '@pages/Member/Home/saga';
+import myTaskDetailSaga from '@pages/Member/Detail/saga';
 
 export default function* rootSaga() {
   yield all([
@@ -17,6 +18,7 @@ export default function* rootSaga() {
     userListSaga(),
     taskListSaga(),
 
-    myTaskSaga()
+    myTaskSaga(),
+    myTaskDetailSaga()
   ]);
 }

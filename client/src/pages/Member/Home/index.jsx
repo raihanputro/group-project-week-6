@@ -5,8 +5,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { useEffect, useState } from 'react';
 import { useDispatch, connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
 import Card from '@components/Card';
 import { selectmyTask } from './selector';
 import { getFetchMyTask, setMyTask } from './actions';
@@ -16,13 +14,13 @@ const HomeMember = ({ myTask }) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
+    dispatch(setMyTask(null));
     dispatch(getFetchMyTask());
   }, [dispatch]);
 
   useEffect(() => {
     setData(myTask);
   }, [myTask]);
-
 
   return (
     <div className={classes.container}>

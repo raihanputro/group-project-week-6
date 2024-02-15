@@ -13,9 +13,10 @@ const urls = {
   changeImg: 'user/change-image',
   userList: 'user/list',
   taskListAdmin: 'task/admin/list',
-  createTask : 'task/admin/create',
+  createTask: 'task/admin/create',
 
-  mytask: 'task/member/list'
+  mytask: 'task/member/list',
+  myTaskDetail: 'task/member/detail',
 };
 
 export const callAPI = async (endpoint, method, header = {}, params = {}, data = {}) => {
@@ -41,7 +42,7 @@ export const callAPI = async (endpoint, method, header = {}, params = {}, data =
 export const ping = () => callAPI(urls.ping, 'get');
 
 export const login = (dataUser) => {
-  return callAPI(urls.login, 'POST', {}, {}, dataUser)
+  return callAPI(urls.login, 'POST', {}, {}, dataUser);
 };
 
 export const register = (dataUser) => {
@@ -49,22 +50,23 @@ export const register = (dataUser) => {
 };
 
 export const getProfile = () => {
-  return callAPI(urls.getProfile, 'GET')
+  return callAPI(urls.getProfile, 'GET');
 };
 
 export const updateProfile = (data) => {
-  return callAPI(urls.updateProfile, 'PATCH', {}, {}, data)
+  return callAPI(urls.updateProfile, 'PATCH', {}, {}, data);
 };
 
 export const changePassword = (data) => {
-  return callAPI(urls.changePassword, 'PATCH', {}, {}, data)
+  return callAPI(urls.changePassword, 'PATCH', {}, {}, data);
 };
 
 export const changeImage = (data) => {
-  return callAPI(urls.changeImg, 'PATCH', { 'Content-Type': 'multipart/form-data; charset=UTF-8' }, {}, data)
+  return callAPI(urls.changeImg, 'PATCH', { 'Content-Type': 'multipart/form-data; charset=UTF-8' }, {}, data);
 };
 export const userList = () => callAPI(urls.userList, 'GET');
 export const taskListAdmin = () => callAPI(urls.taskListAdmin, 'GET');
 export const createTask = (taskData) => callAPI(urls.createTask, 'POST', {}, {}, taskData);
 
 export const getMyTask = () => callAPI(urls.mytask, 'GET');
+export const getMyTaskDetailAPI = (id) => callAPI(`${urls.myTaskDetail}/${id}`, 'GET');
