@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import classes from './style.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -14,11 +12,10 @@ const Card = ({ data  }) => {
 
   return (
     <div className={classes.container} onClick={gotToDetail}>
-      <img src={data?.project?.imageUrl} className={classes.image} />
       <div className={classes.content}>
-        <p className={classes.title}>test</p>
-        <p className={classes.date}>test</p>
-        <p className={classes.shortdesc}>dawda</p>
+        <p className={classes.title}>{data?.Task?.name}</p>
+        <p className={classes.date}>{data?.Task?.start_date.substring(0,10)} s/d {data?.Task?.end_date.substring(0,10)}</p>
+        <p className={classes.shortdesc}>{data?.Task?.description}</p>
       </div>
     </div>
   );
