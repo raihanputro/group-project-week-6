@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
 import { selectUserListData } from '../UserList/selectors';
 import { selectTaskListData } from '../TaskList/selectors';
@@ -50,11 +51,14 @@ const DashboardAdmin = ({userListSelect, taskListSelect}) => {
           </Box>
         </Card>
         <Card className={classes.cardInfo}>
-          <Box>
-            <Typography variant='p' component='div' className={classes.textContainer} sx={{ textAlign: 'center' }}>
-              <FormattedMessage id="number_taks_title" />
+          <Box className={classes.info}>
+            <AssignmentIcon />
+            <Box className={classes.textContainer} >
+              <Typography variant='p' component='div'>
+                <FormattedMessage id="number_taks_title" />
+              </Typography>
               {taskData?.length}
-            </Typography>
+            </Box>
           </Box>
         </Card>
       </Box>

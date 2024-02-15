@@ -8,8 +8,8 @@ const urls = {
   login: 'login',
   register: 'register',
   userList: 'user/list',
-  taskListAdmin: 'task/list-admin',
-  createTask : 'task/create',
+  taskListAdmin: 'task/admin/list',
+  createTask : 'task/admin/create',
 };
 
 export const callAPI = async (endpoint, method, header = {}, params = {}, data = {}) => {

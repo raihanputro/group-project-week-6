@@ -62,7 +62,6 @@ const createTaskAdminValidation = (data) => {
     start_date: Joi.date().required(),
     end_date: Joi.date().required(),
     status: Joi.string().required(),
-    user_id: Joi.number().required(),
     dataToken: Joi.object().required(),
   });
 

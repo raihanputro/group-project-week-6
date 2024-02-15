@@ -66,7 +66,7 @@ const getTaskDetailAdminHelper = async (id, dataToken) => {
 };
 
 const createTaskAdminHelper = async (dataObject, dataToken) => {
-  const { name, description, start_date, end_date, status, user_id } =
+  const { name, description, start_date, end_date, status } =
     dataObject;
   try {
     const checkAuthorization = await db.User.findOne({
@@ -83,7 +83,7 @@ const createTaskAdminHelper = async (dataObject, dataToken) => {
       start_date: start_date,
       end_date: end_date,
       status: status,
-      user_id: user_id,
+      user_id: dataToken.id,
     });
     return Promise.resolve(true);
   } catch (err) {
@@ -354,6 +354,7 @@ module.exports = {
   getListTaskAdminHelper,
   getTaskDetailAdminHelper,
   createTaskAdminHelper,
+  deleteTaskAdmin,
   //admin-route-end
 
   //manager-route-start
