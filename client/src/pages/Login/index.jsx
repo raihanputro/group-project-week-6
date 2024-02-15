@@ -46,7 +46,7 @@ const Login = ({selectAdmin}) => {
         } else if (2) {
           navigate('/manager')
         }  else if (3) {
-          navigate('/')
+          navigate('/member')
         }
       }, (error) => {
         console.log(error)
