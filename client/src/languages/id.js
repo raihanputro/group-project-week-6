@@ -57,4 +57,7 @@ export default {
   role: 'Peran',
 
   logout: 'Keluar',
+  
+  dark_mode: 'Tampilan Gelap',
+  light_mode: 'Tampilan Terang'
 };
