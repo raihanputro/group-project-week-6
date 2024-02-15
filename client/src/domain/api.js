@@ -10,7 +10,10 @@ const urls = {
   getProfile: 'user/my-profile',
   updateProfile: 'user/update-profile',
   changePassword: 'user/change-password',
-  changeImg: 'user/change-image'
+  changeImg: 'user/change-image',
+  userList: 'user/list',
+  taskListAdmin: 'task/admin/list',
+  createTask : 'task/admin/create',
 };
 
 export const callAPI = async (endpoint, method, header = {}, params = {}, data = {}) => {
@@ -58,3 +61,6 @@ export const changePassword = (data) => {
 export const changeImage = (data) => {
   return callAPI(urls.changeImg, 'PATCH', { 'Content-Type': 'multipart/form-data; charset=UTF-8' }, {}, data)
 };
+export const userList = () => callAPI(urls.userList, 'GET');
+export const taskListAdmin = () => callAPI(urls.taskListAdmin, 'GET');
+export const createTask = (taskData) => callAPI(urls.createTask, 'POST', {}, {}, taskData);

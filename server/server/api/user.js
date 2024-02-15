@@ -9,6 +9,20 @@ const { uploadImg } = require('../middlewares/uploadMiddleware');
 
 const fileName = 'server/api/user.js';
 
+const getListUserAdmin = async (request, reply) => {
+    try {
+        const response = await UserHelper.getListUserAdmin();
+
+        return reply.send({
+            message: 'Get All user Success',
+            response
+        })
+    } catch (error) {
+        console.log([fileName, 'get list user admin api', 'ERROR'], { info: `${error}` });
+        return reply.send(GeneralHelper.errorResponse(error));
+    }
+}
+
 const getProfileUser = async (request, reply) => {
     try {
         const dataToken = request.body.dataToken;
@@ -84,5 +98,9 @@ Router.get('/my-profile', Middleware.validateToken, getProfileUser);
 Router.patch('/change-password', Middleware.validateToken, changePassword);
 Router.patch('/update-profile', Middleware.validateToken, updateProfile);
 Router.patch('/change-image', Middleware.validateToken, uploadImg.fields([{ name: 'imageUrl', maxCount: 1 }]), changeImage)
+Router.get('/list', getListUserAdmin)
+Router.get('/my-profile', getProfileUser);
+Router.patch('/change-password', changePassword);
+Router.patch('/update-profile', updateProfile);
 
 module.exports = Router;

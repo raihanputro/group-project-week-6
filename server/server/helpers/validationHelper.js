@@ -55,6 +55,21 @@ const loginValidation = (data) => {
 };
 
 //validation Task
+const createTaskAdminValidation = (data) => {
+  const schema = Joi.object({
+    name: Joi.string().required(),
+    description: Joi.string().required(),
+    start_date: Joi.date().required(),
+    end_date: Joi.date().required(),
+    status: Joi.string().required(),
+    dataToken: Joi.object().required(),
+  });
+
+  if (schema.validate(data).error) {
+    throw Boom.badRequest(schema.validate(data).error);
+  }
+};
+
 
 const createTaskValidation = (data) => {
   const schema = Joi.object({
@@ -117,6 +132,8 @@ module.exports = {
   changePassValidation,
   createTaskValidation,
   idTaskValidation,
+
+  createTaskAdminValidation,
 
   updateMemberValidation,
 };

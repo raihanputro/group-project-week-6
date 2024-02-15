@@ -70,7 +70,7 @@ const Register = () => {
             <input type='password' id='confirmPassword' name='confirmPassword' required  {...register("confirmPassword")} /><br />
             <label htmlFor='name'><FormattedMessage id='name' />:</label><br />
             <input type='name' id='name' name='name' required  {...register("name")} /><br />
-            <label htmlFor="role">Role</label>
+            <label className={classes["select-role"]} htmlFor="role"><FormattedMessage id='role' /></label>
             <select id="role" {...register("role")} defaultValue="">
               <option value="" disabled>Select a role</option>
               {Object.entries(roles).map(([key, value]) => (
