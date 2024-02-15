@@ -5,6 +5,7 @@ const GeneralHelper = require('../helpers/generalHelper');
 const Validation = require('../helpers/validationHelper');
 const Middleware = require('../middlewares/authMiddleware');
 const { decryptObject, decryptTextPayload } = require('../utils/decryptor');
+const { uploadImg } = require('../middlewares/uploadMiddleware');
 
 const fileName = 'server/api/user.js';
 
@@ -64,8 +65,24 @@ const updateProfile = async (request, reply) => {
     }
 };
 
+const changeImage = async (request, reply) => {
+    try {
+        const data = request;
+
+        console.log(data)
+
+        return reply.send({
+            message: 'Change Image Success'
+        });
+    } catch (error) {
+        console.log([fileName, 'Change Image API', 'ERROR'], { info: `${error}` });
+        return reply.send(GeneralHelper.errorResponse(error));
+    }
+}
+
 Router.get('/my-profile', Middleware.validateToken, getProfileUser);
 Router.patch('/change-password', Middleware.validateToken, changePassword);
 Router.patch('/update-profile', Middleware.validateToken, updateProfile);
+Router.patch('/change-image', Middleware.validateToken, uploadImg.fields([{ name: 'imageUrl', maxCount: 1 }]), changeImage)
 
 module.exports = Router;

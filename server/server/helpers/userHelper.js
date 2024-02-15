@@ -101,10 +101,20 @@ const updateProfile = async (dataToken, name) => {
         console.log([fileName, 'Update Profile Helper', 'ERROR'], { info: `${error}` });
         return Promise.reject(GeneralHelper.errorResponse(error));
     }
+};
+
+const changeImage = async () => {
+    try {
+        return Promise.resolve(true);
+    } catch (error) {
+        console.log([fileName, 'Change Image Helper', 'ERROR'], { info: `${error}` });
+        return Promise.reject(GeneralHelper.errorResponse(error));
+    }
 }
 
 module.exports = {
     getProfileUser,
     changePassword,
-    updateProfile
+    updateProfile,
+    changeImage
 };
