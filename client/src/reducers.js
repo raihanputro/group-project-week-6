@@ -3,7 +3,6 @@ import { combineReducers } from 'redux';
 import appReducer, { storedKey as storedAppState } from '@containers/App/reducer';
 import clientReducer, { storedKey as storedClientState } from '@containers/Client/reducer';
 import profileReducer, { storedKey as storedProfileState } from '@pages/Profile/reducer';
-import languageReducer from '@containers/Language/reducer';
 import userListReducer, { storedKey as storedUserListState } from '@pages/Admin/UserList/reducer';
 import taskListReducer, { storedKey as storedTaskListState } from '@pages/Admin/TaskList/reducer';
 

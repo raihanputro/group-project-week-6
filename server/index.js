@@ -5,6 +5,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const upload = multer();
+const path = require('path');
 
 const app = express();
 const Port = process.env.NODEJS_PORT || 8080;
@@ -15,6 +16,10 @@ const User = require('./server/api/user');
 const Task = require('./server/api/task');
 const TaskPivot = require('./server/api/taskPivot');
 dotenv.config();
+
+const __dirname1 = path.resolve();
+
+app.use(express.static(__dirname1 + '/public'))
 
 // Middleware
 app.use(cors());
