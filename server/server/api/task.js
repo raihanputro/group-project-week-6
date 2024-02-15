@@ -56,6 +56,65 @@ const createTaskAdmin = async (req, res) => {
     return res.status(500).send(GeneralHelper.errorResponse(err));
   }
 };
+
+const updateTaskAdmin = async (req, res) => {
+  try {
+    const dataToken = req.body.dataToken;
+    ValidationTask.idTaskValidation(req.params);
+    const { id } = req.params;
+    const { name, description, start_date, end_date, status, user_id } =
+      req.body;
+    const response = await taskHelper.updateTaskAdminHelper(
+      id,
+      name,
+      description,
+      start_date,
+      end_date,
+      status,
+      user_id,
+      dataToken
+    );
+    return res.send({
+      message: "Task data successfully updated",
+      data: response,
+    });
+  } catch (err) {
+    console.log([fileName, "updateTask", "ERROR"], { info: `${err}` });
+    return res.send(GeneralHelper.errorResponse(err));
+  }
+};
+
+const restoreTaskAdmin = async (req, res) => {
+  try {
+    const dataToken = req.body.dataToken;
+    ValidationTask.idTaskValidation(req.params);
+    const { id } = req.params;
+    const response = await taskHelper.restoreTaskAdminHelper(id, dataToken);
+    return res.status(200).send({
+      message: "Task data successfully restored",
+      response,
+    });
+  } catch (err) {
+    console.log([fileName, "restoreTaskAdmin", "ERROR"], { info: `${err}` });
+    return res.send(GeneralHelper.errorResponse(err));
+  }
+};
+
+const deleteTaskAdmin = async (req, res) => {
+  try {
+    const dataToken = req.body.dataToken;
+    ValidationTask.idTaskValidation(req.params);
+    const { id } = req.params;
+    const response = await taskHelper.deleteTaskAdminHelper(id, dataToken);
+    return res.status(200).send({
+      message: "Task data successfully deleted",
+      response,
+    });
+  } catch (err) {
+    console.log([fileName, "deleteTaskAdmin", "ERROR"], { info: `${err}` });
+    return res.send(GeneralHelper.errorResponse(err));
+  }
+};
 //admin-end
 
 //manager-start
@@ -130,18 +189,18 @@ const updateTaskManager = async (req, res) => {
   }
 };
 
-const deleteTask = async (req, res) => {
+const deleteTaskManager = async (req, res) => {
   try {
     const dataToken = req.body.dataToken;
     ValidationTask.idTaskValidation(req.params);
     const { id } = req.params;
-    const response = await taskHelper.deleteTaskHelper(id, dataToken);
+    const response = await taskHelper.deleteTaskManagerHelper(id, dataToken);
     return res.status(200).send({
       message: "Task data successfully deleted",
       response,
     });
   } catch (err) {
-    console.log([fileName, "deleteTask", "ERROR"], { info: `${err}` });
+    console.log([fileName, "deleteTaskManager", "ERROR"], { info: `${err}` });
     return res.send(GeneralHelper.errorResponse(err));
   }
 };
@@ -179,11 +238,17 @@ const detailTaskMember = async (req, res) => {
 };
 // member-end
 
-
 //admin-route-start
 Router.get("/admin/list", Middleware.validateToken, listTaskAdmin);
 Router.get("/admin/detail/:id", Middleware.validateToken, detailListAdmin);
 Router.post("/admin/create", Middleware.validateToken, createTaskAdmin);
+Router.put("/admin/update/:id", Middleware.validateToken, updateTaskAdmin);
+Router.post("/admin/restore/:id", Middleware.validateToken, restoreTaskAdmin);
+Router.delete(
+  "/admin/delete/:id",
+  Middleware.validateToken,
+  deleteTaskAdmin
+);
 //admin-route-end
 
 //manager-route-start
@@ -191,7 +256,11 @@ Router.get("/manager/list", Middleware.validateToken, listTaskManager);
 Router.post("/manager/create", Middleware.validateToken, createTaskManager);
 Router.get("/manager/detail/:id", Middleware.validateToken, detailListManager);
 Router.put("/manager/update/:id", Middleware.validateToken, updateTaskManager);
-Router.delete("/manager/delete/:id", Middleware.validateToken, deleteTask);
+Router.delete(
+  "/manager/delete/:id",
+  Middleware.validateToken,
+  deleteTaskManager
+);
 //manager-route-end
 
 //member-route-start
