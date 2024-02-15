@@ -14,4 +14,5 @@ export default {
 
   profile_name: 'Name',
   profile_email: 'Email',
+  profile_update: 'Update Profile',
 };
