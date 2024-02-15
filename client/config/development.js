@@ -1,4 +1,4 @@
 export default {
-  API_HOST: 'http://localhost:5000/api/',
+  API_HOST: 'http://localhost:8080/api/',
   CRYPTO_SECRET: 'super-secret-key'
 };
