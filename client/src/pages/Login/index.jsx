@@ -34,10 +34,15 @@ const Login = () => {
   const onSubmit = async (data) => {
     try {
       const encryptedData = encryptPayload(data);
-      dispatch(doLogin({ encryptedData }, async () => {
+      dispatch(doLogin({ encryptedData }, async (isAdmin) => {
         notifySuccess("Login Successful");
         await delay(1500);
-        navigate('/');
+        console.log(isAdmin)
+        if(isAdmin){
+          navigate('/admin');
+        } else {
+          navigate('/')
+        }
       }, (error) => {
         console.log(error)
         notifyError(error || "An error occurred");
