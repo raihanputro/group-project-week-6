@@ -1,0 +1,53 @@
+@import "../../../styles/base.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  @include directionY;
+  width: 100%;
+  background-color: $color-white-fade;
+  padding-bottom: 5rem;
+  .title {
+    width: fit-content;
+    color: black;
+    font-size: 48px;
+    font-style: normal;
+    margin: 49px 42px;
+    line-height: normal;
+  }
+  .filter {
+    @include directionX;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 0;
+  }
+  .noContent{
+    text-align: center;
+    font-size: 40px;
+  }
+  .content {
+    display: grid;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    gap: 47px;
+    @include apply-at-xs-size {
+      grid-template-columns: repeat(1, 1fr);
+    }
+    @include apply-at-sm-size {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @include apply-at-lg-size {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @include apply-at-xl-size {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @include apply-at-xxl-size {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+}
