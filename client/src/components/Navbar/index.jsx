@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Toolbar from './components/Toolbar';
 import MobileToolbar from './components/MobileToolbar';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -9,9 +10,19 @@ import { useState } from 'react';
 import classes from './style.module.scss';
 
 const Navbar = ({ title, locale, theme }) => {
+  const userDetails = useSelector((state) => state.client.userDetails);
+
   const navigate = useNavigate();
   const goHome = () => {
-    navigate('/');
+    if (userDetails?.role == 1) {
+      navigate('/admin');
+    } else if (userDetails?.role == 2) {
+      navigate('/manager');
+    } else if (userDetails?.role == 3) {
+      navigate('/member');
+    } else {
+      navigate('/')
+    }
   };
 
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
@@ -32,10 +43,10 @@ const Navbar = ({ title, locale, theme }) => {
           onClose={() => setHamburgerOpen(false)}
         >
           <div className={classes["drawer-wrapper"]}>
-            <MobileToolbar locale={locale} theme={theme} />
+            <MobileToolbar userDetails={userDetails} locale={locale} theme={theme} />
           </div>
         </Drawer>
-        <Toolbar locale={locale} theme={theme} />
+        <Toolbar userDetails={userDetails} locale={locale} theme={theme} />
       </div>
     </div>
   );
