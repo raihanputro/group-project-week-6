@@ -9,7 +9,7 @@ const fileName = 'server/api/user.js';
 
 const getProfileUser = async (request, reply) => {
     try {
-        const dataToken = request.body.token;
+        const dataToken = request.body.dataToken;
 
         const response = await UserHelper.getProfileUser(dataToken);
         return reply.send({
@@ -59,8 +59,8 @@ const updateProfile = async (request, reply) => {
     }
 };
 
-Router.get('/api/my-profile', Middleware.validateToken, getProfileUser);
-Router.patch('api/change-password', Middleware.validateToken, changePassword);
-Router.patch('api/update-profile', updateProfile);
+Router.get('/my-profile', Middleware.validateToken, getProfileUser);
+Router.patch('/change-password', Middleware.validateToken, changePassword);
+Router.patch('/update-profile', updateProfile);
 
 module.exports = Router;
