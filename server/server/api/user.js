@@ -44,10 +44,10 @@ const changePassword = async (request, reply) => {
 
 const updateProfile = async (request, reply) => {
     try {
-        const { id } = request.query;
+        const dataToken = request.body.dataToken;
         const { name } = request.body;
 
-        const response = await UserHelper.updateProfile(id, name);
+        const response = await UserHelper.updateProfile(dataToken, name);
 
         return reply.send({
             message: 'Update Profile Success',
@@ -61,6 +61,6 @@ const updateProfile = async (request, reply) => {
 
 Router.get('/my-profile', Middleware.validateToken, getProfileUser);
 Router.patch('/change-password', Middleware.validateToken, changePassword);
-Router.patch('/update-profile', updateProfile);
+Router.patch('/update-profile', Middleware.validateToken, updateProfile);
 
 module.exports = Router;

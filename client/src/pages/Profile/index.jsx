@@ -9,7 +9,7 @@ import MyProfile from './components/MyProfile';
 import ChangePass from './components/ChangePass';
 import CurrentTask from './components/CurrentTask';
 
-import { getProfile, setProfile } from './action';
+import { getProfile, setProfile, updateProfile } from './action';
 import { selectProfile } from './selector';
 
 import classes from './style.module.scss';
@@ -18,11 +18,18 @@ const Profile = ({ data }) => {
 
     const dispatch = useDispatch();
     const [part, setPart] = useState(1);
+    const [name, setName] = useState('')
+
+    const onSubmit = () => {
+        dispatch(updateProfile({ name }), () => {
+            dispatch(getProfile())
+        })
+    };
 
     const renderedComponent = () => {
         switch (part) {
             case 1:
-                return <MyProfile data={data} />;
+                return <MyProfile data={data} onChangeName={(e) => setName(e.target.value)} onSubmit={onSubmit} />;
             case 2:
                 return <ChangePass />;
             case 3:
@@ -35,6 +42,7 @@ const Profile = ({ data }) => {
     const handlerPart = (e) => {
         setPart(Number(e.target.value));
     };
+
 
     useEffect(() => {
         dispatch(getProfile())

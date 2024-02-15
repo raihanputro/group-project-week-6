@@ -7,7 +7,8 @@ const urls = {
   ping: 'ping.json',
   login: 'login',
   register: 'register',
-  getProfile: 'user/my-profile'
+  getProfile: 'user/my-profile',
+  updateProfile: 'user/update-profile'
 };
 
 export const callAPI = async (endpoint, method, header = {}, params = {}, data = {}) => {
@@ -42,4 +43,8 @@ export const register = (dataUser) => {
 
 export const getProfile = () => {
   return callAPI(urls.getProfile, 'GET')
+};
+
+export const updateProfile = (data) => {
+  return callAPI(urls.updateProfile, 'PATCH', {}, {}, data)
 }

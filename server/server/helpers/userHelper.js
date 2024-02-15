@@ -76,11 +76,11 @@ const changePassword = async (old_password, new_password, new_confirm_password, 
     }
 };
 
-const updateProfile = async (id, name) => {
+const updateProfile = async (dataToken, name) => {
     try {
         const checkUser = await db.User.findOne({
             where: {
-                id
+                id: dataToken?.id
             }
         });
 
@@ -92,7 +92,7 @@ const updateProfile = async (id, name) => {
             name: name ? name : checkUser.name
         }, {
             where: {
-                id
+                id: dataToken?.id
             }
         });
 
