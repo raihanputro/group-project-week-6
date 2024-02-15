@@ -56,5 +56,7 @@ export default {
   register_to_login: "Sudah Memiliki Akun?",
   role: 'Peran',
 
+  app_text_task: 'Tugas Anda',
+
   logout: 'Keluar',
 };

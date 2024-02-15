@@ -56,5 +56,7 @@ export default {
   register_to_login: "Already have an account?",
   role: 'Role',
   
+  app_text_task: 'Your Task',
+
   logout: 'Logout',
 };

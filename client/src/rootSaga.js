@@ -5,6 +5,7 @@ import loginSaga from '@pages/Login/saga';
 import RegisterSaga from '@pages/Register/saga';
 import userListSaga from '@pages/Admin/UserList/saga';
 import taskListSaga from '@pages/Admin/TaskList/saga';
+import myTaskSaga from '@pages/Member/Home/saga';
 
 export default function* rootSaga() {
   yield all([
@@ -13,5 +14,7 @@ export default function* rootSaga() {
     RegisterSaga(),
     userListSaga(),
     taskListSaga(),
+
+    myTaskSaga()
   ]);
 }
