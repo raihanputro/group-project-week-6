@@ -11,9 +11,7 @@ const Port = process.env.NODEJS_PORT || 5000;
 
 // Import routes
 const Auth = require('./server/api/auth');
-const Blog = require('./server/api/blog');
 const User = require('./server/api/user');
-
 const Task = require('./server/api/task');
 const TaskPivot = require('./server/api/taskPivot');
 dotenv.config();
@@ -81,8 +79,7 @@ app.use((req, res, next) => {
 
 // Route middlewares
 app.use('/', Auth);
-app.use('/blog', Blog);
-app.use('/user', User);
+app.use('/api/user', User);
 app.use('/api/task', Task);
 app.use('/api/task-pivot', TaskPivot);
 

@@ -8,12 +8,39 @@ export default {
   app_popup_error_message: 'Maaf, telah terjadi kesalahan. Silakan coba beberapa saat lagi',
   app_popup_close_button_label: 'Tutup',
 
+  dashboard_title: 'Dasbor',
+  task_list_title: 'Data Tugas',
+  user_list_title: 'Data Pengguna',
+
+  add_button: 'Tambah',
+  drawer_dashboard: 'Dasbor',
+  drawer_user_data: 'Data Pengguna',
+  drawer_task_data: 'Data Tugas',
+
+  id_table_row: 'Id',
+  name_table_row: 'Nama',
+  role_table_row: 'Peran',
+  start_date_table_row: 'Mulai',
+  end_date_table_row: 'Berakhir',
+  status_table_row: 'Status',
+  action_table_row: 'Aksi',
+
+  number_users_title: 'Jumlah Pengguna',
+  number_taks_title: 'Jumlah Tugas',
   profile_myProfile: 'Profile Saya',
   profile_changePass: 'Ganti Password',
   profile_currentTask: 'Tugas Saat Ini',
 
   profile_name: 'Nama',
   profile_email: 'Email',
+
+  add_task_modal_title: 'Tambah tugas baru!',
+  name_modal_input: 'Nama',
+  description_modal_input: 'Deskripsi',
+  startdate_modal_input: 'Mulai',
+  enddate_modal_input: 'Berakhir',
+  status_modal_input: 'Status',
+  add_task_modal_button: 'Tambah Tugas',
 
   click_here: "Tekan Disini!",
 
