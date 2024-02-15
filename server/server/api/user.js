@@ -4,6 +4,8 @@ const UserHelper = require('../helpers/userHelper');
 const GeneralHelper = require('../helpers/generalHelper');
 const Validation = require('../helpers/validationHelper');
 const Middleware = require('../middlewares/authMiddleware');
+const { decryptObject, decryptTextPayload } = require('../utils/decryptor');
+const uploadMedia = require("../middlewares/uploadMiddleware");
 
 const fileName = 'server/api/user.js';
 
@@ -23,9 +25,9 @@ const getListUserAdmin = async (request, reply) => {
 
 const getProfileUser = async (request, reply) => {
     try {
-        const { id } = request.query;
+        const dataToken = request.body.dataToken;
 
-        const response = await UserHelper.getProfileUser(id);
+        const response = await UserHelper.getProfileUser(dataToken);
         return reply.send({
             message: 'Get Profile Success',
             response
@@ -38,13 +40,17 @@ const getProfileUser = async (request, reply) => {
 
 const changePassword = async (request, reply) => {
     try {
-        Validation.changePassValidation(request.body);
+        // const { old_password, new_password, new_confirm_password } = decryptObject(request.body);
+        const data = request.body;
+        const old_password = decryptTextPayload(data?.old_password);
+        const new_password = decryptTextPayload(data?.new_password);
+        const new_confirm_password = decryptTextPayload(data?.new_confirm_password);
 
-        const { old_password, new_password, new_confirm_password } = request.body;
+        Validation.changePassValidation({ old_password, new_password, new_confirm_password });
 
-        const { id } = request.query;
+        const dataToken = request.body.dataToken;
 
-        const response = await UserHelper.changePassword(old_password, new_password, new_confirm_password, id);
+        const response = await UserHelper.changePassword(old_password, new_password, new_confirm_password, dataToken);
 
         return reply.send({
             message: 'Change Password Success',
@@ -58,10 +64,10 @@ const changePassword = async (request, reply) => {
 
 const updateProfile = async (request, reply) => {
     try {
-        const { id } = request.query;
+        const dataToken = request.body.dataToken;
         const { name } = request.body;
 
-        const response = await UserHelper.updateProfile(id, name);
+        const response = await UserHelper.updateProfile(dataToken, name);
 
         return reply.send({
             message: 'Update Profile Success',
@@ -73,6 +79,25 @@ const updateProfile = async (request, reply) => {
     }
 };
 
+const changeImage = async (request, reply) => {
+    try {
+        const data = request;
+
+        console.log(data)
+
+        return reply.send({
+            message: 'Change Image Success'
+        });
+    } catch (error) {
+        console.log([fileName, 'Change Image API', 'ERROR'], { info: `${error}` });
+        return reply.send(GeneralHelper.errorResponse(error));
+    }
+}
+
+Router.get('/my-profile', Middleware.validateToken, getProfileUser);
+Router.patch('/change-password', Middleware.validateToken, changePassword);
+Router.patch('/update-profile', Middleware.validateToken, updateProfile);
+Router.patch('/change-image', Middleware.validateToken, uploadMedia.fields([{ name: 'imageUrl', maxCount: 1 }]), changeImage)
 Router.get('/list', getListUserAdmin)
 Router.get('/my-profile', getProfileUser);
 Router.patch('/change-password', changePassword);

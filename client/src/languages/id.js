@@ -8,6 +8,7 @@ export default {
   app_popup_error_message: 'Maaf, telah terjadi kesalahan. Silakan coba beberapa saat lagi',
   app_popup_close_button_label: 'Tutup',
 
+  profile_myProfile: 'Data Diri Saya',
   dashboard_title: 'Dasbor',
   task_list_title: 'Data Tugas',
   user_list_title: 'Data Pengguna',
@@ -30,9 +31,13 @@ export default {
   profile_myProfile: 'Profile Saya',
   profile_changePass: 'Ganti Password',
   profile_currentTask: 'Tugas Saat Ini',
-
   profile_name: 'Nama',
   profile_email: 'Email',
+  profile_update: 'Pembaruan Data Diri',
+  profile_changeImage: 'Ganti Gambar',
+  profile_old_password: 'Kata Sandi Lama',
+  profile_new_password: 'Kata Sandi Baru',
+  profile_new_confirm_password: 'Konfirmasi Kata Sandi Baru',
 
   add_task_modal_title: 'Tambah tugas baru!',
   name_modal_input: 'Nama',

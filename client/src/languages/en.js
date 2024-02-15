@@ -30,9 +30,13 @@ export default {
   profile_myProfile: 'My Profile',
   profile_changePass: 'Change Password',
   profile_currentTask: 'Current Task',
-
   profile_name: 'Name',
   profile_email: 'Email',
+  profile_update: 'Update Profile',
+  profile_changeImage: 'Change Picture',
+  profile_old_password: 'Old Password',
+  profile_new_password: 'New Password',
+  profile_new_confirm_password: 'New Confirm Password',
 
   add_task_modal_title: 'Add new task!',
   name_modal_input: 'Name',
