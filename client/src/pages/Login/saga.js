@@ -15,10 +15,15 @@ function* doLogin({ postData, cbSuccess, cbFailed }) {
         yield put(setUserDetails(decoded))
         if (decoded.role == '1') {
             yield put(setIsAdmin(true))
-            cbSuccess && cbSuccess(true);
+            cbSuccess && cbSuccess(1);
         } else {
             yield put(setIsAdmin(false))
-            cbSuccess && cbSuccess(false);
+            if (decoded.role == '2') {
+                cbSuccess && cbSuccess(2);
+            }
+            if (decoded.role == '3') {
+                cbSuccess && cbSuccess(3);
+            }
         }
     } catch (error) {
         cbFailed && cbFailed(error?.response?.data?.message)

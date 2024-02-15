@@ -57,4 +57,7 @@ export default {
   role: 'Role',
   
   logout: 'Logout',
+
+  dark_mode: 'Dark Mode',
+  light_mode: 'Light Mode'
 };

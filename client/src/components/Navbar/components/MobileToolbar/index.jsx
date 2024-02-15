@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { setLogout } from '@containers/Client/actions';
@@ -23,18 +23,9 @@ import classes from '../../style.module.scss'
 
 const MobileToolbar = ({ locale, theme }) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [langMenuPosition, setlangMenuPosition] = useState(null);
     const langMenuOpen = Boolean(langMenuPosition);
-    const [profileMenuPosition, setprofileMenuPosition] = useState(null);
-    const profileMenuOpen = Boolean(profileMenuPosition);
-
-    const handleProfileClick = (event) => {
-        setprofileMenuPosition(event.currentTarget);
-    };
-
-    const handleProfileClose = () => {
-        setprofileMenuPosition(null);
-    };
 
     const handleLangClick = (event) => {
         setlangMenuPosition(event.currentTarget);
@@ -58,60 +49,104 @@ const MobileToolbar = ({ locale, theme }) => {
 
     const handleLogout = () => {
         dispatch(setLogout());
-        handleProfileClose()
+        navigate('/login');
     }
 
     const userDetails = useSelector((state) => state.client.userDetails);
 
+    const profileNavigate = () => {
+        navigate('/profile');
+    }
+
+    const loginNavigate = () => {
+        navigate('/login');
+    }
+
+    const registerNavigate = () => {
+        navigate('/register');
+    }
+
     return (
         <>
             <div className={classes.toolbar}>
-                <div className={classes.theme} onClick={handleTheme} data-testid="toggleTheme">
-                    {theme === 'light' ? <NightsStayIcon /> : <LightModeIcon />}
-                </div>
-                <div className={classes.toggle} onClick={handleLangClick}>
-                    <Avatar className={classes.avatar} src={locale === 'id' ? '/id.png' : '/en.png'} />
-                    <div className={classes.lang}>{locale}</div>
-                    <ExpandMoreIcon />
-                </div>
                 {userDetails != null ? (
                     <>
                         <List>
+                            <ListItem >
+                                <ListItemIcon>
+                                    <AccountCircle />
+                                </ListItemIcon>
+                                <ListItemText primary={`Hi,` + userDetails?.name} />
+                            </ListItem>
+                            <Divider />
                             <ListItem disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        <AccountCircle />
-                                    </ListItemIcon>
-                                    <ListItemText primary={`Hi,` + userDetails?.name} />
+                                <ListItemButton onClick={profileNavigate}>
+                                    <FormattedMessage id='profile_myProfile' />
+                                </ListItemButton>
+                            </ListItem>
+                            <ListItem disablePadding>
+                                <ListItemButton onClick={handleLogout}>
+                                    <FormattedMessage id='logout' />
+                                </ListItemButton>
+                            </ListItem>
+                            <ListItem disablePadding>
+                                <ListItemButton className={classes.toggle} onClick={handleLangClick}>
+                                    <Avatar className={classes.avatar} src={locale === 'id' ? '/id.png' : '/en.png'} />
+                                    <div className={classes.lang}>{locale}</div>
+                                    <ExpandMoreIcon />
+                                </ListItemButton>
+                            </ListItem>
+                            <ListItem disablePadding>
+                                <ListItemButton className={classes.theme} onClick={handleTheme}>
+                                    {theme === 'light' ? <NightsStayIcon /> : <LightModeIcon />}
+                                    {theme === 'light' ? <p className={classes["theme-text"]}><FormattedMessage id='dark_mode' /></p> : <p className={classes["theme-text"]}><FormattedMessage id='light_mode' /></p>}
                                 </ListItemButton>
                             </ListItem>
                         </List>
-                        <div>
-                            <p>Hi, {userDetails?.name}</p>
-                        </div>
-                        <Divider />
-                        <Link onClick={handleProfileClose} to={'/profile'}>
-                            <FormattedMessage id='profile_myProfile' />
-                        </Link>
-                        <Link onClick={handleLogout} to={'/login'}>
-                            <FormattedMessage id='logout' />
-                        </Link>
                     </>
                 ) : (
                     <>
-                        <Link to={'/login'}>
-                            <button className={classes["button"]}>
-                                <FormattedMessage id='login' />
-                            </button>
-                        </Link>
-                        <Link to={'/register'}>
-                            <button className={classes["button"]} >
-                                <FormattedMessage id='register' />
-                            </button>
-                        </Link>
+                        <List>
+                            <ListItem disablePadding>
+                                <ListItemButton onClick={loginNavigate}>
+                                    <FormattedMessage id='login' />
+                                </ListItemButton>
+                            </ListItem>
+                            <ListItem disablePadding>
+                                <ListItemButton onClick={registerNavigate}>
+                                    <FormattedMessage id='register' />
+                                </ListItemButton>
+                            </ListItem>
+                            <Divider />
+                            <ListItem disablePadding>
+                                <ListItemButton className={classes.toggle} onClick={handleLangClick}>
+                                    <Avatar className={classes.avatar} src={locale === 'id' ? '/id.png' : '/en.png'} />
+                                    <div className={classes.lang}>{locale}</div>
+                                    <ExpandMoreIcon />
+                                </ListItemButton>
+                            </ListItem>
+                            <ListItem disablePadding>
+                                <ListItemButton className={classes.theme} onClick={handleTheme}>
+                                    {theme === 'light' ? <NightsStayIcon /> : <LightModeIcon />}
+                                    {theme === 'light' ? <p className={classes["theme-text"]}><FormattedMessage id='dark_mode' /></p> : <p className={classes["theme-text"]}><FormattedMessage id='light_mode' /></p>}
+                                </ListItemButton>
+                            </ListItem>
+                        </List>
                     </>
+                    // <>
+                    //     <Link to={'/login'}>
+                    //         <button className={classes["button"]}>
+                    //             <FormattedMessage id='login' />
+                    //         </button>
+                    //     </Link>
+                    //     <Link to={'/register'}>
+                    //         <button className={classes["button"]} >
+                    //             <FormattedMessage id='register' />
+                    //         </button>
+                    //     </Link>
+                    // </>
                 )}
-            </div>
+            </div >
             <Menu open={langMenuOpen} anchorEl={langMenuPosition} onClose={handleLangClose}>
                 <MenuItem onClick={() => onSelectLang('id')} selected={locale === 'id'}>
                     <div className={classes.menu}>
@@ -128,25 +163,6 @@ const MobileToolbar = ({ locale, theme }) => {
                             <FormattedMessage id="app_lang_en" />
                         </div>
                     </div>
-                </MenuItem>
-            </Menu>
-            <Menu open={profileMenuOpen} anchorEl={profileMenuPosition} onClose={handleProfileClose}>
-                <MenuItem disabled>
-                    <div>
-                        <p>Hi, {userDetails?.name}</p>
-                    </div>
-                </MenuItem>
-                <MenuItem >
-                    <div>
-                        <Link onClick={handleProfileClose} to={'/profile'}>
-                            <FormattedMessage id='profile_myProfile' />
-                        </Link>
-                    </div>
-                </MenuItem>
-                <MenuItem >
-                    <Link onClick={handleLogout} to={'/login'}>
-                        <FormattedMessage id='logout' />
-                    </Link>
                 </MenuItem>
             </Menu>
         </>
