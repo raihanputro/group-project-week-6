@@ -68,11 +68,11 @@ const Register = () => {
             <input type='password' id='password' name='password' required  {...register("password")} /><br />
             <label htmlFor='confirmPassword'>Confirm Password:</label><br />
             <input type='password' id='confirmPassword' name='confirmPassword' required  {...register("confirmPassword")} /><br />
-            <label htmlFor='name'><FormattedMessage id='name' />:</label><br />
+            <label htmlFor='name'><FormattedMessage id='profile_name' />:</label><br />
             <input type='name' id='name' name='name' required  {...register("name")} /><br />
             <label className={classes["select-role"]} htmlFor="role"><FormattedMessage id='role' /></label>
-            <select id="role" {...register("role")} defaultValue="">
-              <option value="" disabled>Select a role</option>
+            <select className={classes["select-role-box"]} id="role" {...register("role")} defaultValue="">
+              <option value="" disabled><FormattedMessage id='select_role'/></option>
               {Object.entries(roles).map(([key, value]) => (
                 <option key={key} value={key}>{value}</option>
               ))}
