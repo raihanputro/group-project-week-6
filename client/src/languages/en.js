@@ -55,9 +55,12 @@ export default {
   register_now: "Register now!",
   register_to_login: "Already have an account?",
   role: 'Role',
+  select_role: 'Select a role',
   
   logout: 'Logout',
 
   dark_mode: 'Dark Mode',
-  light_mode: 'Light Mode'
+  light_mode: 'Light Mode',
+
+  hero_sub_text: 'We will assist you in building your projects.'
 };

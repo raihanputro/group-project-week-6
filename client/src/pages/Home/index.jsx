@@ -7,12 +7,12 @@ const Home = () => {
     <div className={classes["page-container"]}>
       <div className={classes["content-container"]}>
         <h1>Taskmaster</h1>
-        <h3>We will assist you in building your projects</h3>
+        <h3><FormattedMessage id='hero_sub_text' /></h3>
         <button>
-          LOGIN
+          <FormattedMessage id='login' />
         </button>
-        <button>
-          REGISTER
+        <button className={classes["button-right"]}>
+          <FormattedMessage id='register' />
         </button>
       </div>
     </div>

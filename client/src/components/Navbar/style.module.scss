@@ -31,18 +31,21 @@
       }
     }
 
-    .hamburger-icon-wrapper{
+    .hamburger-icon-wrapper {
       display: block;
-      @include apply-at-md-size{
+
+      @include apply-at-md-size {
         display: none;
       }
     }
 
     .toolbar {
       display: none;
-      @include apply-at-md-size{
+
+      @include apply-at-md-size {
         @include directionX;
       }
+
       align-items: center;
 
       .theme {
@@ -51,13 +54,21 @@
         margin-right: 0.5rem;
         cursor: pointer;
       }
-
-     
     }
 
     .profile-button {
       display: flex;
     }
+  }
+
+  button {
+    padding: 10px;
+    background-color: var(--color-bg-tertiary);
+    margin: 0 10px;
+    border-radius: 8px;
+    border: 0;
+    text-transform: uppercase;
+    cursor: pointer;
   }
 }
 
@@ -78,15 +89,6 @@
   }
 }
 
-button {
-  padding: 10px;
-  background-color: lightblue;
-  margin: 0 10px;
-  border-radius: 8px;
-  border: 0;
-  text-transform: uppercase;
-  cursor: pointer;
-}
 
 a {
   text-decoration: none;
@@ -99,7 +101,7 @@ a:active {
   color: inherit;
 }
 
-p{
+p {
   margin: 0;
 }
 
@@ -127,6 +129,6 @@ p{
   }
 }
 
-.theme-text{
+.theme-text {
   margin-left: 5px;
 }

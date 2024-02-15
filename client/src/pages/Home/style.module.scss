@@ -1,8 +1,10 @@
 @import '@styles/base';
 
 .page-container{
-    color: purple;
+    color: orangered;
     background-image: url("/home-wallpaper.png");
+    background-repeat: no-repeat;
+    background-size: cover;
     height: 100vh;
     display: flex;
     padding: 75px 50px;
@@ -11,14 +13,16 @@
         display: block;
         padding: 150px 0px 0px 200px;
     }
-}
-
-.content-container{
-
+    .button-right{
+        margin-left: 10px;
+    }
 }
 
 button{
-    background-color: purple;
+    padding: 10px;
+    border-radius: 8px;
+    border: 0;
+    background-color: orangered;
     color: white;
-    margin: 5px 5px;
+    margin: 10px 0px;
 }
