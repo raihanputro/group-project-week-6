@@ -10,10 +10,11 @@ const Middleware = require("../middlewares/authMiddleware");
 
 const fileName = "server/api/task.js";
 
-const listTask = async (req, res) => {
+//admin-start
+const listTaskAdmin = async (req, res) => {
   try {
     const dataToken = req.body.dataToken;
-    const response = await taskHelper.getListTaskHelper(dataToken);
+    const response = await taskHelper.getListTaskAdminHelper(dataToken);
     return res.send({
       message: "Task data received successfully",
       response,
@@ -24,12 +25,60 @@ const listTask = async (req, res) => {
   }
 };
 
-const createTask = async (req, res) => {
+const detailListAdmin = async (req, res) => {
+  try {
+    const dataToken = req.body.dataToken;
+    ValidationTask.idTaskValidation(req.params);
+    const { id } = req.params;
+    const response = await taskHelper.getTaskDetailAdminHelper(id, dataToken);
+    return res.send({
+      message: "Task detail data received successfully",
+      data: response,
+    });
+  } catch (err) {
+    console.log([fileName, "detailListAdmin", "ERROR"], { info: `${err}` });
+    return res.send(GeneralHelper.errorResponse(err));
+  }
+};
+
+const createTaskAdmin = async (req, res) => {
+  try {
+    const dataToken = req.body.dataToken; // Assuming dataToken contains user information
+    ValidationTask.createTaskAdminValidation(req.body);
+    const { name, description, start_date, end_date, status,user_id } = req.body;
+    const response = await taskHelper.createTaskAdminHelper(
+      { name, description, start_date, end_date, status,user_id },
+      dataToken
+    );
+    return res.send(response);
+  } catch (err) {
+    console.log([fileName, "createTaskAdmin", "ERROR"], { info: `${err}` });
+    return res.status(500).send(GeneralHelper.errorResponse(err));
+  }
+};
+//admin-end
+
+//manager-start
+const listTaskManager = async (req, res) => {
+  try {
+    const dataToken = req.body.dataToken;
+    const response = await taskHelper.getListTaskManagerHelper(dataToken);
+    return res.send({
+      message: "Task data received successfully",
+      response,
+    });
+  } catch (err) {
+    console.log([fileName, "listTask", "ERROR"], { info: `${err}` });
+    return res.send(GeneralHelper.errorResponse(err));
+  }
+};
+
+const createTaskManager = async (req, res) => {
   try {
     const dataToken = req.body.dataToken; // Assuming dataToken contains user information
     ValidationTask.createTaskValidation(req.body);
     const { name, description, start_date, end_date, status } = req.body;
-    const response = await taskHelper.createTaskHelper(
+    const response = await taskHelper.createTaskManagerHelper(
       { name, description, start_date, end_date, status },
       dataToken
     );
@@ -40,12 +89,12 @@ const createTask = async (req, res) => {
   }
 };
 
-const detailList = async (req, res) => {
+const detailListManager = async (req, res) => {
   try {
     const dataToken = req.body.dataToken;
     ValidationTask.idTaskValidation(req.params);
     const { id } = req.params;
-    const response = await taskHelper.getTaskDetailHelper(id, dataToken);
+    const response = await taskHelper.getTaskDetailManagerHelper(id, dataToken);
     return res.send({
       message: "Task detail data received successfully",
       data: response,
@@ -56,13 +105,13 @@ const detailList = async (req, res) => {
   }
 };
 
-const updateTask = async (req, res) => {
+const updateTaskManager = async (req, res) => {
   try {
     const dataToken = req.body.dataToken;
     ValidationTask.idTaskValidation(req.params);
     const { id } = req.params;
     const { name, description, start_date, end_date, status } = req.body;
-    const response = await taskHelper.updateTaskHelper(
+    const response = await taskHelper.updateTaskManagerHelper(
       id,
       name,
       description,
@@ -96,11 +145,58 @@ const deleteTask = async (req, res) => {
     return res.send(GeneralHelper.errorResponse(err));
   }
 };
+//manager-end
 
-Router.get("/list", Middleware.validateToken, listTask);
-Router.post("/create", Middleware.validateToken, createTask);
-Router.get("/detail/:id", Middleware.validateToken, detailList);
-Router.put("/update/:id", Middleware.validateToken, updateTask);
-Router.delete("/delete/:id", Middleware.validateToken, deleteTask);
+//member-start
+const listTaskMember = async (req, res) => {
+  try {
+    const dataToken = req.body.dataToken;
+    const response = await taskHelper.getListTaskMemberHelper(dataToken);
+    return res.send({
+      message: "Task data received successfully",
+      response,
+    });
+  } catch (err) {
+    console.log([fileName, "listTask", "ERROR"], { info: `${err}` });
+    return res.send(GeneralHelper.errorResponse(err));
+  }
+};
+
+const detailTaskMember = async (req, res) => {
+  try {
+    const dataToken = req.body.dataToken;
+    ValidationTask.idTaskValidation(req.params);
+    const { id } = req.params;
+    const response = await taskHelper.getDetailTaskMemberHelper(id, dataToken);
+    return res.send({
+      message: "Task detail data received successfully",
+      data: response,
+    });
+  } catch (err) {
+    console.log([fileName, "detailList", "ERROR"], { info: `${err}` });
+    return res.send(GeneralHelper.errorResponse(err));
+  }
+};
+// member-end
+
+
+//admin-route-start
+Router.get("/admin/list", Middleware.validateToken, listTaskAdmin);
+Router.get("/admin/detail/:id", Middleware.validateToken, detailListAdmin);
+Router.post("/admin/create", Middleware.validateToken, createTaskAdmin);
+//admin-route-end
+
+//manager-route-start
+Router.get("/manager/list", Middleware.validateToken, listTaskManager);
+Router.post("/manager/create", Middleware.validateToken, createTaskManager);
+Router.get("/manager/detail/:id", Middleware.validateToken, detailListManager);
+Router.put("/manager/update/:id", Middleware.validateToken, updateTaskManager);
+Router.delete("/manager/delete/:id", Middleware.validateToken, deleteTask);
+//manager-route-end
+
+//member-route-start
+Router.get("/member/list", Middleware.validateToken, listTaskMember);
+Router.get("/member/detail/:id", Middleware.validateToken, detailTaskMember);
+//member-route-end
 
 module.exports = Router;
