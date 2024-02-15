@@ -3,8 +3,8 @@
 .container {
   @include directionY;
   width: 300px;
+  padding-bottom: 1rem;
   cursor: pointer;
-  height: 362px;
   position: relative;
   border-radius: 5px;
   background: #fff;

@@ -2,7 +2,7 @@ import { produce } from "immer";
 import { SET_MYTASK } from "./constants";
 
 export const initialState = {
-  myTeam: {},
+  myTask: {},
 };
 
 export const storedKey = ['myTask'];

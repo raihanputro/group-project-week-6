@@ -63,6 +63,8 @@ export default {
   select_role: 'Pilih Peran',
 
 
+  app_text_task: 'Tugas Anda',
+
   logout: 'Keluar',
   
   dark_mode: 'Tampilan Gelap',

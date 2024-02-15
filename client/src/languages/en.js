@@ -61,6 +61,8 @@ export default {
   role: 'Role',
   select_role: 'Select a role',
   
+  app_text_task: 'Your Task',
+
   logout: 'Logout',
 
   dark_mode: 'Dark Mode',
