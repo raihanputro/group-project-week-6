@@ -1,19 +1,28 @@
+import PropTypes from 'prop-types';
 import { Button } from '@mui/material';
-import classes from './style.module.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
+import { connect, useDispatch } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+
 import MyProfile from './components/MyProfile';
 import ChangePass from './components/ChangePass';
 import CurrentTask from './components/CurrentTask';
-import { FormattedMessage } from 'react-intl';
 
-const Profile = () => {
+import { getProfile, setProfile } from './action';
+import { selectProfile } from './selector';
 
-    const [part, setPart] = useState(1)
+import classes from './style.module.scss';
+
+const Profile = ({ data }) => {
+
+    const dispatch = useDispatch();
+    const [part, setPart] = useState(1);
 
     const renderedComponent = () => {
         switch (part) {
             case 1:
-                return <MyProfile />;
+                return <MyProfile data={data} />;
             case 2:
                 return <ChangePass />;
             case 3:
@@ -21,11 +30,15 @@ const Profile = () => {
             default:
                 break;
         }
-    }
+    };
 
     const handlerPart = (e) => {
-        setPart(Number(e.target.value))
-    }
+        setPart(Number(e.target.value));
+    };
+
+    useEffect(() => {
+        dispatch(getProfile())
+    }, [])
 
     return (
         <div className={classes.container}>
@@ -35,10 +48,10 @@ const Profile = () => {
                 <div className={classes.containerContent}>
                     <div className={classes.sidebar}>
                         <div className={classes.containerImage}>
-                            <img className={classes.profilePicture} src="https://img.freepik.com/premium-vector/user-profile-icon-flat-style-member-avatar-vector-illustration-isolated-background-human-permission-sign-business-concept_157943-15752.jpg?size=338&ext=jpg&ga=GA1.1.87170709.1707782400&semt=ais" alt="Profile Picture" />
-                            <p className={classes.name}>
+                            <img className={classes.profilePicture} src={data?.imageUrl ? data?.imageUrl : "https://img.freepik.com/premium-vector/user-profile-icon-flat-style-member-avatar-vector-illustration-isolated-background-human-permission-sign-business-concept_157943-15752.jpg?size=338&ext=jpg&ga=GA1.1.87170709.1707782400&semt=ais"} alt="Profile Picture" />
+                            {/* <p className={classes.name}>
                                 Nama Akun
-                            </p>
+                            </p> */}
                         </div>
                         <div className={classes.containerButton}>
                             <Button value={1} onClick={handlerPart}>
@@ -61,4 +74,12 @@ const Profile = () => {
     )
 }
 
-export default Profile
+Profile.propTypes = {
+    data: PropTypes.object
+}
+
+const mapStateToProps = createStructuredSelector({
+    data: selectProfile
+})
+
+export default connect(mapStateToProps)(Profile);
