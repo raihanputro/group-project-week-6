@@ -1,5 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { setLogout } from '@containers/Client/actions';
@@ -21,7 +21,7 @@ import { setLocale, setTheme } from '@containers/App/actions';
 
 import classes from '../../style.module.scss'
 
-const MobileToolbar = ({ locale, theme }) => {
+const MobileToolbar = ({ userDetails, locale, theme }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [langMenuPosition, setlangMenuPosition] = useState(null);
@@ -52,7 +52,6 @@ const MobileToolbar = ({ locale, theme }) => {
         navigate('/login');
     }
 
-    const userDetails = useSelector((state) => state.client.userDetails);
 
     const profileNavigate = () => {
         navigate('/profile');
