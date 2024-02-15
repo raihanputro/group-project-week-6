@@ -3,14 +3,15 @@ const Router = require('express').Router();
 const UserHelper = require('../helpers/userHelper');
 const GeneralHelper = require('../helpers/generalHelper');
 const Validation = require('../helpers/validationHelper');
+const Middleware = require('../middlewares/authMiddleware');
 
 const fileName = 'server/api/user.js';
 
 const getProfileUser = async (request, reply) => {
     try {
-        const { id } = request.query;
+        const dataToken = request.body.token;
 
-        const response = await UserHelper.getProfileUser(id);
+        const response = await UserHelper.getProfileUser(dataToken);
         return reply.send({
             message: 'Get Profile Success',
             response
@@ -27,9 +28,9 @@ const changePassword = async (request, reply) => {
 
         const { old_password, new_password, new_confirm_password } = request.body;
 
-        const { id } = request.query;
+        const dataToken = request.body.token;
 
-        const response = await UserHelper.changePassword(old_password, new_password, new_confirm_password, id);
+        const response = await UserHelper.changePassword(old_password, new_password, new_confirm_password, dataToken);
 
         return reply.send({
             message: 'Change Password Success',
@@ -58,8 +59,8 @@ const updateProfile = async (request, reply) => {
     }
 };
 
-Router.get('/my-profile', getProfileUser);
-Router.patch('/change-password', changePassword);
-Router.patch('/update-profile', updateProfile);
+Router.get('/api/my-profile', Middleware.validateToken, getProfileUser);
+Router.patch('api/change-password', Middleware.validateToken, changePassword);
+Router.patch('api/update-profile', updateProfile);
 
 module.exports = Router;

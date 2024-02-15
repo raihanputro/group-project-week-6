@@ -18,11 +18,11 @@ const __comparePassword = (payloadPass, dbPass) => {
     return bcrypt.compareSync(payloadPass, dbPass);
 };
 
-const getProfileUser = async (id) => {
+const getProfileUser = async (dataToken) => {
     try {
         const response = await db.User.findOne({
             where: {
-                id
+                id: dataToken?.id
             },
             attributes: ['id', 'name', 'email', 'imageUrl', 'role', 'deletedAt']
         });
@@ -34,7 +34,7 @@ const getProfileUser = async (id) => {
     }
 };
 
-const changePassword = async (old_password, new_password, new_confirm_password, id) => {
+const changePassword = async (old_password, new_password, new_confirm_password, dataToken) => {
     try {
         if (!old_password || !new_password || !new_confirm_password) {
             return Promise.reject(Boom.badRequest('Must Fill Old Password, New Password and New Confirm Password'))
@@ -42,7 +42,7 @@ const changePassword = async (old_password, new_password, new_confirm_password, 
 
         const checkUser = await db.User.findOne({
             where: {
-                id
+                id: dataToken?.id
             }
         });
 
@@ -65,7 +65,7 @@ const changePassword = async (old_password, new_password, new_confirm_password, 
         },
             {
                 where: {
-                    id
+                    id: dataToken?.id
                 }
             });
 

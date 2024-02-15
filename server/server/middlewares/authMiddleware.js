@@ -11,23 +11,25 @@ const fileName = 'server/middlewares/authMiddleware.js';
 // eslint-disable-next-line no-unused-vars
 const validateToken = (request, reply, next) => {
   const { authorization } = request.headers;
-  
+
   try {
-    if(_.isEmpty(authorization)) { 
+    if (_.isEmpty(authorization)) {
       throw Boom.unauthorized();
     }
-  
+
     const token = authorization.split(' ')[1];
     const verifiedUser = jwt.verify(token, jwtSecretToken);
-    if(_.isEmpty(verifiedUser) || !_.has(verifiedUser, 'exp')) {
+    if (_.isEmpty(verifiedUser) || !_.has(verifiedUser, 'exp')) {
       throw Boom.unauthorized();
     }
 
     const isTokenExpired = verifiedUser.exp < Moment().unix();
-    if(isTokenExpired) {
+    if (isTokenExpired) {
       throw Boom.unauthorized();
     }
-    
+
+    request.body.token = verifiedUser;
+
     return next();
   } catch (err) {
     console.log([fileName, 'validateToken', 'ERROR'], { info: `${err}` });
