@@ -14,6 +14,7 @@ export default {
   profile_name: 'Name',
   profile_email: 'Email',
   profile_update: 'Update Profile',
+  profile_changeImage: 'Change Picture',
   profile_old_password: 'Old Password',
   profile_new_password: 'New Password',
   profile_new_confirm_password: 'New Confirm Password',

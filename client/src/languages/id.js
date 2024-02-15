@@ -14,6 +14,7 @@ export default {
   profile_name: 'Nama',
   profile_email: 'Email',
   profile_update: 'Pembaruan Data Diri',
+  profile_changeImage: 'Ganti Gambar',
   profile_old_password: 'Kata Sandi Lama',
   profile_new_password: 'Kata Sandi Baru',
   profile_new_confirm_password: 'Konfirmasi Kata Sandi Baru',
