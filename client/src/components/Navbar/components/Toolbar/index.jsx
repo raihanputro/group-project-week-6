@@ -15,7 +15,7 @@ import { setLocale, setTheme } from '@containers/App/actions';
 
 import classes from '../../style.module.scss'
 
-const Toolbar = ({ locale, theme }) => {
+const Toolbar = ({ userDetails, locale, theme }) => {
     const dispatch = useDispatch();
     const [langMenuPosition, setlangMenuPosition] = useState(null);
     const langMenuOpen = Boolean(langMenuPosition);
@@ -55,7 +55,6 @@ const Toolbar = ({ locale, theme }) => {
         handleProfileClose()
     }
 
-    const userDetails = useSelector((state) => state.client.userDetails);
 
     return (
         <>

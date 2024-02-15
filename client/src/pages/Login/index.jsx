@@ -41,11 +41,11 @@ const Login = ({selectAdmin}) => {
       dispatch(doLogin({ encryptedData }, async (role) => {
         notifySuccess("Login Successful");
         await delay(1500);
-        if(1){
+        if(role == 1){
           navigate('/admin');
-        } else if (2) {
+        } else if (role == 2) {
           navigate('/manager')
-        }  else if (3) {
+        }  else if (role == 3) {
           navigate('/member')
         }
       }, (error) => {
