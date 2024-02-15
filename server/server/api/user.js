@@ -4,6 +4,7 @@ const UserHelper = require('../helpers/userHelper');
 const GeneralHelper = require('../helpers/generalHelper');
 const Validation = require('../helpers/validationHelper');
 const Middleware = require('../middlewares/authMiddleware');
+const { decryptObject, decryptTextPayload } = require('../utils/decryptor');
 
 const fileName = 'server/api/user.js';
 
@@ -24,11 +25,15 @@ const getProfileUser = async (request, reply) => {
 
 const changePassword = async (request, reply) => {
     try {
-        Validation.changePassValidation(request.body);
+        // const { old_password, new_password, new_confirm_password } = decryptObject(request.body);
+        const data = request.body;
+        const old_password = decryptTextPayload(data?.old_password);
+        const new_password = decryptTextPayload(data?.new_password);
+        const new_confirm_password = decryptTextPayload(data?.new_confirm_password);
 
-        const { old_password, new_password, new_confirm_password } = request.body;
+        Validation.changePassValidation({ old_password, new_password, new_confirm_password });
 
-        const dataToken = request.body.token;
+        const dataToken = request.body.dataToken;
 
         const response = await UserHelper.changePassword(old_password, new_password, new_confirm_password, dataToken);
 

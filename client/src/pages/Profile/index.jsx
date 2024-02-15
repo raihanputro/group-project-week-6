@@ -2,36 +2,66 @@ import PropTypes from 'prop-types';
 import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { useNavigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 
 import MyProfile from './components/MyProfile';
 import ChangePass from './components/ChangePass';
 import CurrentTask from './components/CurrentTask';
 
-import { getProfile, setProfile, updateProfile } from './action';
+import { changePassword, getProfile, setProfile, setStep, updateProfile } from './action';
 import { selectProfile } from './selector';
+import encryptPayload from '@utils/encryptionHelper';
 
 import classes from './style.module.scss';
 
 const Profile = ({ data }) => {
 
     const dispatch = useDispatch();
-    const [part, setPart] = useState(1);
-    const [name, setName] = useState('')
+    const navigate = useNavigate();
+    const currentStep = useSelector((state) => state.profile.step);
+    const profileState = useSelector((state) => state.profile.data)
+    const [name, setName] = useState(profileState?.name);
+    const [password, setPassword] = useState({
+        old_password: '',
+        new_password: '',
+        new_confirm_password: ''
+    });
 
-    const onSubmit = () => {
-        dispatch(updateProfile({ name }), () => {
+    const onSubmitChangePassword = () => {
+        const encryptData = {
+            old_password: encryptPayload(password.old_password),
+            new_password: encryptPayload(password.new_password),
+            new_confirm_password: encryptPayload(password.new_confirm_password)
+        }
+        dispatch(changePassword(encryptData, () => {
+            setPassword({
+                old_password: '',
+                new_password: '',
+                new_confirm_password: ''
+            })
+        }))
+    };
+
+    const onSubmitUpdateProfile = () => {
+        dispatch(updateProfile({ name }, () => {
             dispatch(getProfile())
-        })
+        }))
     };
 
     const renderedComponent = () => {
-        switch (part) {
+        switch (currentStep) {
             case 1:
-                return <MyProfile data={data} onChangeName={(e) => setName(e.target.value)} onSubmit={onSubmit} />;
+                return <MyProfile data={data} onChangeName={(e) => setName(e.target.value)} onSubmit={onSubmitUpdateProfile} />;
             case 2:
-                return <ChangePass />;
+                return <ChangePass password={password}
+                    onChangeOld={(e) => setPassword({ ...password, old_password: e.target.value })}
+                    onChangeNew={(e) => setPassword({ ...password, new_password: e.target.value })}
+                    onChangeNewConfirm={(e) => setPassword({ ...password, new_confirm_password: e.target.value })}
+                    onSubmit={onSubmitChangePassword}
+                />;
             case 3:
                 return <CurrentTask />;
             default:
@@ -40,9 +70,8 @@ const Profile = ({ data }) => {
     };
 
     const handlerPart = (e) => {
-        setPart(Number(e.target.value));
+        dispatch(setStep(Number(e.target.value)));
     };
-
 
     useEffect(() => {
         dispatch(getProfile())
@@ -78,6 +107,7 @@ const Profile = ({ data }) => {
                     </div>
                 </div>
             </div>
+            <Toaster />
         </div>
     )
 }

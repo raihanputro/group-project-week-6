@@ -8,7 +8,8 @@ const urls = {
   login: 'login',
   register: 'register',
   getProfile: 'user/my-profile',
-  updateProfile: 'user/update-profile'
+  updateProfile: 'user/update-profile',
+  changePassword: 'user/change-password'
 };
 
 export const callAPI = async (endpoint, method, header = {}, params = {}, data = {}) => {
@@ -47,4 +48,8 @@ export const getProfile = () => {
 
 export const updateProfile = (data) => {
   return callAPI(urls.updateProfile, 'PATCH', {}, {}, data)
-}
+};
+
+export const changePassword = (data) => {
+  return callAPI(urls.changePassword, 'PATCH', {}, {}, data)
+};

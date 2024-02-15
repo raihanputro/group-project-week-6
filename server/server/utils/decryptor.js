@@ -15,6 +15,18 @@ const decryptObject = (dataObject) => {
         console.error(err);
         return Promise.reject("Authentication Error");
     }
+};
+
+const decryptTextPayload = (token) => {
+    try {
+        const bytes = CryptoJS.AES.decrypt(token, secretKey)
+        return bytes.toString(CryptoJS.enc.Utf8)
+    } catch (error) {
+        return null
+    }
 }
 
-module.exports = { decryptObject };
+module.exports = {
+    decryptObject,
+    decryptTextPayload
+};
