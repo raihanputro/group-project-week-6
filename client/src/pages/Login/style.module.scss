@@ -9,6 +9,7 @@
 }
 
 .login-box-container {
+    background-color: var(--color-bg) !important;
     padding: 30px 20px;
     background-color: $color-white;
     color: --color-text;
@@ -37,7 +38,7 @@
             margin: 10px 0px;
             border: 2px solid $color-dark-blue;
             border-radius: 8px;
-            width: 100%;
+            width: 90%;
             padding: 10px;
         }
 

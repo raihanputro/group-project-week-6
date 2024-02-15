@@ -38,9 +38,16 @@ const Login = ({selectAdmin}) => {
   const onSubmit = async (data) => {
     try {
       const encryptedData = encryptPayload(data);
-      dispatch(doLogin({ encryptedData }, async () => {
+      dispatch(doLogin({ encryptedData }, async (role) => {
         notifySuccess("Login Successful");
         await delay(1500);
+        if(role == 1){
+          navigate('/admin');
+        } else if (role == 2) {
+          navigate('/manager')
+        }  else if (role == 3) {
+          navigate('/member')
+        }
       }, (error) => {
         console.log(error)
         notifyError(error || "An error occurred");

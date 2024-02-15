@@ -9,14 +9,17 @@
 }
 
 .login-box-container {
+    background-color: var(--color-bg) !important;
     padding: 30px 20px;
     background-color: $color-white;
     color: --color-text;
     border-radius: 12px;
     width: 250px;
-    @include apply-at-sm-size{
+
+    @include apply-at-sm-size {
         width: 350px;
     }
+
     text-align: center;
 
     .login-form-container {
@@ -35,7 +38,7 @@
             margin: 10px 0px;
             border: 2px solid $color-dark-blue;
             border-radius: 8px;
-            width: 100%;
+            width: 90%;
             padding: 10px;
         }
 
@@ -48,6 +51,11 @@
             width: 100%;
         }
 
+        .select-role-box{
+            padding: 5px;
+            border-radius: 8px;
+        }
+
     }
 
     p {
@@ -58,4 +66,9 @@
     a {
         text-decoration: underline;
     }
+
+}
+
+.select-role {
+    margin-right: 10px;
 }

@@ -2,9 +2,14 @@
 
 .container {
     width: 100%;
+
+    h2 {
+        margin-bottom: 30px;
+    }
 }
 
 .containerTextField {
     @include directionY;
     width: 100%;
+    gap: 30px;
 }

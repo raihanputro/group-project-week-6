@@ -9,6 +9,8 @@ import Register from '@pages/Register';
 import DashboardAdmin from '@pages/Admin/Dashboard';
 import UserList from '@pages/Admin/UserList';
 import TaskList from '@pages/Admin/TaskList';
+import HomeMember from '@pages/Member/Home';
+import Detail from '@pages/Member/Detail';
 
 const routes = [
   {
@@ -21,7 +23,7 @@ const routes = [
   {
     path: '/profile',
     name: 'Profile',
-    protected: false,
+    protected: true,
     component: Profile,
     layout: MainLayout,
   },
@@ -59,6 +61,20 @@ const routes = [
     protected: true,
     component: TaskList,
     layout: AdminLayout
+  },
+  {
+    path: '/member/',
+    name: 'Home Member',
+    protected: true,
+    component: HomeMember,
+    layout: MainLayout
+  },
+  {
+    path: '/member/task/:id',
+    name: 'Detail Member',
+    protected: false,
+    component: Detail,
+    layout: MainLayout
   },
   { 
     path: '*', 

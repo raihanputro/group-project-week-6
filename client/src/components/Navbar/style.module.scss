@@ -5,6 +5,7 @@
   box-shadow: 0 0.25rem 0.75rem rgba(25, 49, 83, 0.2) !important;
   position: sticky;
   top: 0;
+
   .contentWrapper {
     @include directionX;
 
@@ -24,43 +25,50 @@
         height: 1.5rem;
         margin-right: 0.5rem;
       }
+
       .title {
         font-weight: 700;
       }
     }
 
+    .hamburger-icon-wrapper {
+      display: block;
+
+      @include apply-at-md-size {
+        display: none;
+      }
+    }
+
     .toolbar {
-      @include directionX;
+      display: none;
+
+      @include apply-at-md-size {
+        @include directionX;
+      }
+
+      align-items: center;
+
       .theme {
         @include directionX;
         align-items: center;
         margin-right: 0.5rem;
         cursor: pointer;
       }
-      .toggle {
-        @include directionX;
-        align-items: center;
-        cursor: pointer;
-
-        .avatar {
-          width: 1.2rem;
-          height: 1.2rem;
-          box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-          margin-right: 0.5rem;
-        }
-
-        .lang {
-          font-family: Poppins, Arial, Helvetica, sans-serif;
-          font-weight: 700;
-          font-size: 1rem;
-          text-transform: uppercase;
-        }
-
-        .arrow {
-          font-size: 1rem;
-        }
-      }
     }
+
+    .profile-button {
+      display: flex;
+    }
+  }
+
+  button {
+    padding: 10px;
+    background-color: var(--color-bg-tertiary);
+    margin: 0 10px;
+    border-radius: 8px;
+    border: 0;
+    text-transform: uppercase;
+    cursor: pointer;
   }
 }
 
@@ -79,4 +87,48 @@
     font-family: Poppins, Arial, Helvetica, sans-serif;
     font-size: 0.8rem;
   }
+}
+
+
+a {
+  text-decoration: none;
+}
+
+a,
+a:visited,
+a:hover,
+a:active {
+  color: inherit;
+}
+
+p {
+  margin: 0;
+}
+
+.toggle {
+  @include directionX;
+  align-items: center;
+  cursor: pointer;
+
+  .avatar {
+    width: 1.2rem;
+    height: 1.2rem;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    margin-right: 0.5rem;
+  }
+
+  .lang {
+    font-family: Poppins, Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+  }
+
+  .arrow {
+    font-size: 1rem;
+  }
+}
+
+.theme-text {
+  margin-left: 5px;
 }
