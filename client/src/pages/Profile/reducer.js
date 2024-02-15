@@ -4,7 +4,6 @@ import { GET_PROFILE, SET_PASSWORD, SET_PROFILE, SET_STEP } from "./constant";
 export const initialState = {
     step: 1,
     data: {},
-    dataPassword: {},
 };
 
 export const storedKey = ['data'];
