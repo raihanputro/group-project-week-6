@@ -9,7 +9,8 @@ const urls = {
   register: 'register',
   getProfile: 'user/my-profile',
   updateProfile: 'user/update-profile',
-  changePassword: 'user/change-password'
+  changePassword: 'user/change-password',
+  changeImg: 'user/change-image'
 };
 
 export const callAPI = async (endpoint, method, header = {}, params = {}, data = {}) => {
@@ -52,4 +53,8 @@ export const updateProfile = (data) => {
 
 export const changePassword = (data) => {
   return callAPI(urls.changePassword, 'PATCH', {}, {}, data)
+};
+
+export const changeImage = (data) => {
+  return callAPI(urls.changeImg, 'PATCH', { 'Content-Type': 'multipart/form-data; charset=UTF-8' }, {}, data)
 };

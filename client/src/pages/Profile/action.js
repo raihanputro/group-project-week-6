@@ -1,4 +1,4 @@
-import { GET_PROFILE, SET_PASSWORD, SET_PROFILE, SET_STEP, UPDATE_PROFILE } from "./constant";
+import { GET_PROFILE, SET_IMAGE, SET_PASSWORD, SET_PROFILE, SET_STEP, UPDATE_PROFILE } from "./constant";
 
 export const setStep = (step) => ({
     type: SET_STEP,
@@ -24,4 +24,9 @@ export const changePassword = (data, cb) => ({
     type: SET_PASSWORD,
     data,
     cb
+});
+
+export const changeImage = (formData) => ({
+    type: SET_IMAGE,
+    formData
 })

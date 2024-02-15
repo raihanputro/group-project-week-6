@@ -11,7 +11,7 @@ import MyProfile from './components/MyProfile';
 import ChangePass from './components/ChangePass';
 import CurrentTask from './components/CurrentTask';
 
-import { changePassword, getProfile, setProfile, setStep, updateProfile } from './action';
+import { changeImage, changePassword, getProfile, setProfile, setStep, updateProfile } from './action';
 import { selectProfile } from './selector';
 import encryptPayload from '@utils/encryptionHelper';
 
@@ -29,6 +29,15 @@ const Profile = ({ data }) => {
         new_password: '',
         new_confirm_password: ''
     });
+    const [image, setImage] = useState(null);
+
+    const onHandlerImage = (e) => {
+        setImage(e.target.files[0]);
+        const formData = new FormData();
+        formData.append("imageUrl", e.target.files[0])
+
+        dispatch(changeImage(formData))
+    }
 
     const onSubmitChangePassword = () => {
         const encryptData = {
@@ -54,7 +63,12 @@ const Profile = ({ data }) => {
     const renderedComponent = () => {
         switch (currentStep) {
             case 1:
-                return <MyProfile data={data} onChangeName={(e) => setName(e.target.value)} onSubmit={onSubmitUpdateProfile} />;
+                return <MyProfile
+                    data={data}
+                    onChangeName={(e) => setName(e.target.value)}
+                    onSubmit={onSubmitUpdateProfile}
+                    onChangeFile={onHandlerImage}
+                />;
             case 2:
                 return <ChangePass password={password}
                     onChangeOld={(e) => setPassword({ ...password, old_password: e.target.value })}

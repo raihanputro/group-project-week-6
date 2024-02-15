@@ -1,7 +1,7 @@
 import { setLoading } from "@containers/App/actions";
 import { call, put, takeLatest } from "redux-saga/effects";
-import { GET_PROFILE, SET_PASSWORD, UPDATE_PROFILE } from "./constant";
-import { changePassword, getProfile, updateProfile } from "@domain/api";
+import { GET_PROFILE, SET_IMAGE, SET_PASSWORD, UPDATE_PROFILE } from "./constant";
+import { changeImage, changePassword, getProfile, updateProfile } from "@domain/api";
 import { setProfile } from "./action";
 import toast from "react-hot-toast";
 
@@ -38,7 +38,16 @@ function* doChangePassword({ data, cb }) {
         toast.success('Change Password Success')
         cb && cb();
     } catch (error) {
-        console.log(error)
+        toast.error(error?.response?.data?.message)
+    }
+    yield put(setLoading(false))
+};
+
+function* doUpdateImage({ formData }) {
+    yield put(setLoading(true))
+    try {
+        yield call(changeImage, formData)
+    } catch (error) {
         toast.error(error?.response?.data?.message)
     }
     yield put(setLoading(false))
@@ -48,4 +57,5 @@ export default function* profileSaga() {
     yield takeLatest(GET_PROFILE, getProfileUser)
     yield takeLatest(UPDATE_PROFILE, doUpdateProfile)
     yield takeLatest(SET_PASSWORD, doChangePassword)
+    yield takeLatest(SET_IMAGE, doUpdateImage)
 }
