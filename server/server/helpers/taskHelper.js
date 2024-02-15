@@ -19,6 +19,7 @@ const getListTaskAdminHelper = async (dataToken) => {
       include: {
         model: db.User,
       },
+      paranoid: false,
     });
     if (_.isEmpty(checkTask)) {
       return { message: "Your Task is Empty" };
@@ -50,6 +51,7 @@ const getTaskDetailAdminHelper = async (id, dataToken) => {
       include: {
         model: db.User,
       },
+      paranoid: false,
     });
     if (_.isEmpty(checkTask)) {
       return Promise.reject(
@@ -93,6 +95,120 @@ const createTaskAdminHelper = async (dataObject, dataToken) => {
     return Promise.reject(GeneralHelper.errorResponse(err));
   }
 };
+
+const updateTaskAdminHelper = async (
+  id,
+  name,
+  description,
+  start_date,
+  end_date,
+  status,
+  user_id,
+  dataToken
+) => {
+  try {
+    const checkAuthorizationUser = await db.User.findOne({
+      where: { id: dataToken.id, role: 1 },
+    });
+    if (_.isEmpty(checkAuthorizationUser)) {
+      return Promise.reject(Boom.unauthorized("You are not authorized"));
+    }
+
+    const checkTask = await db.Task.findOne({
+      where: { id: id },
+    });
+    if (!checkTask) {
+      return Promise.reject(
+        Boom.badRequest("Task with this id is doesn't exist")
+      );
+    }
+    await db.Task.update(
+      {
+        name: name ? name : checkTask.dataValues.name,
+        description: description
+          ? description
+          : checkTask.dataValues.description,
+        start_date: start_date ? start_date : checkTask.dataValues.start_date,
+        end_date: end_date ? end_date : checkTask.dataValues.end_date,
+        status: status ? status : checkTask.dataValues.status,
+        user_id: user_id ? user_id : checkTask.dataValues.user_id,
+      },
+      { where: { id: id } }
+    );
+    return Promise.resolve(true);
+  } catch (err) {
+    console.log([fileName, "updateTaskAdminHelper", "ERROR"], {
+      info: `${err}`,
+    });
+    return Promise.reject(GeneralHelper.errorResponse(err));
+  }
+};
+
+const restoreTaskAdminHelper = async (id, dataToken) => {
+  try {
+    const checkAuthorizationUser = await db.User.findOne({
+      where: { id: dataToken.id, role: 1 },
+    });
+    if (_.isEmpty(checkAuthorizationUser)) {
+      return Promise.reject(Boom.unauthorized("You are not authorized"));
+    }
+    const checkTask = await db.Task.findOne({
+      where: { id: id },
+      paranoid: false
+    });
+    if (!checkTask) {
+      return Promise.reject(
+        Boom.badRequest("Task with this id is doesn't exist")
+      );
+    } else {
+      await db.Task.restore({
+        where: {
+          id: id,
+        },
+      });
+    }
+    return Promise.resolve(true);
+  } catch (err) {
+    console.log([fileName, "restoreTaskAdminHelper", "ERROR"], {
+      info: `${err}`,
+    });
+    return Promise.reject(GeneralHelper.errorResponse(err));
+  }
+};
+
+const deleteTaskAdminHelper = async (id, dataToken) => {
+  try {
+    const checkAuthorizationUser = await db.User.findOne({
+      where: { id: dataToken.id, role: 1 },
+    });
+    if (_.isEmpty(checkAuthorizationUser)) {
+      return Promise.reject(Boom.unauthorized("You are not authorized"));
+    }
+    const checkTask = await db.Task.findOne({
+      where: { id: id },
+      paranoid: false
+    });
+    if (!checkTask) {
+      return Promise.reject(
+        Boom.badRequest("Task with this id is doesn't exist")
+      );
+    } else {
+      await db.Task.destroy({
+        where: {
+          id: id,
+        },
+        force: true,
+      });
+    }
+    return Promise.resolve(true);
+  } catch (err) {
+    console.log([fileName, "deleteTaskAdminHelper", "ERROR"], {
+      info: `${err}`,
+    });
+    return Promise.reject(GeneralHelper.errorResponse(err));
+  }
+};
+
 //admin-end
 
 //manager-start
@@ -195,12 +311,11 @@ const updateTaskManagerHelper = async (
   dataToken
 ) => {
   try {
-    console.log(dataToken.id)
     const checkAuthorizationUser = await db.User.findOne({
       where: { id: dataToken.id, role: 2 },
     });
     const checkAuthorizationTask = await db.Task.findOne({
-      where: { user_id: dataToken.id },
+      where: { user_id: dataToken.id, id: id },
     });
     if (_.isEmpty(checkAuthorizationUser)) {
       return Promise.reject(Boom.unauthorized("You are not authorized"));
@@ -240,14 +355,20 @@ const updateTaskManagerHelper = async (
   }
 };
 
-const deleteTaskHelper = async (id, dataToken) => {
+const deleteTaskManagerHelper = async (id, dataToken) => {
   try {
-    const checkAuthorization = await db.Task.findOne({
-      where: { user_id: dataToken.id },
+    const checkAuthorizationUser = await db.User.findOne({
+      where: { id: dataToken.id, role: 2 },
     });
-    if (_.isEmpty(checkAuthorization)) {
+    if (_.isEmpty(checkAuthorizationUser)) {
+      return Promise.reject(Boom.unauthorized("You are not authorized"));
+    }
+    const checkAuthorizationTask = await db.Task.findOne({
+      where: { user_id: dataToken.id, id: id },
+    });
+    if (_.isEmpty(checkAuthorizationTask)) {
       return Promise.reject(
-        Boom.unauthorized("You are not authorized to see this data")
+        Boom.unauthorized("You are not authorized to delete this data")
       );
     }
     const checkTask = await db.Task.findOne({
@@ -266,7 +387,7 @@ const deleteTaskHelper = async (id, dataToken) => {
     }
     return Promise.resolve(true);
   } catch (err) {
-    console.log([fileName, "deleteTaskHelper", "ERROR"], {
+    console.log([fileName, "deleteTaskManagerHelper", "ERROR"], {
       info: `${err}`,
     });
     return Promise.reject(GeneralHelper.errorResponse(err));
@@ -277,6 +398,12 @@ const deleteTaskHelper = async (id, dataToken) => {
 //member-start
 const getListTaskMemberHelper = async (dataToken) => {
   try {
+    const checkAuthorizationUser = await db.User.findOne({
+      where: { id: dataToken.id, role: 3 },
+    });
+    if (_.isEmpty(checkAuthorizationUser)) {
+      return Promise.reject(Boom.unauthorized("You are not authorized"));
+    }
     const checkTask = await db.TaskPivot.findAll({
       include: [
         {
@@ -302,6 +429,12 @@ const getListTaskMemberHelper = async (dataToken) => {
 
 const getDetailTaskMemberHelper = async (id, dataToken) => {
   try {
+    const checkAuthorizationUser = await db.User.findOne({
+      where: { id: dataToken.id, role: 3 },
+    });
+    if (_.isEmpty(checkAuthorizationUser)) {
+      return Promise.reject(Boom.unauthorized("You are not authorized"));
+    }
     const checkTask = await db.TaskPivot.findAll({
       include: [
         {
@@ -331,13 +464,16 @@ module.exports = {
   getListTaskAdminHelper,
   getTaskDetailAdminHelper,
   createTaskAdminHelper,
+  updateTaskAdminHelper,
+  restoreTaskAdminHelper,
+  deleteTaskAdminHelper,
   //admin-route-end
 
   //manager-route-start
   getListTaskManagerHelper,
   createTaskManagerHelper,
   getTaskDetailManagerHelper,
-  deleteTaskHelper,
+  deleteTaskManagerHelper,
   updateTaskManagerHelper,
   //manager-route-end
 
