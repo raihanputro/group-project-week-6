@@ -7,13 +7,13 @@ import { createStructuredSelector } from 'reselect';
 const Card = ({ data  }) => {
   const navigate = useNavigate();
   const gotToDetail = () => {
-    navigate(`/user/my-project/${data?.id}`);
+    navigate(`/member/task/${data?.task_id}`);
   };
 
   return (
     <div className={classes.container} onClick={gotToDetail}>
       <div className={classes.content}>
-        <p className={classes.title}>{data?.Task?.name}</p>
+        <p className={classes.title}>{data?.Task?.name} ({data?.Task?.User?.name})</p>
         <p className={classes.date}>{data?.Task?.start_date.substring(0,10)} s/d {data?.Task?.end_date.substring(0,10)}</p>
         <p className={classes.shortdesc}>{data?.Task?.description}</p>
       </div>
