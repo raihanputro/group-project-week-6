@@ -11,8 +11,10 @@ export default {
   profile_myProfile: 'Data Diri Saya',
   profile_changePass: 'Ganti Password',
   profile_currentTask: 'Tugas Saat Ini',
-
   profile_name: 'Nama',
   profile_email: 'Email',
   profile_update: 'Pembaruan Data Diri',
+  profile_old_password: 'Kata Sandi Lama',
+  profile_new_password: 'Kata Sandi Baru',
+  profile_new_confirm_password: 'Konfirmasi Kata Sandi Baru',
 };
