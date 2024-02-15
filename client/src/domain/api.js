@@ -10,6 +10,7 @@ const urls = {
   userList: 'user/list',
   taskListAdmin: 'task/admin/list',
   createTask : 'task/admin/create',
+  deleteTask: 'task/admin/delete',
 };
 
 export const callAPI = async (endpoint, method, header = {}, params = {}, data = {}) => {
@@ -38,3 +39,4 @@ export const register = (dataUser) => callAPI(urls.register, 'POST', {}, {}, dat
 export const userList = () => callAPI(urls.userList, 'GET');
 export const taskListAdmin = () => callAPI(urls.taskListAdmin, 'GET');
 export const createTask = (taskData) => callAPI(urls.createTask, 'POST', {}, {}, taskData);
+export const deleteTask = (id) => callAPI(`${urls.deleteTask}/${id}`, 'DELETE');

@@ -8,29 +8,54 @@
     margin-bottom: 2% !important;
 }
 
-.cardInfoContainer {
+.InfoContainer {
     @include directionX;
-    gap: 5%;
+    margin-top: 5%;
+    justify-content: space-around;
 
-    .cardInfo {
-        width: 100%;
-        height: 100%;
-        max-width: 250px;
-        min-height: 100px;
+    .info {
+        @include directionY;
+        justify-content: center;
+        align-items: center;
 
-        .info {
-            @include directionX;
-            gap: 10%;
-            height: 100%;
+        .cardInfoContainer {
             width: 100%;
-            min-height: 110px;
-            align-items: center;
+            height: 100%;
+            max-width: 250px;
+            min-height: 100px;
+
+            .cardInfo {
+                @include directionX;
+                gap: 10%;
+                height: 100%;
+                width: 100%;
+                min-height: 110px;
+                align-items: center;
+                justify-content: center;
+                background-color: var(--color-bg);
+            }
+        }
+
+        .chartInfo {
+            @include directionY;
             justify-content: center;
-            background-color: var(--color-bg);
-            
-            .textContainer {
-                @include directionY;
+            align-items: center;
+            margin-top: 15%;
+            padding: 0;
+    
+            .chartTitle {
+                font-size: 25px;
+                font-weight: 700;
+                margin-bottom: 2%;
             }
         }
     }
+}
+
+.chartInfoContainer {
+    @include directionX;
+    margin-top: 5%;
+    gap: 5%;
+
+    
 }

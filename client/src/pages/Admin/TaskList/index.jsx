@@ -30,7 +30,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import AddTask from './components/AddTask';
 
-import { getTaskListData } from './actions';
+import { getTaskListData, deleteTask } from './actions';
 import { selectTaskListData } from './selectors';
 
 import classes from './style.module.scss';
@@ -53,6 +53,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const TaskList = ({taskListSelect}) => {
   const dispatch = useDispatch();
   const [taskListData, setTaskListData] = useState([]);
+  const [taskId, setTaskId] = useState(null);
   const [taskMenu, setTaskMenu] = useState(null);
   const [isAddOpen, setAddOpen] = useState(false);
 
@@ -61,11 +62,12 @@ const TaskList = ({taskListSelect}) => {
   }, [dispatch]);
 
   useEffect(() => {
-    setTaskListData(taskListSelect.response);
+    setTaskListData(taskListSelect?.response);
   }, [taskListSelect]);
 
-  const handleOpenTaskMenu = (event) => {
+  const handleOpenTaskMenu = (event, taskId) => {
     setTaskMenu(event.currentTarget);
+    setTaskId(taskId);
   };
 
   const handleCloseTaskMenu = () => {
@@ -78,6 +80,11 @@ const TaskList = ({taskListSelect}) => {
 
   const handleAddClose = () => {
     setAddOpen(false);
+  };
+
+  const deleteItem = () => {
+    dispatch(deleteTask(taskId));
+    setTaskMenu(null);
   };
 
   return (
@@ -100,44 +107,51 @@ const TaskList = ({taskListSelect}) => {
             </TableRow>
             </TableHead>
             <TableBody>
-              { taskListData && taskListData?.map((task, index) => (
+              { taskListData && Array.isArray(taskListData) && taskListData?.map((task, index) => (
                 <StyledTableRow key={index}>
-                  <StyledTableCell align="center">{task.id}</StyledTableCell>
-                  <StyledTableCell align="center">{task.name}</StyledTableCell>
+                  <StyledTableCell align="center">{task?.id}</StyledTableCell>
+                  <StyledTableCell align="center">{task?.name}</StyledTableCell>
                   <StyledTableCell align="center">
-                    {moment(task.start_date).format('dddd, DD MMMM YYYY HH:mm:ss')}
+                    {moment(task?.start_date).format('dddd, DD MMMM YYYY')}
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                  {moment(task.end_date).format('dddd, DD MMMM YYYY HH:mm:ss')}
+                  {moment(task?.end_date).format('dddd, DD MMMM YYYY')}
                   </StyledTableCell>
                   <StyledTableCell align="center">
                   { 
-                      task.status === 'ToDo' 
+                      task?.status === 'ToDo' 
                         && 
                       <Typography variant='p' component='div' className={classes.statusTodo}>
                         ToDo
                       </Typography>
                     }
                     { 
-                      task.status === 'Progress' 
+                      task?.status === 'Progress' 
                         && 
                       <Typography variant='p' component='div' className={classes.statusProgress}>
                         Progress
                       </Typography>
                     }
                     { 
-                      task.status === 'Completed' 
+                      task?.status === 'Completed' 
                         && 
                       <Typography variant='p' component='div' className={classes.statusCompleted}>
                         Completed
                       </Typography>
                     }
+                    { 
+                      task?.status === 'Expired' 
+                        && 
+                      <Typography variant='p' component='div' className={classes.statusExpired}>
+                        Expired
+                      </Typography>
+                    }
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <Button onClick={handleOpenTaskMenu}><ListIcon /></Button>
+                    <Button onClick={(e) => handleOpenTaskMenu(e, task?.id)}><ListIcon /></Button>
                     <Menu
                       sx={{ mt: '45px' }}
-                      id="menu-appbar"
+                      id={`menu-appbar`}
                       anchorEl={taskMenu}
                       anchorOrigin={{
                         vertical: 'top',
@@ -150,7 +164,7 @@ const TaskList = ({taskListSelect}) => {
                       }}
                       open={Boolean(taskMenu)}
                       onClose={handleCloseTaskMenu}
-                    >
+                      >
                       <MenuItem>
                         <Button><InfoIcon sx={{ color: 'yellow' }}/></Button>
                       </MenuItem>
@@ -158,12 +172,11 @@ const TaskList = ({taskListSelect}) => {
                         <Button ><EditIcon /></Button>                      
                       </MenuItem>
                       <MenuItem>
-                        <Button sx={{ color: 'red' }}><DeleteIcon /></Button>                    
+                          <Button sx={{ color: 'red' }} onClick={() => deleteItem()}><DeleteIcon /></Button>                    
                       </MenuItem>
                     </Menu>
                   </StyledTableCell>
                 </StyledTableRow>
-
               ))}
             </TableBody>
         </Table>

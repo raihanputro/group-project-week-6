@@ -244,11 +244,7 @@ Router.get("/admin/detail/:id", Middleware.validateToken, detailListAdmin);
 Router.post("/admin/create", Middleware.validateToken, createTaskAdmin);
 Router.put("/admin/update/:id", Middleware.validateToken, updateTaskAdmin);
 Router.post("/admin/restore/:id", Middleware.validateToken, restoreTaskAdmin);
-Router.delete(
-  "/admin/delete/:id",
-  Middleware.validateToken,
-  deleteTaskAdmin
-);
+Router.delete("/admin/delete/:id",Middleware.validateToken,deleteTaskAdmin);
 //admin-route-end
 
 //manager-route-start

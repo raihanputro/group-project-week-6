@@ -42,21 +42,21 @@ const routes = [
   {
     path: '/admin',
     name: 'Dashboard Admin',
-    protected: false,
+    protected: true,
     component: DashboardAdmin,
     layout: AdminLayout
   },
   {
     path: '/admin/user',
     name: 'User List',
-    protected: false,
+    protected: true,
     component: UserList,
     layout: AdminLayout
   },
   {
     path: '/admin/task',
     name: 'Task List',
-    protected: false,
+    protected: true,
     component: TaskList,
     layout: AdminLayout
   },

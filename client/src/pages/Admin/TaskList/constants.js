@@ -1,3 +1,4 @@
 export const GET_TASK_LIST_DATA = 'GET_TASK_LIST_DATA';
 export const SET_TASK_LIST_DATA = 'SET_TASK_LIST_DATA';
 export const CREATE_TASK = 'CREATE_TASK';
+export const DELETE_TASK = 'DELETE_TASK'

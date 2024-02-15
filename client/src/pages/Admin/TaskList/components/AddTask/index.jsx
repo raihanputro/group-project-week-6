@@ -12,6 +12,10 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ImageIcon from '@mui/icons-material/Image';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 import { createTask } from '../../actions';
 
@@ -80,35 +84,43 @@ const AddTask = ({ isOpen, onClose }) => {
               <Typography variant="body1" color="initial" className={classes.label}>
                 <FormattedMessage id="startdate_modal_input" />
               </Typography>
-                <Controller
-                    name="start_date"
-                    control={control}
-                    defaultValue={null}
-                    rules={{ required: 'Start date is required' }}
-                    render={({ field }) => (
-                    <input
-                    {...field}
-                    type="datetime-local"
-                    required />
-                    )}
-                />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Controller
+                      name="start_date"
+                      control={control}
+                      defaultValue={null}
+                      rules={{ required: 'Start date is required' }}
+                      render={({ field }) => (
+                        <DateTimePicker
+                          {...field}
+                          sx={{ width: '100%', marginBottom: '10px' }}
+                          error={!!field.error}
+                          helperText={field.error ? field.error.message : null}
+                        />
+                      )}
+                  />
+                </LocalizationProvider>
             </Box>
             <Box className={classes.textUploader}>
               <Typography variant="body1" color="initial" className={classes.label}>
                 <FormattedMessage id="enddate_modal_input" />
               </Typography>
-                <Controller
-                    name="end_date"
-                    control={control}
-                    defaultValue={null}
-                    rules={{ required: 'Start date is required' }}
-                    render={({ field }) => (
-                    <input
-                    {...field}
-                    type="datetime-local"
-                    required />
-                    )}
-                />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Controller
+                      name="end_date"
+                      control={control}
+                      defaultValue={null}
+                      rules={{ required: 'End date is required' }}
+                      render={({ field }) => (
+                        <DateTimePicker
+                          {...field}
+                          error={!!field.error}
+                          helperText={field.error ? field.error.message : null}
+                          sx={{ width: '100%', marginBottom: '10px' }}
+                        />
+                      )}
+                  />
+                </LocalizationProvider>
             </Box>
             <Box className={classes.textUploader}>
               <Typography variant="body1" color="initial" className={classes.label}>
