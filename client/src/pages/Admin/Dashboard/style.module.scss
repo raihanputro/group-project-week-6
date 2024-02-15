@@ -7,3 +7,24 @@
     margin-top: 9% !important;
     margin-bottom: 2% !important;
 }
+
+.cardInfoContainer {
+    @include directionX;
+    gap: 5%;
+
+    .cardInfo {
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+        max-width: 250px;
+
+        .info {
+            @include directionX;
+            gap: 5%;
+            
+            .textContainer {
+                @include directionY;
+            }
+        }
+    }
+}

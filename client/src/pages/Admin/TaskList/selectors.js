@@ -1,6 +1,6 @@
 import { createSelector } from "reselect";
 import { initialState } from "./reducer";
 
-const selectProfileState = (state) => state.login || initialState;
+const selectTaskListState = (state) => state.taskList || initialState;
 
-export const selectInfoLogin = createSelector(selectProfileState, (state) => state.infoLoginData);
+export const selectTaskListData = createSelector(selectTaskListState, (state) => state.taskListData);

@@ -18,7 +18,7 @@ const __comparePassword = (payloadPass, dbPass) => {
     return bcrypt.compareSync(payloadPass, dbPass);
 };
 
-const getAllUser = async () => {
+const getListUserAdmin = async () => {
     try {
         const response = await db.User.findAll();
 
@@ -115,7 +115,7 @@ const updateProfile = async (id, name) => {
 }
 
 module.exports = {
-    getAllUser,
+    getListUserAdmin,
     getProfileUser,
     changePassword,
     updateProfile

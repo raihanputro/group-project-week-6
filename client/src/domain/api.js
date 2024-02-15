@@ -7,7 +7,9 @@ const urls = {
   ping: 'ping.json',
   login: 'login',
   register: 'register',
-  allUser: 'user/list'
+  userList: 'user/list',
+  taskListAdmin: 'task/list-admin',
+  createTask : 'task/create',
 };
 
 export const callAPI = async (endpoint, method, header = {}, params = {}, data = {}) => {
@@ -31,13 +33,8 @@ export const callAPI = async (endpoint, method, header = {}, params = {}, data =
 };
 
 export const ping = () => callAPI(urls.ping, 'get');
-
-export const login = (dataUser) => {
-  return callAPI(urls.login, 'POST', {}, {}, dataUser)
-}
-
-export const register = (dataUser) => {
-  return callAPI(urls.register, 'POST', {}, {}, dataUser);
-}
-
-export const allUser = () => callAPI(urls.allUser, 'GET');
+export const login = (dataUser) => callAPI(urls.login, 'POST', {}, {}, dataUser);
+export const register = (dataUser) => callAPI(urls.register, 'POST', {}, {}, dataUser);
+export const userList = () => callAPI(urls.userList, 'GET');
+export const taskListAdmin = () => callAPI(urls.taskListAdmin, 'GET');
+export const createTask = (taskData) => callAPI(urls.createTask, 'POST', {}, {}, taskData);

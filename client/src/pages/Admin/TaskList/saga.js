@@ -1,25 +1,29 @@
 import { takeLatest, call, put } from "redux-saga/effects";
-import { jwtDecode } from 'jwt-decode';
-import { SET_USER_LOGIN } from "./constants";
-import { loginUserApi } from "@domain/api";
-import { setUserInfoLogin } from "./actions";
-import { setLogin, setToken } from "@containers/Client/actions";
-import { setLoading, showPopup } from "@containers/App/actions";
+import { SET_TASK_LIST_DATA, GET_TASK_LIST_DATA, CREATE_TASK } from "./constants";
+import { setTaskListData } from "./actions";
+import { taskListAdmin, createTask } from "@domain/api";
+import { showPopup } from "@containers/App/actions";
 
-function* doLogin ({ userData, cb}) {
-    yield put(setLoading(true));
+function* doGetTaskList () {
     try {
-        const res = yield call(loginUserApi, userData);
-        yield put(setLogin(true));
-        yield put(setToken(res.result));
-        yield put(setUserInfoLogin(jwtDecode(res.result)));
-        cb && cb();
+        const res = yield call(taskListAdmin);
+        yield put(setTaskListData(res));
     } catch (error) {
         yield put(showPopup());
     }
-    yield put(setLoading(false))
+};
+
+function* doPostTask ({taskData}) {
+    try {
+        yield call(createTask, taskData);
+        const res = yield call(taskListAdmin);
+        yield put(setTaskListData(res));
+    } catch (error) {
+        yield put(showPopup(error))
+    }
 }
 
-export default function* loginSaga() {
-    yield takeLatest(SET_USER_LOGIN, doLogin);
+export default function* taskListSaga() {
+    yield takeLatest(GET_TASK_LIST_DATA, doGetTaskList);
+    yield takeLatest(CREATE_TASK, doPostTask);
 }

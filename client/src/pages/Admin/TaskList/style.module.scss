@@ -17,11 +17,24 @@
     background-color: var(--color-bg);
     color: var(--color-text);
 
-    .tableHead {
-        font-weight: 700 !important;
+    .statusTodo {
+        background-color: #9376E0;
+        padding: 10px;
+        border-radius: 10px;
+        font-weight: 700;
     }
 
-    .modalContainer {
-        color: var(--color-bg);
+    .statusProgress {
+        background-color: orange;
+        padding: 10px;
+        border-radius: 10px;
+        font-weight: 700;
+    }
+
+    .statusCompleted {
+        background-color: green;
+        padding: 10px;
+        border-radius: 10px;
+        font-weight: 700;
     }
 }

@@ -1,12 +1,15 @@
-import { SET_USER_LOGIN, SET_USER_INFO_LOGIN } from "./constants"; 
+import { GET_TASK_LIST_DATA, SET_TASK_LIST_DATA, CREATE_TASK } from "./constants"; 
 
-export const setUserLogin = (userData, cb) => ({
-    type: SET_USER_LOGIN,
-    userData,
-    cb
+export const getTaskListData = () => ({
+    type: GET_TASK_LIST_DATA,
 });
 
-export const setUserInfoLogin = (infoLoginData) => ({
-    type: SET_USER_INFO_LOGIN,
-    infoLoginData
+export const setTaskListData = (taskListData) => ({
+    type: SET_TASK_LIST_DATA,
+    taskListData
 });
+
+export const createTask = (taskData) => ({
+    type: CREATE_TASK,
+    taskData
+})

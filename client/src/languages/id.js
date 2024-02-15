@@ -26,10 +26,19 @@ export default {
   action_table_row: 'Aksi',
 
   number_users_title: 'Jumlah Pengguna',
+  number_taks_title: 'Jumlah Tugas',
   profile_myProfile: 'Profile Saya',
   profile_changePass: 'Ganti Password',
   profile_currentTask: 'Tugas Saat Ini',
 
   profile_name: 'Nama',
   profile_email: 'Email',
+
+  add_task_modal_title: 'Tambah tugas baru!',
+  name_modal_input: 'Nama',
+  description_modal_input: 'Deskripsi',
+  startdate_modal_input: 'Mulai',
+  enddate_modal_input: 'Berakhir',
+  status_modal_input: 'Status',
+  add_task_modal_button: 'Tambah Tugas',
 };

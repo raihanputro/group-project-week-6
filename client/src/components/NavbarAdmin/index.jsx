@@ -85,11 +85,9 @@ const NavbarAdmin = ({ title, locale, theme, children }) => {
 
   const [open, setOpen] = useState(true);
   const [menuPosition, setMenuPosition] = useState(null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
+    const [anchorElUser, setAnchorElUser] = useState(null);
   const openLang = Boolean(menuPosition);
   const isSelectedLoc = (path) => location.pathname === path;
-
-  console.log(isSelectedLoc('/admin/task'), 'path');
 
   const handleClick = (event) => {
     setMenuPosition(event.currentTarget);

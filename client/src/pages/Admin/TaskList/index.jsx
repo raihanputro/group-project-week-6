@@ -3,6 +3,7 @@ import { connect, useDispatch } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
+import moment from 'moment';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -18,11 +19,19 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import InfoIcon from '@mui/icons-material/Info';
 import TextField from '@mui/material/TextField';
+import ListIcon from '@mui/icons-material/List';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+
+import AddTask from './components/AddTask';
+
+import { getTaskListData } from './actions';
+import { selectTaskListData } from './selectors';
 
 import classes from './style.module.scss';
 
@@ -41,35 +50,34 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-const TaskList = () => {
-  const [isModalAddOpen, setIsModalAddOpen] = useState(false);
-  const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
-  const [isModalDetailOpen, setIsModalDetailOpen] = useState(false);
+const TaskList = ({taskListSelect}) => {
+  const dispatch = useDispatch();
+  const [taskListData, setTaskListData] = useState([]);
+  const [taskMenu, setTaskMenu] = useState(null);
+  const [isAddOpen, setAddOpen] = useState(false);
 
-  const handleModalOpen = () => {
-    setIsModalAddOpen(true);
+  useEffect(() => {
+    dispatch(getTaskListData());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setTaskListData(taskListSelect.response);
+  }, [taskListSelect]);
+
+  const handleOpenTaskMenu = (event) => {
+    setTaskMenu(event.currentTarget);
   };
 
-  const handleModalClose = () => {
-    setIsModalAddOpen(false);
+  const handleCloseTaskMenu = () => {
+    setTaskMenu(null);
   };
 
-  const handleUpdateModalOpen = (userId) => {
-    setSelectedUserId(userId);
-    setIsModalUpdateOpen(true);
+  const handleAddOpen = () => {
+    setAddOpen(true);
   };
 
-  const handleUpdateModalClose = () => {
-    setIsModalUpdateOpen(false);
-  };
-
-  const handleDetailModalOpen = (userId) => {
-    setSelectedUserId(userId);
-    setIsModalDetailOpen(true);
-  };
-
-  const handleDetailModalClose = () => {
-    setIsModalDetailOpen(false);
+  const handleAddClose = () => {
+    setAddOpen(false);
   };
 
   return (
@@ -77,7 +85,8 @@ const TaskList = () => {
       <Typography variant='h1' component='div' className={classes.pageTitle}>
         <FormattedMessage id="task_list_title" />
       </Typography>
-      <Button variant="contained" onClick={handleModalOpen} className={classes.addButton}><AddIcon /><FormattedMessage id="add_button" /></Button>
+      <Button variant="contained" onClick={handleAddOpen} className={classes.addButton}><AddIcon /><FormattedMessage id="add_button" /></Button>
+      <AddTask isOpen={isAddOpen} onClose={handleAddClose} />
       <TableContainer component={Paper} sx={{ marginTop: '1%' }}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table" className={classes.table}>
           <TableHead>
@@ -91,18 +100,71 @@ const TaskList = () => {
             </TableRow>
             </TableHead>
             <TableBody>
-              <StyledTableRow>
-                <StyledTableCell align="center">1</StyledTableCell>
-                <StyledTableCell align="center">Front end Orm</StyledTableCell>
-                <StyledTableCell align="center">1 Januari 2024, 00:00:00</StyledTableCell>
-                <StyledTableCell align="center">2 Januari 2024, 00:00:00</StyledTableCell>
-                <StyledTableCell align="center">Selesai</StyledTableCell>
-                <StyledTableCell align="center">
-                  <Button><InfoIcon sx={{ color: 'yellow' }}/></Button>
-                  <Button ><EditIcon /></Button>
-                  <Button sx={{ color: 'red' }}><DeleteIcon /></Button>
-                </StyledTableCell>
-              </StyledTableRow>
+              { taskListData && taskListData?.map((task, index) => (
+                <StyledTableRow key={index}>
+                  <StyledTableCell align="center">{task.id}</StyledTableCell>
+                  <StyledTableCell align="center">{task.name}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    {moment(task.start_date).format('dddd, DD MMMM YYYY HH:mm:ss')}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                  {moment(task.end_date).format('dddd, DD MMMM YYYY HH:mm:ss')}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                  { 
+                      task.status === 'ToDo' 
+                        && 
+                      <Typography variant='p' component='div' className={classes.statusTodo}>
+                        ToDo
+                      </Typography>
+                    }
+                    { 
+                      task.status === 'Progress' 
+                        && 
+                      <Typography variant='p' component='div' className={classes.statusProgress}>
+                        Progress
+                      </Typography>
+                    }
+                    { 
+                      task.status === 'Completed' 
+                        && 
+                      <Typography variant='p' component='div' className={classes.statusCompleted}>
+                        Completed
+                      </Typography>
+                    }
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <Button onClick={handleOpenTaskMenu}><ListIcon /></Button>
+                    <Menu
+                      sx={{ mt: '45px' }}
+                      id="menu-appbar"
+                      anchorEl={taskMenu}
+                      anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                      open={Boolean(taskMenu)}
+                      onClose={handleCloseTaskMenu}
+                    >
+                      <MenuItem>
+                        <Button><InfoIcon sx={{ color: 'yellow' }}/></Button>
+                      </MenuItem>
+                      <MenuItem>
+                        <Button ><EditIcon /></Button>                      
+                      </MenuItem>
+                      <MenuItem>
+                        <Button sx={{ color: 'red' }}><DeleteIcon /></Button>                    
+                      </MenuItem>
+                    </Menu>
+                  </StyledTableCell>
+                </StyledTableRow>
+
+              ))}
             </TableBody>
         </Table>
       </TableContainer>
@@ -110,4 +172,12 @@ const TaskList = () => {
   )
 }
 
-export default TaskList
+TaskList.propTypes = {
+  taskListSelect: PropTypes.object,
+};
+
+const mapStateToProps = createStructuredSelector({
+  taskListSelect: selectTaskListData,
+});
+
+export default connect(mapStateToProps)(TaskList);

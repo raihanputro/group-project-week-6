@@ -7,16 +7,16 @@ const Middleware = require('../middlewares/authMiddleware');
 
 const fileName = 'server/api/user.js';
 
-const listUser = async (request, reply) => {
+const getListUserAdmin = async (request, reply) => {
     try {
-        const response = await UserHelper.getAllUser();
+        const response = await UserHelper.getListUserAdmin();
 
         return reply.send({
             message: 'Get All user Success',
             response
         })
     } catch (error) {
-        console.log([fileName, 'get all user api', 'ERROR'], { info: `${error}` });
+        console.log([fileName, 'get list user admin api', 'ERROR'], { info: `${error}` });
         return reply.send(GeneralHelper.errorResponse(error));
     }
 }
@@ -73,7 +73,7 @@ const updateProfile = async (request, reply) => {
     }
 };
 
-Router.get('/list', listUser)
+Router.get('/list', getListUserAdmin)
 Router.get('/my-profile', getProfileUser);
 Router.patch('/change-password', changePassword);
 Router.patch('/update-profile', updateProfile);

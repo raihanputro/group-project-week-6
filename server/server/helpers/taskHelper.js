@@ -4,6 +4,18 @@ const GeneralHelper = require("./generalHelper");
 const Boom = require("boom");
 const fileName = "server/helpers/taskHelper.js";
 
+
+const getListTaskAdmin = async () => {
+  try {
+      const response = await db.Task.findAll();
+
+      return Promise.resolve(response);
+  } catch (error) {
+      console.log([fileName, 'get all user helper', 'ERROR'], { info: `${error}` });
+      return Promise.reject(GeneralHelper.errorResponse(error));
+  }
+}
+
 const getListTaskHelper = async (dataToken) => {
   try {
     const checkTask = await db.Task.findAll({
@@ -116,6 +128,29 @@ const updateTaskHelper = async (
   }
 };
 
+const deleteTaskAdmin = async (id) => {
+  try {
+    const checkTask = await db.Task.findOne({
+      where: { id: id },
+    });
+    if (!checkTask) {
+      return Promise.reject(
+        Boom.badRequest("Task with this id is doesn't exist")
+      );
+    } else {
+      await db.Task.destroy({
+        where: {
+          id: id,
+        },
+      });
+    }
+    return Promise.resolve(true);
+  } catch (error) {
+    console.log([fileName, "deleteTaskAdmin", "ERROR"], {info: `${err}`});
+    return Promise.reject(GeneralHelper.errorResponse(err));
+  }
+}
+
 const deleteTaskHelper = async (id, dataToken) => {
   try {
     const checkAuthorization = await db.Task.findOne({
@@ -150,9 +185,11 @@ const deleteTaskHelper = async (id, dataToken) => {
 };
 
 module.exports = {
+  getListTaskAdmin,
   getListTaskHelper,
   createTaskHelper,
   getTaskDetailHelper,
+  deleteTaskAdmin,
   deleteTaskHelper,
   updateTaskHelper,
 };

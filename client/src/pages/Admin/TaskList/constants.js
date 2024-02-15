@@ -1,2 +1,3 @@
-export const SET_USER_LOGIN = 'SET_USER_LOGIN';
-export const SET_USER_INFO_LOGIN = 'SET_INFO_USER_LOGIN'; 
+export const GET_TASK_LIST_DATA = 'GET_TASK_LIST_DATA';
+export const SET_TASK_LIST_DATA = 'SET_TASK_LIST_DATA';
+export const CREATE_TASK = 'CREATE_TASK';
