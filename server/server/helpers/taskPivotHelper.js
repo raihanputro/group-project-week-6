@@ -6,6 +6,14 @@ const fileName = "server/helpers/taskPivotHelper.js";
 
 const updateMemberTask = async (task_id, member_id, dataToken) => {
   try {
+    const checRole = await db.User.findOne({
+      where: { role: 2 },
+    });
+    if (_.isEmpty(checRole)) {
+      return Promise.reject(
+        Boom.unauthorized("Your role cannot add members")
+      );
+    }
     const checkMember = await db.User.findOne({
       where: { id: member_id },
     });
