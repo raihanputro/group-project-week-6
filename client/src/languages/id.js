@@ -60,9 +60,16 @@ export default {
   register_now: "Daftar sekarang!",
   register_to_login: "Sudah Memiliki Akun?",
   role: 'Peran',
+  select_role: 'Pilih Peran',
+
+
+  app_text_task: 'Tugas Anda',
 
   logout: 'Keluar',
   
   dark_mode: 'Tampilan Gelap',
-  light_mode: 'Tampilan Terang'
+  light_mode: 'Tampilan Terang',
+
+  hero_sub_text: 'Kami akan membantu anda membangun proyek anda.'
+
 };

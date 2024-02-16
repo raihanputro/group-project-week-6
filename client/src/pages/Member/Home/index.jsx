@@ -5,41 +5,43 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { useEffect, useState } from 'react';
 import { useDispatch, connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
 import Card from '@components/Card';
+import { selectmyTask } from './selector';
+import { getFetchMyTask, setMyTask } from './actions';
 
-const HomeMember = () => {
-  const navigate = useNavigate();
+const HomeMember = ({ myTask }) => {
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
 
-  //   useEffect(() => {
-  //     dispatch(setMyTeam(null));
-  //     dispatch(getFetchMyTeam());
-  //   }, [dispatch]);
+  useEffect(() => {
+    dispatch(setMyTask(null));
+    dispatch(getFetchMyTask());
+  }, [dispatch]);
 
-  //   useEffect(() => {
-  //     dispatch(getFetchProfile());
-  //   }, [dispatch]);
-
-  //   useEffect(() => {
-  //     setData(myTeam);
-  //   }, [myTeam]);
-
-  //   useEffect(() => {
-  //   const dataToken = jwtDecode(token);
-  //     if (dataToken.isAdmin === true) {
-  //       navigate('/admin'); // Jika user adalah admin, navigasi ke halaman admin
-  //     }
-  //   }, [navigate]);
+  useEffect(() => {
+    setData(myTask);
+  }, [myTask]);
 
   return (
     <div className={classes.container}>
-      <div className={classes.title}></div>
-      <Card />
+      <div className={classes.title}>
+        <FormattedMessage id="app_text_task" />{' '}
+      </div>
+      {!data?.length > 0 ? (
+        <div className={classes.noContent}>No data</div>
+      ) : (
+        <div className={classes.content}>
+          {data.map((item) => {
+            return <Card data={item} key={item.id} />;
+          })}
+        </div>
+      )}
     </div>
   );
 };
 
-export default HomeMember;
+const mapStateToProps = createStructuredSelector({
+  myTask: selectmyTask,
+});
+
+export default connect(mapStateToProps)(HomeMember);
