@@ -11,14 +11,17 @@ import MyProfile from './components/MyProfile';
 import ChangePass from './components/ChangePass';
 import CurrentTask from './components/CurrentTask';
 
-import { changeImage, changePassword, getProfile, setProfile, setStep, updateProfile } from './action';
-import { selectProfile } from './selector';
+import { changeImage, changePassword, getProfile, getTask, getTaskManager, setProfile, setStep, updateProfile } from './action';
+import { selectProfile, selectTask, selectTaskManager } from './selector';
 import encryptPayload from '@utils/encryptionHelper';
 
 import classes from './style.module.scss';
+import { selectToken } from '@containers/Client/selectors';
+import { jwtDecode } from 'jwt-decode';
 
-const Profile = ({ data }) => {
+const Profile = ({ data, myTask, token, myTaskManager }) => {
 
+    const decryptData = jwtDecode(token);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const currentStep = useSelector((state) => state.profile.step);
@@ -77,7 +80,7 @@ const Profile = ({ data }) => {
                     onSubmit={onSubmitChangePassword}
                 />;
             case 3:
-                return <CurrentTask />;
+                return <CurrentTask myTask={myTask} token={decryptData} myTaskManager={myTaskManager} />;
             default:
                 break;
         }
@@ -87,9 +90,22 @@ const Profile = ({ data }) => {
         dispatch(setStep(Number(e.target.value)));
     };
 
-    useEffect(() => {
-        dispatch(getProfile())
-    }, [])
+    if (decryptData?.role === 2) {
+        useEffect(() => {
+            dispatch(getProfile())
+            dispatch(getTaskManager())
+
+        }, [])
+    } else if (decryptData?.role === 3) {
+        useEffect(() => {
+            dispatch(getProfile())
+            dispatch(getTask())
+        }, [])
+    } else {
+        useEffect(() => {
+            dispatch(getProfile())
+        }, [])
+    }
 
     return (
         <div className={classes.container}>
@@ -100,9 +116,6 @@ const Profile = ({ data }) => {
                     <div className={classes.sidebar}>
                         <div className={classes.containerImage}>
                             <img className={classes.profilePicture} src={data?.imageUrl ? data?.imageUrl : "https://img.freepik.com/premium-vector/user-profile-icon-flat-style-member-avatar-vector-illustration-isolated-background-human-permission-sign-business-concept_157943-15752.jpg?size=338&ext=jpg&ga=GA1.1.87170709.1707782400&semt=ais"} alt="Profile Picture" />
-                            {/* <p className={classes.name}>
-                                Nama Akun
-                            </p> */}
                         </div>
                         <div className={classes.containerButton}>
                             <Button value={1} onClick={handlerPart}>
@@ -111,9 +124,14 @@ const Profile = ({ data }) => {
                             <Button value={2} onClick={handlerPart}>
                                 <FormattedMessage id='profile_changePass' />
                             </Button>
-                            <Button value={3} onClick={handlerPart}>
-                                <FormattedMessage id='profile_currentTask' />
-                            </Button>
+                            {
+                                decryptData?.role === 1 ?
+                                    null
+                                    :
+                                    <Button value={3} onClick={handlerPart}>
+                                        <FormattedMessage id='profile_currentTask' />
+                                    </Button>
+                            }
                         </div>
                     </div>
                     <div className={classes.content}>
@@ -127,11 +145,17 @@ const Profile = ({ data }) => {
 }
 
 Profile.propTypes = {
-    data: PropTypes.object
+    data: PropTypes.object,
+    myTask: PropTypes.array,
+    token: PropTypes.object,
+    myTaskManager: PropTypes.array
 }
 
 const mapStateToProps = createStructuredSelector({
-    data: selectProfile
+    data: selectProfile,
+    myTask: selectTask,
+    token: selectToken,
+    myTaskManager: selectTaskManager
 })
 
 export default connect(mapStateToProps)(Profile);

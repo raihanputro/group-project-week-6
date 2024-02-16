@@ -9,14 +9,14 @@ import Card from '@mui/material/Card';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 
-import { selectUserListData } from '../UserList/selectors';
-import { selectTaskListData } from '../TaskList/selectors';
-import { getUserListData } from '../UserList/actions';
-import { getTaskListData } from '../TaskList/actions';
+import { selectUserListData } from '../../Admin/UserList/selectors';
+import { selectTaskListData } from '../../Admin/TaskList/selectors';
+import { getUserListData } from '../../Admin/UserList/actions';
+import { getTaskListData } from '../../Admin/TaskList/actions';
 
 import classes from './style.module.scss';
 
-const DashboardAdmin = ({userListSelect, taskListSelect}) => {
+const DashboardManager = ({ userListSelect, taskListSelect }) => {
   const dispatch = useDispatch();
 
   const [userData, setUserData] = useState([]);
@@ -66,7 +66,7 @@ const DashboardAdmin = ({userListSelect, taskListSelect}) => {
   )
 }
 
-DashboardAdmin.propTypes = {
+DashboardManager.propTypes = {
   userListSelect: PropTypes.object,
   taskListSelect: PropTypes.object
 };
@@ -76,4 +76,4 @@ const mapStateToProps = createStructuredSelector({
   taskListSelect: selectTaskListData
 });
 
-export default connect(mapStateToProps)(DashboardAdmin);
+export default connect(mapStateToProps)(DashboardManager);

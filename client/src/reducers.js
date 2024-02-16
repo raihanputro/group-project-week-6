@@ -7,6 +7,7 @@ import userListReducer, { storedKey as storedUserListState } from '@pages/Admin/
 import taskListReducer, { storedKey as storedTaskListState } from '@pages/Admin/TaskList/reducer';
 import myTaskReducer, { storedKey as storedMyTask } from '@pages/Member/Home/reducer';
 import myTaskDetailReducer, { storedKey as storedMyDetailTask } from '@pages/Member/Detail/reducer';
+import taskListManagerReducer, { storedKey as storedTaskListManagerState } from '@pages/Manager/TaskList/reducer';
 
 import languageReducer from '@containers/Language/reducer';
 import { mapWithPersistor } from './persistence';
@@ -20,6 +21,8 @@ const storedReducers = {
 
   myTask: { reducer: myTaskReducer, whitelist: storedMyTask },
   myTaskDetail: { reducer: myTaskDetailReducer, whitelist: storedMyDetailTask },
+
+  managerTaskList: { reducer: taskListManagerReducer, whitelist: storedTaskListManagerState }
 };
 
 const temporaryReducers = {

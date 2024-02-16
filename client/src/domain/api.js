@@ -17,6 +17,8 @@ const urls = {
 
   mytask: 'task/member/list',
   myTaskDetail: 'task/member/detail',
+
+  myTaskManager: 'task/manager/list',
   getMemberMyTaskDetail: 'task/member/detail/member'
 };
 
@@ -71,4 +73,6 @@ export const createTask = (taskData) => callAPI(urls.createTask, 'POST', {}, {},
 
 export const getMyTask = () => callAPI(urls.mytask, 'GET');
 export const getMyTaskDetailAPI = (id) => callAPI(`${urls.myTaskDetail}/${id}`, 'GET');
+
+export const getMyTaskManager = () => callAPI(urls.myTaskManager, 'GET');
 export const getMyMemberAPI = (id) => callAPI(`${urls.getMemberMyTaskDetail}/${id}`, 'GET');

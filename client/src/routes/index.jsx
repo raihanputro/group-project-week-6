@@ -7,8 +7,10 @@ import NotFound from '@pages/NotFound';
 import Login from '@pages/Login';
 import Register from '@pages/Register';
 import DashboardAdmin from '@pages/Admin/Dashboard';
+import DashboardManager from '@pages/Manager/Dashboard';
 import UserList from '@pages/Admin/UserList';
 import TaskList from '@pages/Admin/TaskList';
+import TaskListManager from '@pages/Manager/TaskList';
 import HomeMember from '@pages/Member/Home';
 import Detail from '@pages/Member/Detail';
 
@@ -42,12 +44,26 @@ const routes = [
     layout: MainLayout,
   },
   {
+    path: '/manager',
+    name: 'Dashboard Manager',
+    // protected: true,
+    component: DashboardManager,
+    layout: AdminLayout
+  },
+  {
+    path: '/manager/task',
+    name: 'Dashboard Manager',
+    // protected: true,
+    component: TaskListManager,
+    layout: AdminLayout
+  },
+  {
     path: '/admin',
     name: 'Dashboard Admin',
     protected: true,
     component: DashboardAdmin,
     layout: AdminLayout,
-    isAdmin: true
+    // isAdmin: true
   },
   {
     path: '/admin/user',
@@ -55,7 +71,7 @@ const routes = [
     protected: true,
     component: UserList,
     layout: AdminLayout,
-    isAdmin: true
+    // isAdmin: true
   },
   {
     path: '/admin/task',
@@ -63,7 +79,7 @@ const routes = [
     protected: true,
     component: TaskList,
     layout: AdminLayout,
-    isAdmin: true
+    // isAdmin: true
   },
   {
     path: '/member/',
@@ -71,7 +87,7 @@ const routes = [
     protected: true,
     component: HomeMember,
     layout: MainLayout,
-    isMember: true
+    // isMember: true
   },
   {
     path: '/member/task/:id',
@@ -79,7 +95,7 @@ const routes = [
     protected: false,
     component: Detail,
     layout: MainLayout,
-    isMember: true
+    // isMember: true
   },
   {
     path: '*',
