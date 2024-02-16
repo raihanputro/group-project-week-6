@@ -39,7 +39,9 @@ const Profile = ({ data, myTask, token, myTaskManager }) => {
         const formData = new FormData();
         formData.append("imageUrl", e.target.files[0])
 
-        dispatch(changeImage(formData))
+        dispatch(changeImage(formData, () => {
+            dispatch(getProfile())
+        }))
     }
 
     const onSubmitChangePassword = () => {

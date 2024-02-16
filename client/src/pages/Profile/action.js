@@ -26,9 +26,10 @@ export const changePassword = (data, cb) => ({
     cb
 });
 
-export const changeImage = (formData) => ({
+export const changeImage = (formData, cb) => ({
     type: SET_IMAGE,
-    formData
+    formData,
+    cb
 });
 
 export const getTask = () => ({
