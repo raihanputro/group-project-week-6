@@ -81,12 +81,12 @@ const routes = [
     layout: MainLayout,
     isMember: true
   },
-  { 
-    path: '*', 
-    name: 'Not Found', 
-    component: NotFound, 
-    layout: MainLayout, 
-    protected: false 
+  {
+    path: '*',
+    name: 'Not Found',
+    component: NotFound,
+    layout: MainLayout,
+    protected: false
   },
 ];
 

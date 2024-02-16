@@ -15,27 +15,22 @@ const Client = ({ role, login, children, userDetails }) => {
   }, [login, navigate]);
 
   if (role == 1) {
-    useEffect(() => {
-      if (userDetails?.role != 1) {
-        navigate('/');
-      }
-    }, [login, navigate]);
+    if (userDetails?.role != 1) {
+      navigate('/');
+    }
+    return children;
   }
-
   if (role == 2) {
-    useEffect(() => {
-      if (userDetails?.role != 2) {
-        navigate('/');
-      }
-    }, [login, navigate]);
+    if (userDetails?.role != 2) {
+      navigate('/');
+    }
+    return children;
   }
-
-  if (role = 3) {
-    useEffect(() => {
-      if (userDetails?.role != 3) {
-        navigate('/');
-      }
-    }, [login, navigate]);
+  if (role == 3) {
+    if (userDetails?.role != 3) {
+      navigate('/');
+    }
+    return children;
   }
 
   return children;
