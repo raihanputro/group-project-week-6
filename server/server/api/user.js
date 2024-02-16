@@ -5,7 +5,7 @@ const GeneralHelper = require('../helpers/generalHelper');
 const Validation = require('../helpers/validationHelper');
 const Middleware = require('../middlewares/authMiddleware');
 const { decryptObject, decryptTextPayload } = require('../utils/decryptor');
-const uploadMedia = require("../middlewares/uploadMiddleware");
+const { uploadImg } = require('../middlewares/uploadMiddleware');
 
 const fileName = 'server/api/user.js';
 
@@ -81,12 +81,23 @@ const updateProfile = async (request, reply) => {
 
 const changeImage = async (request, reply) => {
     try {
-        const data = request;
+        const dataToken = request.body.dataToken;
 
-        console.log(data)
+        console.log(dataToken, 'dd')
+
+        const url = request.protocol + '://' + request.get('host');
+
+        const imageUrl = request.files.imageUrl[0]; 
+
+        const fileName = imageUrl.originalname;
+        
+        const imageUrlFix = url + '/' + fileName;
+
+        const response = await UserHelper.changeImage(dataToken, imageUrlFix);
 
         return reply.send({
-            message: 'Change Image Success'
+            message: 'Change Image Success',
+            response
         });
     } catch (error) {
         console.log([fileName, 'Change Image API', 'ERROR'], { info: `${error}` });
@@ -97,8 +108,8 @@ const changeImage = async (request, reply) => {
 Router.get('/my-profile', Middleware.validateToken, getProfileUser);
 Router.patch('/change-password', Middleware.validateToken, changePassword);
 Router.patch('/update-profile', Middleware.validateToken, updateProfile);
-Router.patch('/change-image', Middleware.validateToken, uploadMedia.fields([{ name: 'imageUrl', maxCount: 1 }]), changeImage)
-Router.get('/list', getListUserAdmin)
+Router.patch('/change-image', uploadImg.fields([{name: 'imageUrl', maxCount: 1}]), Middleware.validateToken,  changeImage);
+Router.get('/list', getListUserAdmin);
 Router.get('/my-profile', getProfileUser);
 Router.patch('/change-password', changePassword);
 Router.patch('/update-profile', updateProfile);

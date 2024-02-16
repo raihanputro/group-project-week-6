@@ -3,8 +3,6 @@ const dotenv = require('dotenv');
 const Boom = require('boom');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const multer = require('multer');
-const upload = multer();
 const path = require('path');
 
 const app = express();
@@ -26,7 +24,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(upload.array());
 
 // Handling Invalid Input
 app.use((error, req, res, next) => {

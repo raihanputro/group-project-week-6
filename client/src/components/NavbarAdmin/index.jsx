@@ -29,7 +29,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 
-import { setLogin, setToken } from '@containers/Client/actions';
+import { setLogout } from '@containers/Client/actions';
 import { setLocale, setTheme } from '@containers/App/actions';
 
 import classes from './style.module.scss';
@@ -174,7 +174,12 @@ const NavbarAdmin = ({ title, locale, theme, children, token, userDetails }) => 
             </MenuItem>
           </Menu>
           <Menu
-            sx={{ mt: '45px' }}
+            sx={{ 
+              mt: '45px',
+              '& .MuiPaper-root': { 
+                backgroundColor: theme === 'light' ? '#fff' : '#4f4557', 
+              },
+            }}
             id="menu-appbar"
             anchorEl={anchorElUser}
             anchorOrigin={{
@@ -189,16 +194,22 @@ const NavbarAdmin = ({ title, locale, theme, children, token, userDetails }) => 
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
+            <MenuItem disabled>
+                    <div>
+                        <p>Hi, {userDetails?.name}</p>
+                    </div>
+            </MenuItem>
             <MenuItem onClick={() => { handleCloseUserMenu, navigate('/profile') }}>
-              <Typography textAlign="center">Profile</Typography>
+              <Typography textAlign="center">
+                <FormattedMessage id='profile_myProfile' />
+              </Typography>
             </MenuItem>
             <MenuItem
               onClick={
                 () => {
-                  handleCloseUserMenu,
-                    dispatch(setLogin(false)),
-                    dispatch(setToken(null)),
-                    navigate('/')
+                  handleCloseUserMenu, 
+                  dispatch(setLogout());
+                  navigate('/login')
                 }
               }>
               <Typography textAlign="center">Logout</Typography>

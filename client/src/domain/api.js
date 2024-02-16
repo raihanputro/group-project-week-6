@@ -13,7 +13,10 @@ const urls = {
   changeImg: 'user/change-image',
   userList: 'user/list',
   taskListAdmin: 'task/admin/list',
-  createTask: 'task/admin/create',
+  taskDetailAdmin: 'task/admin/detail',
+  createTask : 'task/admin/create',
+  updateTask: 'task/admin/update',
+  deleteTask: 'task/admin/delete',
 
   mytask: 'task/member/list',
   myTaskDetail: 'task/member/detail',
@@ -69,7 +72,10 @@ export const changeImage = (data) => {
 };
 export const userList = () => callAPI(urls.userList, 'GET');
 export const taskListAdmin = () => callAPI(urls.taskListAdmin, 'GET');
+export const taskDetailAdmin = (id) => callAPI(`${urls.taskDetailAdmin}/${id}`, 'GET');
 export const createTask = (taskData) => callAPI(urls.createTask, 'POST', {}, {}, taskData);
+export const updateTaskAdmin = (id, taskData) => callAPI(`${urls.updateTask}/${id}`, 'PUT', {}, {}, taskData);
+export const deleteTask = (id) => callAPI(`${urls.deleteTask}/${id}`, 'DELETE');
 
 export const getMyTask = () => callAPI(urls.mytask, 'GET');
 export const getMyTaskDetailAPI = (id) => callAPI(`${urls.myTaskDetail}/${id}`, 'GET');

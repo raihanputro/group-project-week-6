@@ -45,9 +45,9 @@ const createTaskAdmin = async (req, res) => {
   try {
     const dataToken = req.body.dataToken; // Assuming dataToken contains user information
     ValidationTask.createTaskAdminValidation(req.body);
-    const { name, description, start_date, end_date, status } = req.body;
+    const { name, description, start_date, end_date, status, user_id } = req.body;
     const response = await taskHelper.createTaskAdminHelper(
-      { name, description, start_date, end_date, status },
+      { name, description, start_date, end_date, status, user_id },
       dataToken
     );
     return res.send(response);
@@ -60,8 +60,8 @@ const createTaskAdmin = async (req, res) => {
 const updateTaskAdmin = async (req, res) => {
   try {
     const dataToken = req.body.dataToken;
-    ValidationTask.idTaskValidation(req.params);
-    const { id } = req.params;
+    // ValidationTask.idTaskValidation(req.params);
+    const id = parseInt(req.params['id']);
     const { name, description, start_date, end_date, status, user_id } =
       req.body;
     const response = await taskHelper.updateTaskAdminHelper(
@@ -260,11 +260,7 @@ Router.get("/admin/detail/:id", Middleware.validateToken, detailListAdmin);
 Router.post("/admin/create", Middleware.validateToken, createTaskAdmin);
 Router.put("/admin/update/:id", Middleware.validateToken, updateTaskAdmin);
 Router.post("/admin/restore/:id", Middleware.validateToken, restoreTaskAdmin);
-Router.delete(
-  "/admin/delete/:id",
-  Middleware.validateToken,
-  deleteTaskAdmin
-);
+Router.delete("/admin/delete/:id",Middleware.validateToken,deleteTaskAdmin);
 //admin-route-end
 
 //manager-route-start

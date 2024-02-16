@@ -7,7 +7,7 @@ import { showPopup } from "@containers/App/actions";
 function* doGetUserList () {
     try {
         const res = yield call(userList);
-      
+    
           yield put(setUserListData(res));
     } catch (error) {
         yield put(showPopup());

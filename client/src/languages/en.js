@@ -44,6 +44,7 @@ export default {
   startdate_modal_input: 'Start',
   enddate_modal_input: 'End',
   status_modal_input: 'Status',
+  manager_modal_input: 'Manager',
   add_task_modal_button: 'Add Task',
 
   click_here: "Click Here!",
@@ -69,5 +70,16 @@ export default {
   dark_mode: 'Dark Mode',
   light_mode: 'Light Mode',
 
-  hero_sub_text: 'We will assist you in building your projects.'
+  hero_sub_text: 'We will assist you in building your projects.',
+
+  add_admin_modal_title: 'Add new admin!',
+  email_modal_input: 'Email',
+  password_modal_input: 'Password',
+  confirmPass_modal_input: 'Confirm Password',
+  add_admin_modal_button: 'Add admin!',
+
+  update_task_modal_title: 'Update task!',
+  update_task_modal_button: 'Update task',
+
+  email_table_row: 'Email',
 };
