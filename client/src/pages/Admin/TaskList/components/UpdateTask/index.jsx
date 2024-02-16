@@ -28,10 +28,6 @@ const UpdateTask = ({ isOpen, onClose, id, taskDataSelect, userListSelect }) => 
 
     const { handleSubmit, control, reset, setValue } = useForm();
 
-    console.log(taskData, 'test')
-    console.log(id, 'test')
-    console.log(taskDataSelect, 'test')
-
     useEffect(() => {
       if(id) {
         dispatch(getTaskDetailData(id));
@@ -58,8 +54,7 @@ const UpdateTask = ({ isOpen, onClose, id, taskDataSelect, userListSelect }) => 
     const managerUser = userData?.filter(user => user.role === 2);
 
     const onSubmit = (data) => {
-      console.log(data, 'kntl')
-        // dispatch(updateTask(id, {name: data.name, description: data.description, start_date: data.start_date, end_date: data.end_date, status: data.status, user_id: data.user_id }));
+        dispatch(updateTask(id, {name: data.name, description: data.description, start_date: data.start_date, end_date: data.end_date, status: data.status, user_id: data.user_id }));
         reset();
         onClose();
     };
@@ -79,7 +74,6 @@ const UpdateTask = ({ isOpen, onClose, id, taskDataSelect, userListSelect }) => 
               <Controller
                 name="name"
                 control={control}
-                rules={{ required: 'Name is required' }}
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -99,7 +93,6 @@ const UpdateTask = ({ isOpen, onClose, id, taskDataSelect, userListSelect }) => 
               <Controller
                 name="description"
                 control={control}
-                rules={{ required: 'Description is required' }}
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -121,7 +114,6 @@ const UpdateTask = ({ isOpen, onClose, id, taskDataSelect, userListSelect }) => 
                       name="start_date"
                       control={control}
                       defaultValue={null}
-                      rules={{ required: 'Start date is required' }}
                       render={({ field }) => (
                         <DateTimePicker
                           {...field}
@@ -142,7 +134,6 @@ const UpdateTask = ({ isOpen, onClose, id, taskDataSelect, userListSelect }) => 
                       name="end_date"
                       control={control}
                       defaultValue={null}
-                      rules={{ required: 'End date is required' }}
                       render={({ field }) => (
                         <DateTimePicker
                           {...field}
@@ -161,7 +152,6 @@ const UpdateTask = ({ isOpen, onClose, id, taskDataSelect, userListSelect }) => 
               <Controller
                 name="status"
                 control={control}
-                rules={{ required: 'Status is required' }}
                 render={({ field }) => (
                   <Select
                   {...field}
@@ -187,7 +177,6 @@ const UpdateTask = ({ isOpen, onClose, id, taskDataSelect, userListSelect }) => 
               <Controller
                 name="user_id"
                 control={control}
-                rules={{ required: 'Manager is required' }}
                 render={({ field }) => (
                   <Select
                   {...field}
@@ -214,7 +203,7 @@ const UpdateTask = ({ isOpen, onClose, id, taskDataSelect, userListSelect }) => 
               sx={{ mt: 2 }}
               className={classes.addButton}
             >
-                <FormattedMessage id="update_task_modal_button" />
+              <FormattedMessage id="update_task_modal_button" />
             </Button>
           </Box> 
         </form>
