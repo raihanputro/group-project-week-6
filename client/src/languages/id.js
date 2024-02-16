@@ -65,6 +65,7 @@ export default {
 
 
   app_text_task: 'Tugas Anda',
+  app_text_member: 'Anggota',
 
   logout: 'Keluar',
   

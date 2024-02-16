@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "user_id",
       });
       User.hasMany(models.TaskPivot, {
-        foreignKey: "user_id",
+        foreignKey: "member_id",
       });
     }
   }

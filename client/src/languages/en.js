@@ -63,6 +63,7 @@ export default {
   select_role: 'Select a role',
   
   app_text_task: 'Your Task',
+  app_text_member: 'Member',
 
   logout: 'Logout',
 

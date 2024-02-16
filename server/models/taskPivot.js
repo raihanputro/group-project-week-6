@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "task_id",
       });
       TaskPivot.belongsTo(models.User, {
-        foreignKey: "user_id",
+        foreignKey: "member_id",
       });
     }
   }
