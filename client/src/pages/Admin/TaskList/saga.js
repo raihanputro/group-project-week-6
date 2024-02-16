@@ -37,6 +37,7 @@
     function* doUpdateTask ({id, taskData}) {
         try {
             yield call(updateTaskAdmin, id, taskData);
+            console.log(taskData, 'll')
             const res = yield call(taskListAdmin);
             yield put(setTaskListData(res));
         } catch (error) {
