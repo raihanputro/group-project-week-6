@@ -29,8 +29,8 @@ const DashboardAdmin = ({userListSelect, taskListSelect}) => {
   }, [dispatch]);
 
   useEffect(() => {
-    setUserData(userListSelect.response);
-    setTaskData(taskListSelect.response);
+    setUserData(userListSelect?.response);
+    setTaskData(taskListSelect?.response);
   }, [userListSelect, taskListSelect]);
 
   const adminUserDataLength = userData?.filter(user => user.role === 1).length;

@@ -78,4 +78,8 @@ export default {
   password_modal_input: 'Sandi',
   confirmPass_modal_input: 'Konfirmasi Password',
   add_admin_modal_button: 'Tambah admin!',
+
+  update_task_modal_title: 'Perbarui tugas!',
+  update_task_modal_button: 'Perbarui tugas',
+
 };

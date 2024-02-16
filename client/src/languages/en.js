@@ -76,4 +76,7 @@ export default {
   password_modal_input: 'Password',
   confirmPass_modal_input: 'Confirm Password',
   add_admin_modal_button: 'Add admin!',
+
+  update_task_modal_title: 'Update task!',
+  update_task_modal_button: 'Update task',
 };

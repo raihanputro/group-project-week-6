@@ -30,6 +30,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import AddTask from './components/AddTask';
+import UpdateTask from './components/UpdateTask';
 
 import { getTaskListData, deleteTask } from './actions';
 import { selectTaskListData } from './selectors';
@@ -58,6 +59,7 @@ const TaskList = ({taskListSelect, theme}) => {
   const [taskId, setTaskId] = useState(null);
   const [taskMenu, setTaskMenu] = useState(null);
   const [isAddOpen, setAddOpen] = useState(false);
+  const [isUpdateOpen, setUpdateOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('');
 
@@ -76,6 +78,8 @@ const TaskList = ({taskListSelect, theme}) => {
     return false;
   });
 
+  console.log(taskListSelect, 'data')
+
   const handleOpenTaskMenu = (event, taskId) => {
     setTaskMenu(event.currentTarget);
     setTaskId(taskId);
@@ -91,6 +95,14 @@ const TaskList = ({taskListSelect, theme}) => {
 
   const handleAddClose = () => {
     setAddOpen(false);
+  };
+
+  const handleUpdateOpen = () => {
+    setUpdateOpen(true);
+  };
+
+  const handleUpdateClose = () => {
+    setUpdateOpen(false);
   };
 
   const deleteItem = () => {
@@ -217,7 +229,7 @@ const TaskList = ({taskListSelect, theme}) => {
                         <Button><InfoIcon sx={{ color: 'yellow' }}/></Button>
                       </MenuItem>
                       <MenuItem>
-                        <Button ><EditIcon /></Button>                      
+                        <Button ><EditIcon onClick={() => handleUpdateOpen()}/></Button>                      
                       </MenuItem>
                       <MenuItem>
                           <Button sx={{ color: 'red' }} onClick={() => deleteItem()}><DeleteIcon /></Button>                    
@@ -229,6 +241,7 @@ const TaskList = ({taskListSelect, theme}) => {
             </TableBody>
         </Table>
       </TableContainer>
+      <UpdateTask isOpen={isUpdateOpen} onClose={handleUpdateClose} id={taskId}/>
     </>
   )
 }

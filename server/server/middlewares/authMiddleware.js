@@ -30,6 +30,8 @@ const validateToken = (request, reply, next) => {
     
     request.body.dataToken = verifiedUser;
 
+    console.log(verifiedUser, 'wkwk')
+
     return next();
   } catch (err) {
     console.log([fileName, 'validateToken', 'ERROR'], { info: `${err}` });
