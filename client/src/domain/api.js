@@ -74,7 +74,7 @@ export const userList = () => callAPI(urls.userList, 'GET');
 export const taskListAdmin = () => callAPI(urls.taskListAdmin, 'GET');
 export const taskDetailAdmin = (id) => callAPI(`${urls.taskDetailAdmin}/${id}`, 'GET');
 export const createTask = (taskData) => callAPI(urls.createTask, 'POST', {}, {}, taskData);
-export const updateTaskAdmin = (id, taskData) => callAPI(`${urls.updateTask}/${id}`, 'PATCH', {}, {}, taskData);
+export const updateTaskAdmin = (id, taskData) => callAPI(`${urls.updateTask}/${id}`, 'PUT', {}, {}, taskData);
 export const deleteTask = (id) => callAPI(`${urls.deleteTask}/${id}`, 'DELETE');
 
 export const getMyTask = () => callAPI(urls.mytask, 'GET');

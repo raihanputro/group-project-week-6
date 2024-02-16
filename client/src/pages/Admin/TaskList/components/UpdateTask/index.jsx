@@ -25,6 +25,7 @@ const UpdateTask = ({ isOpen, onClose, id, taskDataSelect, userListSelect }) => 
     const dispatch = useDispatch();
     const [userData, setUserData] = useState([]);
     const [taskData, setTaskData] = useState([]);
+
     const { handleSubmit, control, reset, setValue } = useForm();
 
     console.log(taskData, 'test')
@@ -57,7 +58,8 @@ const UpdateTask = ({ isOpen, onClose, id, taskDataSelect, userListSelect }) => 
     const managerUser = userData?.filter(user => user.role === 2);
 
     const onSubmit = (data) => {
-        dispatch(updateTask(id, {name: data.name, description: data.description, start_date: data.start_date, end_date: data.end_date, status: data.status, user_id: data.user_id }));
+      console.log(data, 'kntl')
+        // dispatch(updateTask(id, {name: data.name, description: data.description, start_date: data.start_date, end_date: data.end_date, status: data.status, user_id: data.user_id }));
         reset();
         onClose();
     };
