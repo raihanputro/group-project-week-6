@@ -33,6 +33,8 @@ import { setLogin, setToken } from '@containers/Client/actions';
 import { setLocale, setTheme } from '@containers/App/actions';
 
 import classes from './style.module.scss';
+import { selectToken, selectUserDetails } from '@containers/Client/selectors';
+import { jwtDecode } from 'jwt-decode';
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -78,14 +80,16 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-const NavbarAdmin = ({ title, locale, theme, children }) => {
+const NavbarAdmin = ({ title, locale, theme, children, token, userDetails }) => {
+
+  const decryptToken = jwtDecode(token);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
 
   const [open, setOpen] = useState(true);
   const [menuPosition, setMenuPosition] = useState(null);
-    const [anchorElUser, setAnchorElUser] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
   const openLang = Boolean(menuPosition);
   const isSelectedLoc = (path) => location.pathname === path;
 
@@ -121,37 +125,37 @@ const NavbarAdmin = ({ title, locale, theme, children }) => {
   };
 
   return (
-      <Box sx={{ display: 'flex' }}>
-        <AppBar position="absolute" open={open} className={classes.appBar}>
-          <Toolbar sx={{   pr: '24px',  }}>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer}
-              sx={{
-                marginRight: '36px',
-                ...(open && { display: 'none' }),
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Box className={classes.toolbar}>
+    <Box sx={{ display: 'flex' }}>
+      <AppBar position="absolute" open={open} className={classes.appBar}>
+        <Toolbar sx={{ pr: '24px', }}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            onClick={toggleDrawer}
+            sx={{
+              marginRight: '36px',
+              ...(open && { display: 'none' }),
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Box className={classes.toolbar}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar  />
+                <Avatar />
               </IconButton>
             </Tooltip>
-              <div className={classes.theme} onClick={handleTheme} data-testid="toggleTheme">
-                {theme === 'light' ? <NightsStayIcon /> : <LightModeIcon />}
-              </div>
-              <div className={classes.toggle} onClick={handleClick}>
-                <Avatar className={classes.avatar} src={locale === 'id' ? '/id.png' : '/en.png'} />
-                <div className={classes.lang}>{locale}</div>
-                <ExpandMoreIcon />
-              </div>
-            </Box>
-           <Menu open={openLang} anchorEl={menuPosition} onClose={handleClose}>
+            <div className={classes.theme} onClick={handleTheme} data-testid="toggleTheme">
+              {theme === 'light' ? <NightsStayIcon /> : <LightModeIcon />}
+            </div>
+            <div className={classes.toggle} onClick={handleClick}>
+              <Avatar className={classes.avatar} src={locale === 'id' ? '/id.png' : '/en.png'} />
+              <div className={classes.lang}>{locale}</div>
+              <ExpandMoreIcon />
+            </div>
+          </Box>
+          <Menu open={openLang} anchorEl={menuPosition} onClose={handleClose}>
             <MenuItem onClick={() => onSelectLang('id')} selected={locale === 'id'}>
               <div className={classes.menu}>
                 <Avatar className={classes.menuAvatar} src="/id.png" />
@@ -185,65 +189,70 @@ const NavbarAdmin = ({ title, locale, theme, children }) => {
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
-            <MenuItem onClick={() => {handleCloseUserMenu, navigate('/profile')}}>
+            <MenuItem onClick={() => { handleCloseUserMenu, navigate('/profile') }}>
               <Typography textAlign="center">Profile</Typography>
             </MenuItem>
-            <MenuItem 
+            <MenuItem
               onClick={
-                () => { 
-                  handleCloseUserMenu, 
-                  dispatch(setLogin(false)), 
-                  dispatch(setToken(null)),
-                  navigate('/')
+                () => {
+                  handleCloseUserMenu,
+                    dispatch(setLogin(false)),
+                    dispatch(setToken(null)),
+                    navigate('/')
                 }
               }>
-                <Typography textAlign="center">Logout</Typography>
+              <Typography textAlign="center">Logout</Typography>
             </MenuItem>
           </Menu>
+        </Toolbar>
+      </AppBar>
+      <Drawer variant="permanent" open={open} >
+        <Box className={classes.drawer}>
+          <Toolbar
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              px: [1],
+            }}
+          >
+            <IconButton onClick={toggleDrawer}>
+              <ChevronLeftIcon />
+            </IconButton>
           </Toolbar>
-        </AppBar>
-        <Drawer variant="permanent" open={open} >
-          <Box className={classes.drawer}>
-            <Toolbar
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-                px: [1],
-              }}
-            >
-              <IconButton onClick={toggleDrawer}>
-                <ChevronLeftIcon />
-              </IconButton>
-            </Toolbar>
-            <List component="nav" sx={{ mt: 4 }} className={classes.listContainer}>
-              <ListItemButton className={isSelectedLoc('/admin') && classes.listActive} onClick={() => navigate('/admin')}>
-                <ListItemIcon>
-                  <DashboardIcon className={isSelectedLoc('/admin') && classes.dashboardIcon} />
-                </ListItemIcon>
-                <FormattedMessage id="drawer_dashboard" />
-              </ListItemButton>
-              <ListItemButton className={isSelectedLoc('/admin/user') && classes.listActive} onClick={() => navigate('/admin/user')}>
-                <ListItemIcon>
-                  <PeopleIcon className={isSelectedLoc('/admin/user') && classes.peopleIcon} />
-                </ListItemIcon>
-                <FormattedMessage id="drawer_user_data" />
-              </ListItemButton>
-              <ListItemButton className={isSelectedLoc('/admin/task') && classes.listActive} onClick={() => navigate('/admin/task')}>
-                <ListItemIcon>
-                  <AssignmentIcon className={isSelectedLoc('/admin/task') && classes.assignIcon} />
-                </ListItemIcon>
-                <FormattedMessage id="drawer_task_data" />
-              </ListItemButton>
-            </List>
-          </Box>
-        </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, overflow: 'auto' }}> 
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            {children}
-          </Container>
+          <List component="nav" sx={{ mt: 4 }} className={classes.listContainer}>
+            <ListItemButton className={userDetails?.role === 2 ? isSelectedLoc('/manager') : isSelectedLoc('/admin') && classes.listActive} onClick={() => navigate(userDetails?.role === 2 ? '/manager' : '/admin')}>
+              <ListItemIcon>
+                <DashboardIcon className={userDetails?.role === 2 ? isSelectedLoc('/manager') : isSelectedLoc('/admin') && classes.dashboardIcon} />
+              </ListItemIcon>
+              <FormattedMessage id="drawer_dashboard" />
+            </ListItemButton>
+            {
+              userDetails?.role === 2 ?
+                null
+                :
+                <ListItemButton className={isSelectedLoc('/admin/user') && classes.listActive} onClick={() => navigate('/admin/user')}>
+                  <ListItemIcon>
+                    <PeopleIcon className={isSelectedLoc('/admin/user') && classes.peopleIcon} />
+                  </ListItemIcon>
+                  <FormattedMessage id="drawer_user_data" />
+                </ListItemButton>
+            }
+            <ListItemButton className={userDetails?.role === 2 ? isSelectedLoc('/manager/task') : isSelectedLoc('/admin/task') && classes.listActive} onClick={() => navigate(userDetails?.role === 2 ? '/manager/task' : '/admin/task')}>
+              <ListItemIcon>
+                <AssignmentIcon className={userDetails?.role === 2 ? isSelectedLoc('/manager/task') : isSelectedLoc('/admin/task') && classes.assignIcon} />
+              </ListItemIcon>
+              <FormattedMessage id="drawer_task_data" />
+            </ListItemButton>
+          </List>
         </Box>
+      </Drawer>
+      <Box component="main" sx={{ flexGrow: 1, overflow: 'auto' }}>
+        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          {children}
+        </Container>
       </Box>
+    </Box>
   )
 }
 
@@ -251,10 +260,13 @@ NavbarAdmin.propTypes = {
   title: PropTypes.string,
   locale: PropTypes.string.isRequired,
   theme: PropTypes.string,
+  token: PropTypes.object,
+  userDetails: PropTypes.object
 };
 
 const mapStateToProps = createStructuredSelector({
-
+  token: selectToken,
+  userDetails: selectUserDetails
 })
 
 export default connect(mapStateToProps)(NavbarAdmin);
