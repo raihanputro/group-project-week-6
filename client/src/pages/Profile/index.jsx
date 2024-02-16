@@ -101,6 +101,10 @@ const Profile = ({ data, myTask, token, myTaskManager }) => {
             dispatch(getProfile())
             dispatch(getTask())
         }, [])
+    } else {
+        useEffect(() => {
+            dispatch(getProfile())
+        }, [])
     }
 
     return (
@@ -120,9 +124,14 @@ const Profile = ({ data, myTask, token, myTaskManager }) => {
                             <Button value={2} onClick={handlerPart}>
                                 <FormattedMessage id='profile_changePass' />
                             </Button>
-                            <Button value={3} onClick={handlerPart}>
-                                <FormattedMessage id='profile_currentTask' />
-                            </Button>
+                            {
+                                decryptData?.role === 1 ?
+                                    null
+                                    :
+                                    <Button value={3} onClick={handlerPart}>
+                                        <FormattedMessage id='profile_currentTask' />
+                                    </Button>
+                            }
                         </div>
                     </div>
                     <div className={classes.content}>
