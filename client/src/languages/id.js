@@ -83,4 +83,6 @@ export default {
   update_task_modal_title: 'Perbarui tugas!',
   update_task_modal_button: 'Perbarui tugas',
 
+  email_table_row: 'Email',
+
 };

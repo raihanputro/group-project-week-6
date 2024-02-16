@@ -80,4 +80,6 @@ export default {
 
   update_task_modal_title: 'Update task!',
   update_task_modal_button: 'Update task',
+
+  email_table_row: 'Email',
 };

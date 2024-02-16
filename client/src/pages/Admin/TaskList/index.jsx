@@ -226,9 +226,6 @@ const TaskList = ({taskListSelect, theme}) => {
                       onClose={handleCloseTaskMenu}
                       >
                       <MenuItem>
-                        <Button><InfoIcon sx={{ color: 'yellow' }}/></Button>
-                      </MenuItem>
-                      <MenuItem>
                         <Button ><EditIcon onClick={() => handleUpdateOpen()}/></Button>                      
                       </MenuItem>
                       <MenuItem>
