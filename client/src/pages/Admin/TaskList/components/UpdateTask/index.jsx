@@ -24,33 +24,40 @@ import classes from './style.module.scss';
 const UpdateTask = ({ isOpen, onClose, id, taskDataSelect, userListSelect }) => {
     const dispatch = useDispatch();
     const [userData, setUserData] = useState([]);
-    const { handleSubmit, control, reset } = useForm();
+    const [taskData, setTaskData] = useState([]);
+    const { handleSubmit, control, reset, setValue } = useForm();
 
-    console.log(taskDataSelect, 'dzddd')
-    
+    console.log(taskData, 'test')
+    console.log(id, 'test')
+    console.log(taskDataSelect, 'test')
+
     useEffect(() => {
-      dispatch(getTaskDetailData(id));
-    }, [dispatch]);
+      if(id) {
+        dispatch(getTaskDetailData(id));
+      }
+    }, [id]);
 
     useEffect(() => {
       setUserData(userListSelect.response);
     }, [userListSelect]);
 
-    // useEffect(() => {
-    //   if (isOpen && userDataSelect?.result) {
-    //     setValue('name', userDataSelect?.result?.email);
-    //     setValue('description', userDataSelect?.result?.password);
-    //     setValue('start_date', userDataSelect?.result?.username);
-    //     setValue('end_date', userDataSelect?.result?.address);
-    //     setValue('status', userDataSelect?.result?.phone);
-    //     setValue('user_id', userDataSelect?.result?.role);
-    //   }
-    // }, [isOpen, taskDataSelect]);
+    useEffect(() => {
+      setTaskData(taskDataSelect.data);
+    }, [taskDataSelect]);
+
+    useEffect(() => {
+      if (isOpen && taskData) {
+        setValue('name', taskData?.name);
+        setValue('description', taskData?.description);
+        setValue('status', taskData?.status);
+        setValue('user_id', taskData?.user_id);
+      }
+    }, [isOpen, taskDataSelect]);
 
     const managerUser = userData?.filter(user => user.role === 2);
 
     const onSubmit = (data) => {
-        dispatch(updateTask({name: data.name, description: data.description, start_date: data.start_date, end_date: data.end_date, status: data.status, user_id: data.user_id }));
+        dispatch(updateTask(id, {name: data.name, description: data.description, start_date: data.start_date, end_date: data.end_date, status: data.status, user_id: data.user_id }));
         reset();
         onClose();
     };
@@ -70,13 +77,13 @@ const UpdateTask = ({ isOpen, onClose, id, taskDataSelect, userListSelect }) => 
               <Controller
                 name="name"
                 control={control}
-                defaultValue=""
                 rules={{ required: 'Name is required' }}
                 render={({ field }) => (
                   <TextField
                     {...field}
                     fullWidth
                     margin="normal"
+                    value={field.value}     
                     error={!!field.error}
                     helperText={field.error ? field.error.message : null}
                   />
@@ -90,12 +97,12 @@ const UpdateTask = ({ isOpen, onClose, id, taskDataSelect, userListSelect }) => 
               <Controller
                 name="description"
                 control={control}
-                defaultValue=""
                 rules={{ required: 'Description is required' }}
                 render={({ field }) => (
                   <TextField
                     {...field}
                     fullWidth
+                    value={field.value}     
                     margin="normal"
                     error={!!field.error}
                     helperText={field.error ? field.error.message : null}
@@ -107,7 +114,7 @@ const UpdateTask = ({ isOpen, onClose, id, taskDataSelect, userListSelect }) => 
               <Typography variant="body1" color="initial" className={classes.label}>
                 <FormattedMessage id="startdate_modal_input" />
               </Typography>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <Controller
                       name="start_date"
                       control={control}
@@ -152,7 +159,6 @@ const UpdateTask = ({ isOpen, onClose, id, taskDataSelect, userListSelect }) => 
               <Controller
                 name="status"
                 control={control}
-                defaultValue=""
                 rules={{ required: 'Status is required' }}
                 render={({ field }) => (
                   <Select
@@ -160,6 +166,8 @@ const UpdateTask = ({ isOpen, onClose, id, taskDataSelect, userListSelect }) => 
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   label="Role"
+                  value={field.value}  
+                  sx={{ mb: '1%' }}   
                   fullWidth
                 >
                   <MenuItem value={'ToDo'}>ToDo</MenuItem>
@@ -177,7 +185,6 @@ const UpdateTask = ({ isOpen, onClose, id, taskDataSelect, userListSelect }) => 
               <Controller
                 name="user_id"
                 control={control}
-                defaultValue=""
                 rules={{ required: 'Manager is required' }}
                 render={({ field }) => (
                   <Select
@@ -185,6 +192,7 @@ const UpdateTask = ({ isOpen, onClose, id, taskDataSelect, userListSelect }) => 
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   label="Role"
+                  value={field.value}     
                   fullWidth
                 >
                   {managerUser && Array.isArray(managerUser) && managerUser?.map(manager =>(
