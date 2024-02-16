@@ -46,35 +46,40 @@ const routes = [
     name: 'Dashboard Admin',
     protected: true,
     component: DashboardAdmin,
-    layout: AdminLayout
+    layout: AdminLayout,
+    isAdmin: true
   },
   {
     path: '/admin/user',
     name: 'User List',
     protected: true,
     component: UserList,
-    layout: AdminLayout
+    layout: AdminLayout,
+    isAdmin: true
   },
   {
     path: '/admin/task',
     name: 'Task List',
     protected: true,
     component: TaskList,
-    layout: AdminLayout
+    layout: AdminLayout,
+    isAdmin: true
   },
   {
     path: '/member/',
     name: 'Home Member',
     protected: true,
     component: HomeMember,
-    layout: MainLayout
+    layout: MainLayout,
+    isMember: true
   },
   {
     path: '/member/task/:id',
     name: 'Detail Member',
     protected: false,
     component: Detail,
-    layout: MainLayout
+    layout: MainLayout,
+    isMember: true
   },
   { 
     path: '*', 
