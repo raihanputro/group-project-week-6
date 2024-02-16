@@ -1,8 +1,8 @@
 import { setLoading } from "@containers/App/actions";
 import { call, put, takeLatest } from "redux-saga/effects";
-import { GET_PROFILE, GET_TASK, SET_IMAGE, SET_PASSWORD, UPDATE_PROFILE } from "./constant";
-import { changeImage, changePassword, getMyTask, getProfile, updateProfile } from "@domain/api";
-import { getTask, setProfile, setTask } from "./action";
+import { GET_MANAGER_TASK, GET_PROFILE, GET_TASK, SET_IMAGE, SET_PASSWORD, UPDATE_PROFILE } from "./constant";
+import { changeImage, changePassword, getMyTask, getMyTaskManager, getProfile, updateProfile } from "@domain/api";
+import { getTask, setProfile, setTask, setTaskManager } from "./action";
 import toast from "react-hot-toast";
 
 function* getProfileUser() {
@@ -57,8 +57,18 @@ function* getTaskUser() {
     yield put(setLoading(true))
     try {
         const response = yield call(getMyTask);
-        console.log(response.response)
         yield put(setTask(response?.response))
+    } catch (error) {
+        toast.error(error?.response?.data?.message)
+    }
+    yield put(setLoading(false))
+};
+
+function* getTaskManager() {
+    yield put(setLoading(true))
+    try {
+        const response = yield call(getMyTaskManager);
+        yield put(setTaskManager(response?.response))
     } catch (error) {
         toast.error(error?.response?.data?.message)
     }
@@ -71,4 +81,5 @@ export default function* profileSaga() {
     yield takeLatest(SET_PASSWORD, doChangePassword)
     yield takeLatest(SET_IMAGE, doUpdateImage)
     yield takeLatest(GET_TASK, getTaskUser)
+    yield takeLatest(GET_MANAGER_TASK, getTaskManager)
 }

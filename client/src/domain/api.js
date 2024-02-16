@@ -17,6 +17,8 @@ const urls = {
 
   mytask: 'task/member/list',
   myTaskDetail: 'task/member/detail',
+
+  myTaskManager: 'task/manager/list',
 };
 
 export const callAPI = async (endpoint, method, header = {}, params = {}, data = {}) => {
@@ -70,3 +72,5 @@ export const createTask = (taskData) => callAPI(urls.createTask, 'POST', {}, {},
 
 export const getMyTask = () => callAPI(urls.mytask, 'GET');
 export const getMyTaskDetailAPI = (id) => callAPI(`${urls.myTaskDetail}/${id}`, 'GET');
+
+export const getMyTaskManager = () => callAPI(urls.myTaskManager, 'GET');

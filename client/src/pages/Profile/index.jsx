@@ -11,14 +11,17 @@ import MyProfile from './components/MyProfile';
 import ChangePass from './components/ChangePass';
 import CurrentTask from './components/CurrentTask';
 
-import { changeImage, changePassword, getProfile, getTask, setProfile, setStep, updateProfile } from './action';
-import { selectProfile, selectTask } from './selector';
+import { changeImage, changePassword, getProfile, getTask, getTaskManager, setProfile, setStep, updateProfile } from './action';
+import { selectProfile, selectTask, selectTaskManager } from './selector';
 import encryptPayload from '@utils/encryptionHelper';
 
 import classes from './style.module.scss';
+import { selectToken } from '@containers/Client/selectors';
+import { jwtDecode } from 'jwt-decode';
 
-const Profile = ({ data, myTask }) => {
+const Profile = ({ data, myTask, token, myTaskManager }) => {
 
+    const decryptData = jwtDecode(token);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const currentStep = useSelector((state) => state.profile.step);
@@ -77,7 +80,7 @@ const Profile = ({ data, myTask }) => {
                     onSubmit={onSubmitChangePassword}
                 />;
             case 3:
-                return <CurrentTask myTask={myTask} />;
+                return <CurrentTask myTask={myTask} token={decryptData} myTaskManager={myTaskManager} />;
             default:
                 break;
         }
@@ -87,10 +90,18 @@ const Profile = ({ data, myTask }) => {
         dispatch(setStep(Number(e.target.value)));
     };
 
-    useEffect(() => {
-        dispatch(getProfile())
-        dispatch(getTask())
-    }, [dispatch])
+    if (decryptData?.role === 2) {
+        useEffect(() => {
+            dispatch(getProfile())
+            dispatch(getTaskManager())
+
+        }, [])
+    } else if (decryptData?.role === 3) {
+        useEffect(() => {
+            dispatch(getProfile())
+            dispatch(getTask())
+        }, [])
+    }
 
     return (
         <div className={classes.container}>
@@ -126,12 +137,16 @@ const Profile = ({ data, myTask }) => {
 
 Profile.propTypes = {
     data: PropTypes.object,
-    myTask: PropTypes.array
+    myTask: PropTypes.array,
+    token: PropTypes.object,
+    myTaskManager: PropTypes.array
 }
 
 const mapStateToProps = createStructuredSelector({
     data: selectProfile,
-    myTask: selectTask
+    myTask: selectTask,
+    token: selectToken,
+    myTaskManager: selectTaskManager
 })
 
 export default connect(mapStateToProps)(Profile);

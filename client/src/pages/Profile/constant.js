@@ -8,3 +8,6 @@ export const SET_IMAGE = 'Profile/SET_IMAGE';
 
 export const GET_TASK = 'Profile/GET_TASK';
 export const SET_TASK = 'Profile/SET_TASK';
+
+export const GET_MANAGER_TASK = 'Profile/GET_MANAGER_TASK';
+export const SET_MANAGER_TASK = 'Profile/SET_MANAGER_TASK';
