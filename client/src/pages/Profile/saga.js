@@ -43,10 +43,11 @@ function* doChangePassword({ data, cb }) {
     yield put(setLoading(false))
 };
 
-function* doUpdateImage({ formData }) {
+function* doUpdateImage({ formData, cb }) {
     yield put(setLoading(true))
     try {
-        yield call(changeImage, formData)
+        yield call(changeImage, formData);
+        cb && cb();
     } catch (error) {
         toast.error(error?.response?.data?.message)
     }
