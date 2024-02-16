@@ -23,7 +23,7 @@ const routes = [
   {
     path: '/profile',
     name: 'Profile',
-    protected: false,
+    protected: true,
     component: Profile,
     layout: MainLayout,
   },
@@ -44,37 +44,42 @@ const routes = [
   {
     path: '/admin',
     name: 'Dashboard Admin',
-    protected: false,
+    protected: true,
     component: DashboardAdmin,
-    layout: AdminLayout
+    layout: AdminLayout,
+    isAdmin: true
   },
   {
     path: '/admin/user',
     name: 'User List',
-    protected: false,
+    protected: true,
     component: UserList,
-    layout: AdminLayout
+    layout: AdminLayout,
+    isAdmin: true
   },
   {
     path: '/admin/task',
     name: 'Task List',
-    protected: false,
+    protected: true,
     component: TaskList,
-    layout: AdminLayout
+    layout: AdminLayout,
+    isAdmin: true
   },
   {
     path: '/member/',
     name: 'Home Member',
-    protected: false,
+    protected: true,
     component: HomeMember,
-    layout: MainLayout
+    layout: MainLayout,
+    isMember: true
   },
   {
     path: '/member/task/:id',
     name: 'Detail Member',
     protected: false,
     component: Detail,
-    layout: MainLayout
+    layout: MainLayout,
+    isMember: true
   },
   { 
     path: '*', 
