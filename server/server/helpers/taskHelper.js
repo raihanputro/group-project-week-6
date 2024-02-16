@@ -437,7 +437,7 @@ const getDetailTaskMemberHelper = async (id, dataToken) => {
     if (_.isEmpty(checkAuthorizationUser)) {
       return Promise.reject(Boom.unauthorized("You are not authorized"));
     }
-    const checkTask = await db.TaskPivot.findAll({
+    const checkTask = await db.TaskPivot.findOne({
       include: [
         {
           model: db.User,
@@ -450,6 +450,52 @@ const getDetailTaskMemberHelper = async (id, dataToken) => {
         },
       ],
       where: { member_id: dataToken.id, task_id: id },
+    });
+    if (_.isEmpty(checkTask)) {
+      return Promise.reject(Boom.unauthorized("You are not authorized"));
+    }
+    return Promise.resolve(checkTask);
+  } catch (err) {
+    console.log([fileName, "getDetailTaskMemberHelper", "ERROR"], {
+      info: `${err}`,
+    });
+    return Promise.reject(GeneralHelper.errorResponse(err));
+  }
+};
+
+const getMemberDetailTaskHelper = async (id, dataToken) => {
+  try {
+    const checkAuthorizationUser = await db.User.findOne({
+      where: { id: dataToken.id, role: 3 },
+    });
+    if (_.isEmpty(checkAuthorizationUser)) {
+      return Promise.reject(Boom.unauthorized("You are not authorized"));
+    }
+    const checkTask = await db.TaskPivot.findAll({
+      attributes: {
+        exclude: ["deletedAt","createdAt", "updatedAt"],
+      },
+      include: [
+        {
+          model: db.User,
+          attributes: {
+            exclude: ["deletedAt","createdAt", "updatedAt"],
+          },
+        },
+        {
+          model: db.Task,
+          include: {
+            model: db.User,
+            attributes: {
+              exclude: ["deletedAt","createdAt", "updatedAt"],
+            },
+          },
+          attributes: {
+            exclude: ["deletedAt","createdAt", "updatedAt"],
+          },
+        },
+      ],
+      where: { task_id: id },
     });
     if (_.isEmpty(checkTask)) {
       return Promise.reject(Boom.unauthorized("You are not authorized"));
@@ -485,5 +531,6 @@ module.exports = {
   //member-route-start
   getListTaskMemberHelper,
   getDetailTaskMemberHelper,
+  getMemberDetailTaskHelper,
   //member-route-end
 };

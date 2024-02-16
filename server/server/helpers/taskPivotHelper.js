@@ -14,6 +14,16 @@ const updateMemberTask = async (task_id, member_id, dataToken) => {
         Boom.unauthorized("Your role cannot add members")
       );
     }
+    
+    const checkTaskAlready = await db.TaskPivot.findOne({
+      where: { task_id: task_id },
+    });
+    if (_.isEmpty(checkTaskAlready)) {
+      return Promise.reject(
+        Boom.unauthorized("Task already added")
+      );
+    }
+
     const checkMember = await db.User.findOne({
       where: { id: member_id },
     });

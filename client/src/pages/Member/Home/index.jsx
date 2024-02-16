@@ -40,6 +40,10 @@ const HomeMember = ({ myTask }) => {
   );
 };
 
+HomeMember.prototypes = {
+  myTask: PropTypes.array,
+};
+
 const mapStateToProps = createStructuredSelector({
   myTask: selectmyTask,
 });
