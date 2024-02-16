@@ -60,8 +60,8 @@ const createTaskAdmin = async (req, res) => {
 const updateTaskAdmin = async (req, res) => {
   try {
     const dataToken = req.body.dataToken;
-    ValidationTask.idTaskValidation(req.params);
-    const { id } = req.params;
+    // ValidationTask.idTaskValidation(req.params);
+    const id = parseInt(req.params['id']);
     const { name, description, start_date, end_date, status, user_id } =
       req.body;
     const response = await taskHelper.updateTaskAdminHelper(
