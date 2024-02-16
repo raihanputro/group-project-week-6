@@ -142,8 +142,9 @@ const UserList = ({userListSelect, theme}) => {
               <StyledTableCell align="center" sx={{ fontWeight: '700' }}></StyledTableCell>
               <StyledTableCell align="center" sx={{ fontWeight: '700' }}><FormattedMessage id="id_table_row" /></StyledTableCell>
               <StyledTableCell align="center" sx={{ fontWeight: '700' }}><FormattedMessage id="name_table_row" /></StyledTableCell>
+              <StyledTableCell align="center" sx={{ fontWeight: '700' }}><FormattedMessage id="email_table_row" /></StyledTableCell>
               <StyledTableCell align="center" sx={{ fontWeight: '700' }}><FormattedMessage id="role_table_row" /></StyledTableCell>
-              <StyledTableCell align="center" sx={{ fontWeight: '700' }}><FormattedMessage id="action_table_row" /></StyledTableCell>
+              {/* <StyledTableCell align="center" sx={{ fontWeight: '700' }}><FormattedMessage id="action_table_row" /></StyledTableCell> */}
             </TableRow>
             </TableHead>
             <TableBody>
@@ -159,57 +160,57 @@ const UserList = ({userListSelect, theme}) => {
                             width: "50px",
                             borderRadius: "50%"
                           }}
-                          src={user.imageUrl}
+                          src={user?.imageUrl}
                         />
                       ) : (
                         <Avatar sx={{ height: "50px", width: "50px" }} />
                       )}
                     </StyledTableCell>
-                    <StyledTableCell align="center">{user.id}</StyledTableCell>
-                    <StyledTableCell align="center">{user.name}</StyledTableCell>
+                    <StyledTableCell align="center">{user?.id}</StyledTableCell>
+                    <StyledTableCell align="center">{user?.name}</StyledTableCell>
+                    <StyledTableCell align="center">{user?.email}</StyledTableCell>
                     <StyledTableCell align="center">
-                      {user.role === 1 && 'Admin'}
-                      {user.role === 2 && 'Manager'}
-                      {user.role === 3 && 'Member'}
+                      {user?.role === 1 && 'Admin'}
+                      {user?.role === 2 && 'Manager'}
+                      {user?.role === 3 && 'Member'}
                     </StyledTableCell>
-                    <StyledTableCell align="center">
-                      <Button onClick={(e) => handleOpenUserMenu(e, user?.id, user?.role)}><ListIcon /></Button>
-                      <Menu
-                        sx={{ 
-                          mt: '45px',
-                          '& .MuiPaper-root': { 
-                            backgroundColor: theme === 'light' ? '#fff' : '#4f4557', 
-                          },
-                        }}
-                        id={`menu-appbar`}
-                        anchorEl={userMenu}
-                        anchorOrigin={{
-                          vertical: 'top',
-                          horizontal: 'right',
-                        }}
-                        keepMounted
-                        transformOrigin={{
-                          vertical: 'top',
-                          horizontal: 'right',
-                        }}
-                        open={Boolean(userMenu)}
-                        onClose={handleCloseUserMenu}
-                      >
-                        <MenuItem>
-                          <Button><InfoIcon sx={{ color: 'yellow' }}/></Button>
-                        </MenuItem>
-                        {userRole === 1 && 
-                          <>
-                            <MenuItem>
-                              <Button ><EditIcon /></Button>  
-                            </MenuItem>
-                            <MenuItem>
-                              <Button sx={{ color: 'red' }}><DeleteIcon /></Button>
-                            </MenuItem>
-                          </>
+                    {/* <StyledTableCell align="center">
+                      {user.role === 1 && 
+                      <>
+                        <Button onClick={(e) => handleOpenUserMenu(e, user?.id, user?.role)}><ListIcon /></Button>
+                        <Menu
+                          sx={{ 
+                            mt: '45px',
+                            '& .MuiPaper-root': { 
+                              backgroundColor: theme === 'light' ? '#fff' : '#4f4557', 
+                            },
+                          }}
+                          id={`menu-appbar`}
+                          anchorEl={userMenu}
+                          anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                          }}
+                          keepMounted
+                          transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                          }}
+                          open={Boolean(userMenu)}
+                          onClose={handleCloseUserMenu}
+                        >
+                            <>
+                              <MenuItem>
+                                <Button ><EditIcon /></Button>  
+                              </MenuItem>
+                              <MenuItem>
+                                <Button sx={{ color: 'red' }}><DeleteIcon /></Button>
+                              </MenuItem>
+                            </>
+                        </Menu>
+                      </>
                         }
-                      </Menu>
-                    </StyledTableCell>
+                    </StyledTableCell> */}
                   </StyledTableRow>
                 ))}
             </TableBody>
