@@ -61,6 +61,7 @@ export default {
   role: 'Role',
   
   app_text_task: 'Your Task',
+  app_text_member: 'Member',
 
   logout: 'Logout',
 
