@@ -45,6 +45,7 @@ export default {
   startdate_modal_input: 'Mulai',
   enddate_modal_input: 'Berakhir',
   status_modal_input: 'Status',
+  manager_modal_input: 'Manajer',
   add_task_modal_button: 'Tambah Tugas',
 
   click_here: "Tekan Disini!",
@@ -70,6 +71,11 @@ export default {
   dark_mode: 'Tampilan Gelap',
   light_mode: 'Tampilan Terang',
 
-  hero_sub_text: 'Kami akan membantu anda membangun proyek anda.'
+  hero_sub_text: 'Kami akan membantu anda membangun proyek anda.',
 
+  add_admin_modal_title: 'Tambah admin!',
+  email_modal_input: 'Email',
+  password_modal_input: 'Sandi',
+  confirmPass_modal_input: 'Konfirmasi Password',
+  add_admin_modal_button: 'Tambah admin!',
 };

@@ -29,7 +29,8 @@ import PeopleIcon from '@mui/icons-material/People';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 
-import { setLogin, setToken } from '@containers/Client/actions';
+import { setLogout } from '@containers/Client/actions';
+import { selectUserDetails } from '@containers/Client/selectors';
 import { setLocale, setTheme } from '@containers/App/actions';
 
 import classes from './style.module.scss';
@@ -78,7 +79,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-const NavbarAdmin = ({ title, locale, theme, children }) => {
+const NavbarAdmin = ({ title, locale, theme, children, user }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -170,7 +171,12 @@ const NavbarAdmin = ({ title, locale, theme, children }) => {
             </MenuItem>
           </Menu>
           <Menu
-            sx={{ mt: '45px' }}
+            sx={{ 
+              mt: '45px',
+              '& .MuiPaper-root': { 
+                backgroundColor: theme === 'light' ? '#fff' : '#4f4557', 
+              },
+            }}
             id="menu-appbar"
             anchorEl={anchorElUser}
             anchorOrigin={{
@@ -185,19 +191,27 @@ const NavbarAdmin = ({ title, locale, theme, children }) => {
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
+            <MenuItem disabled>
+                    <div>
+                        <p>Hi, {user?.name}</p>
+                    </div>
+            </MenuItem>
             <MenuItem onClick={() => {handleCloseUserMenu, navigate('/profile')}}>
-              <Typography textAlign="center">Profile</Typography>
+              <Typography textAlign="center">
+                <FormattedMessage id='profile_myProfile' />
+              </Typography>
             </MenuItem>
             <MenuItem 
               onClick={
                 () => { 
                   handleCloseUserMenu, 
-                  dispatch(setLogin(false)), 
-                  dispatch(setToken(null)),
-                  navigate('/')
+                  dispatch(setLogout());
+                  navigate('/login')
                 }
               }>
-                <Typography textAlign="center">Logout</Typography>
+                <Typography textAlign="center">
+                  <FormattedMessage id='logout' />
+                </Typography>
             </MenuItem>
           </Menu>
           </Toolbar>
@@ -251,10 +265,11 @@ NavbarAdmin.propTypes = {
   title: PropTypes.string,
   locale: PropTypes.string.isRequired,
   theme: PropTypes.string,
+  user: PropTypes.object
 };
 
 const mapStateToProps = createStructuredSelector({
-
+  user: selectUserDetails
 })
 
 export default connect(mapStateToProps)(NavbarAdmin);

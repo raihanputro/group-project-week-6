@@ -45,9 +45,9 @@ const createTaskAdmin = async (req, res) => {
   try {
     const dataToken = req.body.dataToken; // Assuming dataToken contains user information
     ValidationTask.createTaskAdminValidation(req.body);
-    const { name, description, start_date, end_date, status } = req.body;
+    const { name, description, start_date, end_date, status, user_id } = req.body;
     const response = await taskHelper.createTaskAdminHelper(
-      { name, description, start_date, end_date, status },
+      { name, description, start_date, end_date, status, user_id },
       dataToken
     );
     return res.send(response);
