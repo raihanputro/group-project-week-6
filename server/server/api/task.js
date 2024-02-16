@@ -236,6 +236,22 @@ const detailTaskMember = async (req, res) => {
     return res.send(GeneralHelper.errorResponse(err));
   }
 };
+
+const getTaskMember = async (req, res) => {
+  try {
+    const dataToken = req.body.dataToken;
+    ValidationTask.idTaskValidation(req.params);
+    const { id } = req.params;
+    const response = await taskHelper.getMemberDetailTaskHelper(id, dataToken);
+    return res.send({
+      message: "Task detail Member data received successfully",
+      data: response,
+    });
+  } catch (err) {
+    console.log([fileName, "detailList", "ERROR"], { info: `${err}` });
+    return res.send(GeneralHelper.errorResponse(err));
+  }
+};
 // member-end
 
 //admin-route-start
@@ -266,6 +282,7 @@ Router.delete(
 //member-route-start
 Router.get("/member/list", Middleware.validateToken, listTaskMember);
 Router.get("/member/detail/:id", Middleware.validateToken, detailTaskMember);
+Router.get("/member/detail/member/:id", Middleware.validateToken, getTaskMember);
 //member-route-end
 
 module.exports = Router;

@@ -9,6 +9,7 @@
   @include directionX;
   width: 100%;
   justify-content: center;
+  background-color: #ffffff;
   .content {
     width: 90%;
     margin-top: 65px;
@@ -56,9 +57,38 @@
       -ms-border-radius: 10px;
       -o-border-radius: 10px;
     }
-    .desc{
+    .desc {
       margin: 65px 0px;
       color: black;
+    }
+    .member {
+      color: black;
+    }
+    .statusTodo {
+      background-color: #9376e0;
+      padding: 10px;
+      color: white;
+      width: fit-content;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+
+    .statusProgress {
+      background-color: orange;
+      padding: 10px;
+      color: white;
+      width: fit-content;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+
+    .statusCompleted {
+      background-color: green;
+      padding: 10px 30px;
+      border-radius: 10px;
+      width: fit-content;
+      color: white;
+      font-weight: 700;
     }
   }
 }
