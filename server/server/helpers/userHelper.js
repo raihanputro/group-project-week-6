@@ -114,8 +114,26 @@ const updateProfile = async (dataToken, name) => {
     }
 };
 
-const changeImage = async () => {
+const changeImage = async (dataToken, imageUrl) => {
     try {
+        const checkUser = await db.User.findOne({
+            where: {
+                id: dataToken?.id
+            }
+        });
+        
+        if (!checkUser) {
+            return Promise.reject(Boom.badRequest('User not found'))
+        };
+
+        await db.User.update({
+            imageUrl: imageUrl
+        }, {
+            where: {
+                id: dataToken?.id
+            }
+        });
+
         return Promise.resolve(true);
     } catch (error) {
         console.log([fileName, 'Change Image Helper', 'ERROR'], { info: `${error}` });
@@ -128,5 +146,5 @@ module.exports = {
     getProfileUser,
     changePassword,
     updateProfile,
-    changeImage
+    changeImage,
 };

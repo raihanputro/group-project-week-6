@@ -12,18 +12,34 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ImageIcon from '@mui/icons-material/Image';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
+import { selectUserListData } from '@pages/Admin/UserList/selectors';
+import { getUserListData } from '@pages/Admin/UserList/actions';
 import { createTask } from '../../actions';
 
 import classes from './style.module.scss';
 
-const AddTask = ({ isOpen, onClose }) => {
+const AddTask = ({ isOpen, onClose, userListSelect }) => {
     const dispatch = useDispatch();
-
+    const [userData, setUserData] = useState([]);
     const { handleSubmit, control, reset } = useForm();
 
+    useEffect(() => {
+      dispatch(getUserListData());
+    }, [dispatch]);
+
+    useEffect(() => {
+      setUserData(userListSelect.response);
+    }, [userListSelect]);
+
+    const managerUser = userData?.filter(user => user.role === 2);
+
     const onSubmit = (data) => {
-        dispatch(createTask({name: data.name, description: data.description, start_date: data.start_date, end_date: data.end_date, status: data.status }));
+        dispatch(createTask({name: data.name, description: data.description, start_date: data.start_date, end_date: data.end_date, status: data.status, user_id: data.user_id }));
         reset();
         onClose();
     };
@@ -80,35 +96,43 @@ const AddTask = ({ isOpen, onClose }) => {
               <Typography variant="body1" color="initial" className={classes.label}>
                 <FormattedMessage id="startdate_modal_input" />
               </Typography>
-                <Controller
-                    name="start_date"
-                    control={control}
-                    defaultValue={null}
-                    rules={{ required: 'Start date is required' }}
-                    render={({ field }) => (
-                    <input
-                    {...field}
-                    type="datetime-local"
-                    required />
-                    )}
-                />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Controller
+                      name="start_date"
+                      control={control}
+                      defaultValue={null}
+                      rules={{ required: 'Start date is required' }}
+                      render={({ field }) => (
+                        <DateTimePicker
+                          {...field}
+                          sx={{ width: '100%', marginBottom: '10px' }}
+                          error={!!field.error}
+                          helperText={field.error ? field.error.message : null}
+                        />
+                      )}
+                  />
+                </LocalizationProvider>
             </Box>
             <Box className={classes.textUploader}>
               <Typography variant="body1" color="initial" className={classes.label}>
                 <FormattedMessage id="enddate_modal_input" />
               </Typography>
-                <Controller
-                    name="end_date"
-                    control={control}
-                    defaultValue={null}
-                    rules={{ required: 'Start date is required' }}
-                    render={({ field }) => (
-                    <input
-                    {...field}
-                    type="datetime-local"
-                    required />
-                    )}
-                />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Controller
+                      name="end_date"
+                      control={control}
+                      defaultValue={null}
+                      rules={{ required: 'End date is required' }}
+                      render={({ field }) => (
+                        <DateTimePicker
+                          {...field}
+                          error={!!field.error}
+                          helperText={field.error ? field.error.message : null}
+                          sx={{ width: '100%', marginBottom: '10px' }}
+                        />
+                      )}
+                  />
+                </LocalizationProvider>
             </Box>
             <Box className={classes.textUploader}>
               <Typography variant="body1" color="initial" className={classes.label}>
@@ -135,12 +159,39 @@ const AddTask = ({ isOpen, onClose }) => {
                 )}
               />
             </Box>
+            <Box className={classes.textUploader}>
+              <Typography variant="body1" color="initial" className={classes.label}>
+                <FormattedMessage id="manager_modal_input" />
+              </Typography>
+              <Controller
+                name="user_id"
+                control={control}
+                defaultValue=""
+                rules={{ required: 'Manager is required' }}
+                render={({ field }) => (
+                  <Select
+                  {...field}
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="Role"
+                  fullWidth
+                >
+                  {managerUser && Array.isArray(managerUser) && managerUser?.map(manager =>(
+                    <MenuItem key={manager.id} value={manager.id}>
+                      {manager.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                )}
+              />
+            </Box>
             <Button
               type="submit"
               variant="contained"
               color="primary"
               fullWidth
               sx={{ mt: 2 }}
+              className={classes.addButton}
             >
                 <FormattedMessage id="add_task_modal_button" />
             </Button>
@@ -151,4 +202,12 @@ const AddTask = ({ isOpen, onClose }) => {
   )
 }
 
-export default AddTask
+AddTask.propTypes = {
+  userListSelect: PropTypes.object,
+};
+
+const mapStateToProps = createStructuredSelector({
+  userListSelect: selectUserListData,
+});
+
+export default connect(mapStateToProps)(AddTask);

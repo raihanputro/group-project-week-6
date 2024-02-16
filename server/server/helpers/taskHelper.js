@@ -68,7 +68,7 @@ const getTaskDetailAdminHelper = async (id, dataToken) => {
 };
 
 const createTaskAdminHelper = async (dataObject, dataToken) => {
-  const { name, description, start_date, end_date, status } = dataObject;
+  const { name, description, start_date, end_date, status, user_id } = dataObject;
   try {
     const checkAuthorization = await db.User.findOne({
       where: { id: dataToken.id, role: 1 },
@@ -84,7 +84,7 @@ const createTaskAdminHelper = async (dataObject, dataToken) => {
       start_date: start_date,
       end_date: end_date,
       status: status,
-      user_id: dataToken.id,
+      user_id: user_id,
     });
     return Promise.resolve(true);
   } catch (err) {

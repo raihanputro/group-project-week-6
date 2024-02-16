@@ -13,6 +13,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -29,9 +30,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import AddTask from './components/AddTask';
+import UpdateTask from './components/UpdateTask';
 
-import { getTaskListData } from './actions';
+import { getTaskListData, deleteTask } from './actions';
 import { selectTaskListData } from './selectors';
+import { selectTheme } from '@containers/App/selectors';
 
 import classes from './style.module.scss';
 
@@ -50,22 +53,36 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-const TaskList = ({taskListSelect}) => {
+const TaskList = ({taskListSelect, theme}) => {
   const dispatch = useDispatch();
   const [taskListData, setTaskListData] = useState([]);
+  const [taskId, setTaskId] = useState(null);
   const [taskMenu, setTaskMenu] = useState(null);
   const [isAddOpen, setAddOpen] = useState(false);
+  const [isUpdateOpen, setUpdateOpen] = useState(false);
+  const [search, setSearch] = useState('');
+  const [status, setStatus] = useState('');
 
   useEffect(() => {
     dispatch(getTaskListData());
   }, [dispatch]);
 
   useEffect(() => {
-    setTaskListData(taskListSelect.response);
+    setTaskListData(taskListSelect?.response);
   }, [taskListSelect]);
 
-  const handleOpenTaskMenu = (event) => {
+  const filteredTask = taskListData?.filter(task => {
+    if(task.name.toLowerCase().includes(search.toLocaleLowerCase()) && (status == '' || task.status === status)) {
+      return true;
+    }
+    return false;
+  });
+
+  console.log(taskListSelect, 'data')
+
+  const handleOpenTaskMenu = (event, taskId) => {
     setTaskMenu(event.currentTarget);
+    setTaskId(taskId);
   };
 
   const handleCloseTaskMenu = () => {
@@ -80,11 +97,56 @@ const TaskList = ({taskListSelect}) => {
     setAddOpen(false);
   };
 
+  const handleUpdateOpen = () => {
+    setUpdateOpen(true);
+  };
+
+  const handleUpdateClose = () => {
+    setUpdateOpen(false);
+  };
+
+  const deleteItem = () => {
+    dispatch(deleteTask(taskId));
+    setTaskMenu(null);
+  };
+
   return (
     <>
       <Typography variant='h1' component='div' className={classes.pageTitle}>
         <FormattedMessage id="task_list_title" />
       </Typography>
+      <Box className={classes.filterContainer}>
+        <TextField
+            label="Search Task"
+            variant="outlined"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className={classes.search}
+          />
+          <TextField
+            select
+            label="Status"
+            variant="outlined"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            className={classes.status}
+            SelectProps={{
+              MenuProps: {
+                PaperProps: {
+                  sx: {
+                    backgroundColor: theme === 'light' ? '#fff' : '#4f4557', 
+                  },
+                },
+              },
+            }}
+          >
+            <MenuItem value="">All</MenuItem>
+            <MenuItem value="ToDo">ToDo</MenuItem>
+            <MenuItem value="Progress">Progress</MenuItem>
+            <MenuItem value="Completed">Completed</MenuItem>
+            <MenuItem value="Expired">Expired</MenuItem>
+          </TextField>
+      </Box>
       <Button variant="contained" onClick={handleAddOpen} className={classes.addButton}><AddIcon /><FormattedMessage id="add_button" /></Button>
       <AddTask isOpen={isAddOpen} onClose={handleAddClose} />
       <TableContainer component={Paper} sx={{ marginTop: '1%' }}>
@@ -100,44 +162,56 @@ const TaskList = ({taskListSelect}) => {
             </TableRow>
             </TableHead>
             <TableBody>
-              { taskListData && taskListData?.map((task, index) => (
+              { filteredTask && Array.isArray(filteredTask) && filteredTask?.map((task, index) => (
                 <StyledTableRow key={index}>
-                  <StyledTableCell align="center">{task.id}</StyledTableCell>
-                  <StyledTableCell align="center">{task.name}</StyledTableCell>
+                  <StyledTableCell align="center">{task?.id}</StyledTableCell>
+                  <StyledTableCell align="center">{task?.name}</StyledTableCell>
                   <StyledTableCell align="center">
-                    {moment(task.start_date).format('dddd, DD MMMM YYYY HH:mm:ss')}
+                    {moment(task?.start_date).format('dddd, DD MMMM YYYY')}
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                  {moment(task.end_date).format('dddd, DD MMMM YYYY HH:mm:ss')}
+                  {moment(task?.end_date).format('dddd, DD MMMM YYYY')}
                   </StyledTableCell>
                   <StyledTableCell align="center">
                   { 
-                      task.status === 'ToDo' 
+                      task?.status === 'ToDo' 
                         && 
                       <Typography variant='p' component='div' className={classes.statusTodo}>
                         ToDo
                       </Typography>
                     }
                     { 
-                      task.status === 'Progress' 
+                      task?.status === 'Progress' 
                         && 
                       <Typography variant='p' component='div' className={classes.statusProgress}>
                         Progress
                       </Typography>
                     }
                     { 
-                      task.status === 'Completed' 
+                      task?.status === 'Completed' 
                         && 
                       <Typography variant='p' component='div' className={classes.statusCompleted}>
                         Completed
                       </Typography>
                     }
+                    { 
+                      task?.status === 'Expired' 
+                        && 
+                      <Typography variant='p' component='div' className={classes.statusExpired}>
+                        Expired
+                      </Typography>
+                    }
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <Button onClick={handleOpenTaskMenu}><ListIcon /></Button>
+                    <Button onClick={(e) => handleOpenTaskMenu(e, task?.id)}><ListIcon /></Button>
                     <Menu
-                      sx={{ mt: '45px' }}
-                      id="menu-appbar"
+                      sx={{ 
+                        mt: '45px',
+                        '& .MuiPaper-root': { 
+                          backgroundColor: theme === 'light' ? '#fff' : '#4f4557', 
+                        },
+                      }}
+                      id={`menu-appbar`}
                       anchorEl={taskMenu}
                       anchorOrigin={{
                         vertical: 'top',
@@ -150,34 +224,36 @@ const TaskList = ({taskListSelect}) => {
                       }}
                       open={Boolean(taskMenu)}
                       onClose={handleCloseTaskMenu}
-                    >
+                      >
                       <MenuItem>
                         <Button><InfoIcon sx={{ color: 'yellow' }}/></Button>
                       </MenuItem>
                       <MenuItem>
-                        <Button ><EditIcon /></Button>                      
+                        <Button ><EditIcon onClick={() => handleUpdateOpen()}/></Button>                      
                       </MenuItem>
                       <MenuItem>
-                        <Button sx={{ color: 'red' }}><DeleteIcon /></Button>                    
+                          <Button sx={{ color: 'red' }} onClick={() => deleteItem()}><DeleteIcon /></Button>                    
                       </MenuItem>
                     </Menu>
                   </StyledTableCell>
                 </StyledTableRow>
-
               ))}
             </TableBody>
         </Table>
       </TableContainer>
+      <UpdateTask isOpen={isUpdateOpen} onClose={handleUpdateClose} id={taskId}/>
     </>
   )
 }
 
 TaskList.propTypes = {
   taskListSelect: PropTypes.object,
+  theme: PropTypes.string
 };
 
 const mapStateToProps = createStructuredSelector({
   taskListSelect: selectTaskListData,
+  theme: selectTheme
 });
 
 export default connect(mapStateToProps)(TaskList);
