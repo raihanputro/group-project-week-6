@@ -100,9 +100,6 @@ const Profile = ({ data }) => {
                     <div className={classes.sidebar}>
                         <div className={classes.containerImage}>
                             <img className={classes.profilePicture} src={data?.imageUrl ? data?.imageUrl : "https://img.freepik.com/premium-vector/user-profile-icon-flat-style-member-avatar-vector-illustration-isolated-background-human-permission-sign-business-concept_157943-15752.jpg?size=338&ext=jpg&ga=GA1.1.87170709.1707782400&semt=ais"} alt="Profile Picture" />
-                            {/* <p className={classes.name}>
-                                Nama Akun
-                            </p> */}
                         </div>
                         <div className={classes.containerButton}>
                             <Button value={1} onClick={handlerPart}>

@@ -1,8 +1,8 @@
 import { setLoading } from "@containers/App/actions";
 import { call, put, takeLatest } from "redux-saga/effects";
-import { GET_PROFILE, SET_IMAGE, SET_PASSWORD, UPDATE_PROFILE } from "./constant";
+import { GET_PROFILE, GET_TASK, SET_IMAGE, SET_PASSWORD, UPDATE_PROFILE } from "./constant";
 import { changeImage, changePassword, getProfile, updateProfile } from "@domain/api";
-import { setProfile } from "./action";
+import { getTask, setProfile } from "./action";
 import toast from "react-hot-toast";
 
 function* getProfileUser() {
@@ -51,6 +51,16 @@ function* doUpdateImage({ formData }) {
         toast.error(error?.response?.data?.message)
     }
     yield put(setLoading(false))
+};
+
+function* getTaskUser() {
+    yield put(setLoading(true))
+    try {
+
+    } catch (error) {
+        toast.error(error?.response?.data?.message)
+    }
+    yield put(setLoading(false))
 }
 
 export default function* profileSaga() {
@@ -58,4 +68,5 @@ export default function* profileSaga() {
     yield takeLatest(UPDATE_PROFILE, doUpdateProfile)
     yield takeLatest(SET_PASSWORD, doChangePassword)
     yield takeLatest(SET_IMAGE, doUpdateImage)
+    yield takeLatest(GET_TASK, getTaskUser)
 }
