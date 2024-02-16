@@ -46,16 +46,19 @@ const routes = [
   {
     path: '/manager',
     name: 'Dashboard Manager',
-    // protected: true,
+    protected: true,
     component: DashboardManager,
-    layout: AdminLayout
+    layout: AdminLayout,
+    isManager: true
   },
   {
     path: '/manager/task',
     name: 'Dashboard Manager',
-    // protected: true,
+    protected: true,
     component: TaskListManager,
-    layout: AdminLayout
+    layout: AdminLayout,
+    isManager: true
+
   },
   {
     path: '/admin',
@@ -63,7 +66,7 @@ const routes = [
     protected: true,
     component: DashboardAdmin,
     layout: AdminLayout,
-    // isAdmin: true
+    isAdmin: true
   },
   {
     path: '/admin/user',
@@ -71,7 +74,7 @@ const routes = [
     protected: true,
     component: UserList,
     layout: AdminLayout,
-    // isAdmin: true
+    isAdmin: true
   },
   {
     path: '/admin/task',
@@ -79,7 +82,7 @@ const routes = [
     protected: true,
     component: TaskList,
     layout: AdminLayout,
-    // isAdmin: true
+    isAdmin: true
   },
   {
     path: '/member/',
@@ -87,15 +90,15 @@ const routes = [
     protected: true,
     component: HomeMember,
     layout: MainLayout,
-    // isMember: true
+    isMember: true
   },
   {
     path: '/member/task/:id',
     name: 'Detail Member',
-    protected: false,
+    protected: true,
     component: Detail,
     layout: MainLayout,
-    // isMember: true
+    isMember: true
   },
   {
     path: '*',

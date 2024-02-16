@@ -33,8 +33,7 @@ import { setLogout } from '@containers/Client/actions';
 import { setLocale, setTheme } from '@containers/App/actions';
 
 import classes from './style.module.scss';
-import { selectToken, selectUserDetails } from '@containers/Client/selectors';
-import { jwtDecode } from 'jwt-decode';
+import { selectUserDetails } from '@containers/Client/selectors';
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -80,9 +79,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-const NavbarAdmin = ({ title, locale, theme, children, token, userDetails }) => {
+const NavbarAdmin = ({ title, locale, theme, children, userDetails }) => {
 
-  const decryptToken = jwtDecode(token);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -174,10 +172,10 @@ const NavbarAdmin = ({ title, locale, theme, children, token, userDetails }) => 
             </MenuItem>
           </Menu>
           <Menu
-            sx={{ 
+            sx={{
               mt: '45px',
-              '& .MuiPaper-root': { 
-                backgroundColor: theme === 'light' ? '#fff' : '#4f4557', 
+              '& .MuiPaper-root': {
+                backgroundColor: theme === 'light' ? '#fff' : '#4f4557',
               },
             }}
             id="menu-appbar"
@@ -195,9 +193,9 @@ const NavbarAdmin = ({ title, locale, theme, children, token, userDetails }) => 
             onClose={handleCloseUserMenu}
           >
             <MenuItem disabled>
-                    <div>
-                        <p>Hi, {userDetails?.name}</p>
-                    </div>
+              <div>
+                <p>Hi, {userDetails?.name}</p>
+              </div>
             </MenuItem>
             <MenuItem onClick={() => { handleCloseUserMenu, navigate('/profile') }}>
               <Typography textAlign="center">
@@ -207,8 +205,8 @@ const NavbarAdmin = ({ title, locale, theme, children, token, userDetails }) => 
             <MenuItem
               onClick={
                 () => {
-                  handleCloseUserMenu, 
-                  dispatch(setLogout());
+                  handleCloseUserMenu,
+                    dispatch(setLogout());
                   navigate('/login')
                 }
               }>
@@ -271,12 +269,10 @@ NavbarAdmin.propTypes = {
   title: PropTypes.string,
   locale: PropTypes.string.isRequired,
   theme: PropTypes.string,
-  token: PropTypes.object,
   userDetails: PropTypes.object
 };
 
 const mapStateToProps = createStructuredSelector({
-  token: selectToken,
   userDetails: selectUserDetails
 })
 
