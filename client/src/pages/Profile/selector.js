@@ -6,3 +6,5 @@ const selectProfileState = (state) => {
 }
 
 export const selectProfile = createSelector(selectProfileState, (state) => state.data)
+
+export const selectTask = createSelector(selectProfileState, (state) => state.myTask)

@@ -35,7 +35,7 @@ export const getTask = () => ({
     type: GET_TASK
 });
 
-export const setTask = (data) => ({
+export const setTask = (dataTask) => ({
     type: SET_TASK,
-    data
+    dataTask
 })

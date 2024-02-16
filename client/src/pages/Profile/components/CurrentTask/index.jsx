@@ -1,9 +1,9 @@
 import { FormattedMessage } from 'react-intl';
 
 import classes from './style.module.scss';
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 
-const CurrentTask = () => {
+const CurrentTask = ({ myTask }) => {
     return (
         <div className={classes.container}>
             <h2>
@@ -20,18 +20,45 @@ const CurrentTask = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        <TableRow>
-                            <TableCell>1</TableCell>
-                            <TableCell>[HTML/CSS]</TableCell>
-                            <TableCell>Hilman</TableCell>
-                            <TableCell>ToDo</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell>2</TableCell>
-                            <TableCell>[HTML/CSS]</TableCell>
-                            <TableCell>Hilman</TableCell>
-                            <TableCell>ToDo</TableCell>
-                        </TableRow>
+                        {
+                            myTask?.length !== 0 ?
+                                myTask?.map((data, index) => {
+                                    return (
+                                        <TableRow>
+                                            <TableCell>{index + 1}</TableCell>
+                                            <TableCell>{data?.Task?.name}</TableCell>
+                                            <TableCell>{data?.User?.name}</TableCell>
+                                            <TableCell>
+                                                {
+                                                    data?.Task?.status === 'ToDo'
+                                                    &&
+                                                    <Typography variant='p' component='div' className={classes.statusTodo}>
+                                                        ToDo
+                                                    </Typography>
+                                                }
+                                                {
+                                                    data?.Task?.status === 'Progress'
+                                                    &&
+                                                    <Typography variant='p' component='div' className={classes.statusProgress}>
+                                                        Progress
+                                                    </Typography>
+                                                }
+                                                {
+                                                    data?.Task?.status === 'Completed'
+                                                    &&
+                                                    <Typography variant='p' component='div' className={classes.statusCompleted}>
+                                                        Completed
+                                                    </Typography>
+                                                }
+                                            </TableCell>
+                                        </TableRow>
+                                    )
+                                })
+                                :
+                                <TableRow>
+                                    <TableCell></TableCell>
+                                </TableRow>
+                        }
                     </TableBody>
                 </Table>
             </div>

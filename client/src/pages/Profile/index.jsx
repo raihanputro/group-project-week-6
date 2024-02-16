@@ -11,13 +11,13 @@ import MyProfile from './components/MyProfile';
 import ChangePass from './components/ChangePass';
 import CurrentTask from './components/CurrentTask';
 
-import { changeImage, changePassword, getProfile, setProfile, setStep, updateProfile } from './action';
-import { selectProfile } from './selector';
+import { changeImage, changePassword, getProfile, getTask, setProfile, setStep, updateProfile } from './action';
+import { selectProfile, selectTask } from './selector';
 import encryptPayload from '@utils/encryptionHelper';
 
 import classes from './style.module.scss';
 
-const Profile = ({ data }) => {
+const Profile = ({ data, myTask }) => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -77,7 +77,7 @@ const Profile = ({ data }) => {
                     onSubmit={onSubmitChangePassword}
                 />;
             case 3:
-                return <CurrentTask />;
+                return <CurrentTask myTask={myTask} />;
             default:
                 break;
         }
@@ -89,7 +89,8 @@ const Profile = ({ data }) => {
 
     useEffect(() => {
         dispatch(getProfile())
-    }, [])
+        dispatch(getTask())
+    }, [dispatch])
 
     return (
         <div className={classes.container}>
@@ -124,11 +125,13 @@ const Profile = ({ data }) => {
 }
 
 Profile.propTypes = {
-    data: PropTypes.object
+    data: PropTypes.object,
+    myTask: PropTypes.array
 }
 
 const mapStateToProps = createStructuredSelector({
-    data: selectProfile
+    data: selectProfile,
+    myTask: selectTask
 })
 
 export default connect(mapStateToProps)(Profile);

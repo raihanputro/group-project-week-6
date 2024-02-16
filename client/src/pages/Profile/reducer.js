@@ -4,10 +4,10 @@ import { GET_PROFILE, GET_TASK, SET_PASSWORD, SET_PROFILE, SET_STEP, SET_TASK } 
 export const initialState = {
     step: 1,
     data: {},
-    task: []
+    myTask: []
 };
 
-export const storedKey = ['step', 'data', 'task'];
+export const storedKey = ['step', 'data', 'myTask'];
 
 const profileReducer = (state = initialState, action) =>
     produce(state, (draft) => {
@@ -22,10 +22,10 @@ const profileReducer = (state = initialState, action) =>
                 draft.data = action.data
                 break;
             case GET_TASK:
-                draft.task = action.task
+                draft.myTask = action.myTask
                 break;
             case SET_TASK:
-                draft.task = action.data
+                draft.myTask = action.dataTask
                 break;
             default:
                 break;

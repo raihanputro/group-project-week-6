@@ -1,8 +1,8 @@
 import { setLoading } from "@containers/App/actions";
 import { call, put, takeLatest } from "redux-saga/effects";
 import { GET_PROFILE, GET_TASK, SET_IMAGE, SET_PASSWORD, UPDATE_PROFILE } from "./constant";
-import { changeImage, changePassword, getProfile, updateProfile } from "@domain/api";
-import { getTask, setProfile } from "./action";
+import { changeImage, changePassword, getMyTask, getProfile, updateProfile } from "@domain/api";
+import { getTask, setProfile, setTask } from "./action";
 import toast from "react-hot-toast";
 
 function* getProfileUser() {
@@ -56,7 +56,9 @@ function* doUpdateImage({ formData }) {
 function* getTaskUser() {
     yield put(setLoading(true))
     try {
-
+        const response = yield call(getMyTask);
+        console.log(response.response)
+        yield put(setTask(response?.response))
     } catch (error) {
         toast.error(error?.response?.data?.message)
     }
