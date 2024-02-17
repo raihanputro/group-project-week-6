@@ -78,8 +78,6 @@ const TaskList = ({taskListSelect, theme}) => {
     return false;
   });
 
-  console.log(taskListSelect, 'data')
-
   const handleOpenTaskMenu = (event, taskId) => {
     setTaskMenu(event.currentTarget);
     setTaskId(taskId);
