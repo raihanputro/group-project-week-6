@@ -8,7 +8,6 @@
         try {
             const res = yield call(taskListAdmin);
             yield put(setTaskListData(res));
-            console.log(res, 'anjg')
         } catch (error) {
             yield put(showPopup());
         }
@@ -17,7 +16,6 @@
     function* doGetTaskDetail ({id}) {
         try {
             const resTaskDetail = yield call(taskDetailAdmin, id);
-            console.log(resTaskDetail, 'dwed');
             yield put(setTaskDetailData(resTaskDetail));
         } catch (error) {
             yield put(showPopup(error));
@@ -37,7 +35,6 @@
     function* doUpdateTask ({id, taskData}) {
         try {
             yield call(updateTaskAdmin, id, taskData);
-            console.log(taskData, 'll')
             const res = yield call(taskListAdmin);
             yield put(setTaskListData(res));
         } catch (error) {
