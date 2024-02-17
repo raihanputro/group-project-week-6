@@ -2,8 +2,6 @@
 const {
   Model
 } = require('sequelize');
-const { hashPassword } = require('../utils/bcryptPassword');
-
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -12,35 +10,25 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      User.hasMany(models.Post, {
-        as: 'posts',
-        foreignKey: {
-          name: 'userId'
-        }
-      }),
-      User.hasMany(models.Bookmark, {
-        as: 'userBookmarks',
-        foreignKey: {
-          name: 'idUser'
-        }
-      })
+      User.hasMany(models.Task, {
+        foreignKey: "user_id",
+      });
+      User.hasMany(models.TaskPivot, {
+        foreignKey: "member_id",
+      });
     }
   }
   User.init({
-    fullname: DataTypes.STRING,
+    name: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    profileImage: DataTypes.STRING,
-    image_public_id: DataTypes.STRING,
+    imageUrl: DataTypes.STRING,
+    role: DataTypes.TINYINT,
+    deletedAt: DataTypes.DATE
   }, {
-    hooks: {
-      beforeCreate: (user) => {
-        user.password = hashPassword(user.password)
-      }
-    },
     sequelize,
     modelName: 'User',
+    paranoid: true
   });
   return User;
 };

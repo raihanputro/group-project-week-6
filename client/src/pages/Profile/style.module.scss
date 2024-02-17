@@ -1,0 +1,70 @@
+@import '../../styles/base.scss';
+
+.container {
+    @include directionY;
+    align-items: center;
+}
+
+.atas {
+    background-image: linear-gradient(45deg, #FEFBF6, #8CB9BD);
+    width: 100%;
+    height: 150px;
+}
+
+.bawah {
+    width: 100%;
+    height: 100%;
+    @include directionX;
+    justify-content: center
+}
+
+.containerContent {
+    margin: 10px;
+    @include directionY;
+    align-items: center;
+
+    @include apply-at-sm-size {
+        @include directionX;
+        align-items: start;
+
+    }
+
+    width: 900px;
+    max-width: 900px;
+
+    .sidebar {
+        width: 350px;
+        max-width: 350px;
+        @include directionY;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .content {
+        width: 100%;
+    }
+}
+
+.containerImage {
+    margin-top: -80px;
+
+    .profilePicture {
+        object-fit: cover;
+        object-position: center;
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+    }
+
+    .name {
+        margin: 0;
+        padding: 0;
+        font-weight: 700;
+    }
+}
+
+.containerButton {
+    @include directionY;
+    // width: 100%;
+    gap: 10px;
+}

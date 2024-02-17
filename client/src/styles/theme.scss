@@ -3,6 +3,7 @@
 @mixin light-theme {
   --color-bg: #fff;
   --color-bg-secondary: #e8eef1;
+  --color-bg-tertiary: #26b7ff;
   --color-text: #001a41;
   --color-button: #ed0226;
 }
@@ -10,6 +11,7 @@
 @mixin dark-theme {
   --color-bg: #4f4557;
   --color-bg-secondary: #393646;
+  --color-bg-tertiary: #ff5d17;
   --color-text: #f4eee0;
   --color-button: #ed0226;
 }

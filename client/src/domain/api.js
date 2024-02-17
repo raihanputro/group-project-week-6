@@ -5,6 +5,24 @@ import request from '@utils/request';
 
 const urls = {
   ping: 'ping.json',
+  login: 'login',
+  register: 'register',
+  getProfile: 'user/my-profile',
+  updateProfile: 'user/update-profile',
+  changePassword: 'user/change-password',
+  changeImg: 'user/change-image',
+  userList: 'user/list',
+  taskListAdmin: 'task/admin/list',
+  taskDetailAdmin: 'task/admin/detail',
+  createTask : 'task/admin/create',
+  updateTask: 'task/admin/update',
+  deleteTask: 'task/admin/delete',
+
+  mytask: 'task/member/list',
+  myTaskDetail: 'task/member/detail',
+
+  myTaskManager: 'task/manager/list',
+  getMemberMyTaskDetail: 'task/member/detail/member'
 };
 
 export const callAPI = async (endpoint, method, header = {}, params = {}, data = {}) => {
@@ -28,3 +46,39 @@ export const callAPI = async (endpoint, method, header = {}, params = {}, data =
 };
 
 export const ping = () => callAPI(urls.ping, 'get');
+
+export const login = (dataUser) => {
+  return callAPI(urls.login, 'POST', {}, {}, dataUser);
+};
+
+export const register = (dataUser) => {
+  return callAPI(urls.register, 'POST', {}, {}, dataUser);
+};
+
+export const getProfile = () => {
+  return callAPI(urls.getProfile, 'GET');
+};
+
+export const updateProfile = (data) => {
+  return callAPI(urls.updateProfile, 'PATCH', {}, {}, data);
+};
+
+export const changePassword = (data) => {
+  return callAPI(urls.changePassword, 'PATCH', {}, {}, data);
+};
+
+export const changeImage = (data) => {
+  return callAPI(urls.changeImg, 'PATCH', { 'Content-Type': 'multipart/form-data; charset=UTF-8' }, {}, data);
+};
+export const userList = () => callAPI(urls.userList, 'GET');
+export const taskListAdmin = () => callAPI(urls.taskListAdmin, 'GET');
+export const taskDetailAdmin = (id) => callAPI(`${urls.taskDetailAdmin}/${id}`, 'GET');
+export const createTask = (taskData) => callAPI(urls.createTask, 'POST', {}, {}, taskData);
+export const updateTaskAdmin = (id, taskData) => callAPI(`${urls.updateTask}/${id}`, 'PUT', {}, {}, taskData);
+export const deleteTask = (id) => callAPI(`${urls.deleteTask}/${id}`, 'DELETE');
+
+export const getMyTask = () => callAPI(urls.mytask, 'GET');
+export const getMyTaskDetailAPI = (id) => callAPI(`${urls.myTaskDetail}/${id}`, 'GET');
+
+export const getMyTaskManager = () => callAPI(urls.myTaskManager, 'GET');
+export const getMyMemberAPI = (id) => callAPI(`${urls.getMemberMyTaskDetail}/${id}`, 'GET');

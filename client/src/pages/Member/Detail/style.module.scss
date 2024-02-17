@@ -1,0 +1,94 @@
+@import '../../../styles/base.scss';
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  @include directionX;
+  width: 100%;
+  justify-content: center;
+  background-color: #ffffff;
+  .content {
+    width: 90%;
+    margin-top: 65px;
+    @include directionY;
+    justify-content: center;
+    .title {
+      @include directionX;
+      justify-content: space-between;
+      width: 100%;
+      .titlePost {
+        color: black;
+        font-family: 'Roboto', sans-serif;
+        font-size: 48px;
+        font-style: italic;
+        font-weight: 100;
+        line-height: normal;
+      }
+      .userPost {
+        color: black;
+        font-family: 'Roboto', sans-serif;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        font-style: italic;
+        font-weight: 100;
+        line-height: normal;
+      }
+    }
+    .date {
+      color: #3b97d3;
+      font-family: 'Poppins', sans-serif;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+    .image {
+      margin-top: 51px;
+      width: 100%;
+      object-fit: cover;
+      height: 691px;
+      border-radius: 10px;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      -ms-border-radius: 10px;
+      -o-border-radius: 10px;
+    }
+    .desc {
+      margin: 65px 0px;
+      color: black;
+    }
+    .member {
+      color: black;
+    }
+    .statusTodo {
+      background-color: #9376e0;
+      padding: 10px;
+      color: white;
+      width: fit-content;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+
+    .statusProgress {
+      background-color: orange;
+      padding: 10px;
+      color: white;
+      width: fit-content;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+
+    .statusCompleted {
+      background-color: green;
+      padding: 10px 30px;
+      border-radius: 10px;
+      width: fit-content;
+      color: white;
+      font-weight: 700;
+    }
+  }
+}

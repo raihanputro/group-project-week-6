@@ -1,0 +1,90 @@
+@import '@styles/base';
+
+.pageTitle {
+    font-size: 40px !important;
+    font-weight: 700 !important ;
+    color: var(--color-text) !important;
+    margin-top: 120px !important;    
+    margin-bottom: 2% !important;
+}
+
+.filterContainer {
+    @include directionX;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 1%;
+    
+    .search {
+        width: 100%;
+        background-color: var(--color-bg);
+    }
+
+    .status {
+        width: 30%;
+        background-color: var(--color-bg);
+    }
+}
+
+.addButton {
+    color: var(--color-text) !important;
+    background-color: var(--color-bg) !important;
+}
+
+.table {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+
+    .statusTodo {
+        background-color: #9376E0;
+        padding: 10px;
+        border-radius: 10px;
+        font-weight: 700;
+    }
+
+    .statusProgress {
+        background-color: orange;
+        padding: 10px;
+        border-radius: 10px;
+        font-weight: 700;
+    }
+
+    .statusCompleted {
+        background-color: green;
+        padding: 10px;
+        border-radius: 10px;
+        font-weight: 700;
+    }
+
+    .statusExpired {
+        background-color: red;
+        padding: 10px;
+        border-radius: 10px;
+        font-weight: 700;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .addButton {
+        width: 100%; // Make the add button full-width on smaller screens
+    }
+
+    .filterContainer {
+        @include directionY;
+        
+        .search {
+            width: 100%;
+        }
+    
+        .status {
+            width: 100%;
+        }
+    }
+
+    .pageTitle {
+        margin-top: 5%; // Reduce top margin for the page title on smaller screens
+    }
+
+    .table {
+        font-size: 12px; // Decrease font size for better readability on smaller screens
+    }
+}   
